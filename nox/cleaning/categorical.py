@@ -1,9 +1,8 @@
 import numpy as np
 from nox.util import _get_columns
 
-
 def _determine_default_category(x_train, col, replacement_categories):
-    
+
     """
     A utility function to help determine the default category name for a column that has missing
     categorical values. 
@@ -21,3 +20,63 @@ def _determine_default_category(x_train, col, replacement_categories):
             break
 
     return new_category_name
+
+def replace_missing_new_category(
+    x_train, x_test=None, col_to_category=None, constant=None
+):
+ 
+    if isinstance(col_to_category, list):
+        col_to_category = _get_columns(col_to_category, x_train)
+
+    str_missing_categories = ["Other", "Unknown", "Missingx_trainCategory"]
+    num_missing_categories = [-1, -999, -9999]
+
+    if isinstance(col_to_category, dict):
+
+        for col in col_to_category.keys():
+            x_train[col].fillna(col_to_category[col], inplace=True)
+
+            if x_test is not None:
+                x_test[col].fillna(col_to_category[col], inplace=True)
+
+    elif isinstance(col_to_category, list) and constant is not None:
+
+        for col in col_to_category:
+            x_train[col].fillna(constant, inplace=True)
+
+            if x_test is not None:
+                x_test[col].fillna(constant, inplace=True)
+
+    else:
+
+        for col in col_to_category:
+            # Check if column is a number
+            if np.issubdtype(x_train[col].dtype, np.number):
+                new_category_name = _determine_default_category(
+                    x_train, col, num_missing_categories
+                )
+                x_train[col].fillna(new_category_name, inplace=True)
+
+                # Convert numeric categorical column to integer
+                x_train[col] = x_train[col].astype(int)
+
+                if x_test is not None:
+                    x_test[col].fillna(new_category_name, inplace=True)
+                    # Convert numeric categorical column to integer
+                    x_test[col] = x_test[col].astype(int)
+            else:
+                new_category_name = _determine_default_category(
+                    x_train, col, str_missing_categories
+                )
+                x_train[col].fillna(new_category_name, inplace=True)
+
+                if x_test is not None:
+                    new_category_name = _determine_default_category(
+                        x_train, col, str_missing_categories
+                    )
+                    x_test[col].fillna(new_category_name, inplace=True)
+
+    return x_train, x_test
+
+
+ 
