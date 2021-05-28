@@ -25,6 +25,36 @@ def replace_missing_new_category(
     x_train, x_test=None, col_to_category=None, constant=None
 ):
  
+    """
+    Replaces missing values in categorical column with its own category. The categories can be autochosen
+    from the defaults set.
+    
+    Parameters
+    ----------
+    x_train : DataFrame
+        Dataset
+        
+    x_test : DataFrame
+        Testing Dataset, by default None
+        
+    col_to_category : list or dict, optional
+        A dictionary mapping column name to the category name you want to replace , by default None
+    constant : str, int or float, optional
+        Category placeholder value for missing values, by default None
+    
+    Returns
+    -------
+    Dataframe, *Dataframe:
+        Cleaned columns of the Dataframe(s) provides with the provided constant.
+        
+    Returns 2 Dataframes if x_test is provided.
+    Examples
+    --------
+    >>> ReplaceMissingCategory({'a': "Green", 'b': "Canada", 'c': "December"})
+    >>> ReplaceMissingCategory("Blue", ['a', 'b', 'c'])
+    """
+
+
     if isinstance(col_to_category, list):
         col_to_category = _get_columns(col_to_category, x_train)
 
