@@ -111,6 +111,22 @@ class Clean(object):
 
     def drop_rows_missing_threshold(self, threshold: float):
 
+        """
+        Remove rows from the dataframe that have greater than or equal to the threshold value of missing rows.
+        Example: Remove rows where > 50% of the data is missing.
+        Parameters
+        ----------
+        threshold : float
+            Value between 0 and 1 that describes what percentage of a row can be missing values.
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.drop_rows_missing_threshold(0.5)    
+        """
 
         if threshold > 1 or threshold < 0:
             raise ValueError("Threshold cannot be greater than 1 or less than 0.")
