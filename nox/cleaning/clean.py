@@ -78,3 +78,22 @@ class Clean(object):
             self.test_data = self.test_data[keep_columns]
 
         return self
+
+
+    def drop_unique_columns(self):
+
+        # If the number of unique values is not 0(all missing) or 1(constant or constant + missing)
+        keep_columns = list(
+            filter(
+                lambda x: self.train_data.nunique()[x] != self.train_data.shape[0],
+                self.train_data.columns,
+            )
+        )
+
+        self.train_data = self.train_data[keep_columns]
+
+        if self.test_data is not None:
+            self.test_data = self.test_data[keep_columns]
+
+        return self       
+
