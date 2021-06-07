@@ -82,6 +82,18 @@ class Clean(object):
 
     def drop_unique_columns(self):
 
+        """
+        Remove columns from the data that only have one unique value.
+                
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.drop_unique_columns()
+        """
+
         # If the number of unique values is not 0(all missing) or 1(constant or constant + missing)
         keep_columns = list(
             filter(
