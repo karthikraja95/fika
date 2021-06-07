@@ -109,3 +109,5 @@ class Clean(object):
 
         return self       
 
+    def drop_rows_missing_threshold(self, threshold: float):
+        
