@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "nox"
+name = "nyx"
 version = "0.1.0"
 description = ""
 authors = ["Karthik Bhaskar <karthikrajabk@gmail.com>"]
