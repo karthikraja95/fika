@@ -110,4 +110,20 @@ class Clean(object):
         return self       
 
     def drop_rows_missing_threshold(self, threshold: float):
-        
+
+
+        if threshold > 1 or threshold < 0:
+            raise ValueError("Threshold cannot be greater than 1 or less than 0.")
+
+        self.train_data = self.train_data.dropna(
+            thresh=round(self.train_data.shape[1] * threshold), axis=0
+        )
+
+        if self.test_data is not None:
+            self.test_data = self.test_data.dropna(
+                thresh=round(self.test_data.shape[1] * threshold), axis=0
+            )
+
+        return self
+
+
