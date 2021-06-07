@@ -4,10 +4,10 @@ import pandas as pd
 
 from sklearn.impute import MissingIndicator, KNNImputer
 
-from nox.cleaning import util
-from nox.cleaning import categorical as cat
-from nox.cleaning import numeric as num
-from nox.util import _input_columns, _numeric_input_conditions
+from nyx.cleaning import util
+from nyx.cleaning import categorical as cat
+from nyx.cleaning import numeric as num
+from nyx.util import _input_columns, _numeric_input_conditions
 
 # Create cleaning code by creating different func
 class Clean(object):
