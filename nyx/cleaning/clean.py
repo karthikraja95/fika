@@ -254,3 +254,33 @@ class Clean(object):
         return self
 
 
+    def replace_missing_constant(
+        self, *list_args, list_of_cols=[], constant=0, col_mapping=None
+    ):
+
+    # If a list of columns is provided use the list, otherwise use arguemnts.
+        if col_mapping:
+            col_to_constant = col_mapping
+        else:
+            col_to_constant = _input_columns(list_args, list_of_cols)
+
+        if isinstance(col_to_constant, dict):
+            self.x_train, self.x_test = cat.replace_missing_new_category(
+                x_train=self.x_train,
+                x_test=self.x_test,
+                col_to_category=col_to_constant,
+            )
+        elif isinstance(col_to_constant, list):
+            self.x_train, self.x_test = cat.replace_missing_new_category(
+                x_train=self.x_train,
+                x_test=self.x_test,
+                col_to_category=col_to_constant,
+                constant=constant,
+            )
+        else:
+            self.x_train, self.x_test = cat.replace_missing_new_category(
+                x_train=self.x_train, x_test=self.x_test, constant=constant,
+            )
+
+        return self
+
