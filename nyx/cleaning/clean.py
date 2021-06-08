@@ -258,6 +258,34 @@ class Clean(object):
         self, *list_args, list_of_cols=[], constant=0, col_mapping=None
     ):
 
+        """
+        Replaces missing values in every numeric column with a constant.
+        If no columns are supplied, missing values will be replaced with the mean in every numeric column.
+        If a list of columns is provided use the list, otherwise use arguemnts.
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        constant : int or float, optional
+            Numeric value to replace all missing values with , by default 0
+        col_mapping : dict, optional
+            Dictionary mapping {'ColumnName': `constant`}, by default None
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.replace_missing_constant(col_mapping={'a': 1, 'b': 2, 'c': 3})
+        >>> data.replace_missing_constant('col1', 'col2', constant=2)
+        >>> data.replace_missing_constant(['col1', 'col2'], constant=3)
+        
+        """
+
     # If a list of columns is provided use the list, otherwise use arguemnts.
         if col_mapping:
             col_to_constant = col_mapping
