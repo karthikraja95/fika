@@ -181,6 +181,30 @@ class Clean(object):
 
     def replace_missing_median(self, *list_args, list_of_cols=[]):
 
+        """
+        Replaces missing values in every numeric column with the median of that column.
+        If no columns are supplied, missing values will be replaced with the mean in every numeric column.
+        Median: Middle value of a list of numbers. Equal to the mean if data follows normal distribution. Not effected much by anomalies.
+        If a list of columns is provided use the list, otherwise use arguemnts.
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            Specific columns to apply this technique to., by default []
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.replace_missing_median('col1', 'col2')
+        >>> data.replace_missing_median(['col1', 'col2'])
+        """
+
+
         ## If a list of columns is provided use the list, otherwise use arguemnts.
         list_of_cols = _input_columns(list_args, list_of_cols)
 
