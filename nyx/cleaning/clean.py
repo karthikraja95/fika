@@ -142,4 +142,18 @@ class Clean(object):
 
         return self
 
+    def replace_missing_mean(self, *list_args, list_of_cols=[]):
+
+        ## If a list of columns is provided use the list, otherwise use arguemnts.
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        (self.train_data, self.test_data,) = num.replace_missing_mean_median_mode(
+            x_train=self.train_data,
+            x_test=self.test_data,
+            list_of_cols=list_of_cols,
+            strategy="mean",
+        )
+
+        return self
+
 
