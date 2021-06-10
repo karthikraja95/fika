@@ -399,6 +399,30 @@ class Clean(object):
     def drop_duplicate_rows(self, *list_args, list_of_cols=[]):
 
 
+        """
+        Remove rows from the data that are exact duplicates of each other and leave only 1.
+        This can be used to reduce processing time or performance for algorithms where
+        duplicates have no effect on the outcome (i.e DBSCAN)
+        If a list of columns is provided use the list, otherwise use arguemnts.
+       
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+       
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.drop_duplicate_rows('col1', 'col2') # Only look at columns 1 and 2
+        >>> data.drop_duplicate_rows(['col1', 'col2'])
+        >>> data.drop_duplicate_rows()
+        """
+
         # If a list of columns is provided use the list, otherwise use arguemnts.
         list_of_cols = _input_columns(list_args, list_of_cols)
 
