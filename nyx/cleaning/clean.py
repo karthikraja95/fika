@@ -316,6 +316,34 @@ class Clean(object):
         self, *list_args, list_of_cols=[], new_category=None, col_mapping=None
     ):
 
+        """
+        Replaces missing values in categorical column with its own category. The categories can be autochosen
+        from the defaults set.
+        For numeric categorical columns default values are: -1, -999, -9999
+        For string categorical columns default values are: "Other", "Unknown", "MissingDataCategory"
+        If a list of columns is provided use the list, otherwise use arguemnts.
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        new_category : str, int, or float, optional
+            Category to replace missing values with, by default None
+        col_mapping : dict, optional
+           Dictionary mapping {'ColumnName': `constant`}, by default None
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.replace_missing_new_category(col_mapping={'col1': "Green", 'col2': "Canada", 'col3': "December"})
+        >>> data.replace_missing_new_category('col1', 'col2', 'col3', new_category='Blue')
+        >>> data.replace_missing_new_category(['col1', 'col2', 'col3'], new_category='Blue')
+        """
 
         # If dictionary mapping is provided, use that otherwise use column
         if col_mapping:
