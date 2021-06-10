@@ -364,6 +364,27 @@ class Clean(object):
     def replace_missing_remove_row(self, *list_args, list_of_cols=[]):
 
 
+        """
+        Remove rows where the value of a column for those rows is missing.
+        If a list of columns is provided use the list, otherwise use arguemnts.
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.replace_missing_remove_row('col1', 'col2')
+        >>> data.replace_missing_remove_row(['col1', 'col2'])
+        """
+
+
         # If a list of columns is provided use the list, otherwise use arguemnts.
         list_of_cols = _input_columns(list_args, list_of_cols)
 
