@@ -312,3 +312,24 @@ class Clean(object):
 
         return self
 
+    def replace_missing_new_category(
+        self, *list_args, list_of_cols=[], new_category=None, col_mapping=None
+    ):
+
+
+        # If dictionary mapping is provided, use that otherwise use column
+        if col_mapping:
+            col_to_category = col_mapping
+        else:
+            # If a list of columns is provided use the list, otherwise use arguemnts.
+            col_to_category = _input_columns(list_args, list_of_cols)
+
+        self.x_train, self.x_test = cat.replace_missing_new_category(
+            x_train=self.x_train,
+            x_test=self.x_test,
+            col_to_category=col_to_category,
+            constant=new_category,
+        )
+
+        return self
+
