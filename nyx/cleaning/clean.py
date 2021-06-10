@@ -394,3 +394,17 @@ class Clean(object):
             self.x_test = self.x_test.dropna(axis=0, subset=list_of_cols)
 
         return self
+
+
+    def drop_duplicate_rows(self, *list_args, list_of_cols=[]):
+
+
+        # If a list of columns is provided use the list, otherwise use arguemnts.
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        self.x_train = self.x_train.drop_duplicates(list_of_cols)
+
+        if self.x_test is not None:
+            self.test_data = self.test_data.drop_duplicates(list_of_cols)
+
+        return self
