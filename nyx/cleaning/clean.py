@@ -453,3 +453,32 @@ class Clean(object):
             self.test_data = self.test_data.T.drop_duplicates().T
 
         return self
+
+
+
+    def replace_missing_random_discrete(self, *list_args, list_of_cols=[]):
+
+        # If a list of columns is provided use the list, otherwise use arguemnts.
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        for col in list_of_cols:
+            probabilities = self.x_train[col].value_counts(normalize=True)
+
+            missing_data = self.x_train[col].isnull()
+            self.x_train.loc[missing_data, col] = np.random.choice(
+                probabilities.index,
+                size=len(self.x_train[missing_data]),
+                replace=True,
+                p=probabilities.values,
+            )
+
+            if self.x_test is not None:
+                missing_data = self.x_test[col].isnull()
+                self.x_test.loc[missing_data, col] = np.random.choice(
+                    probabilities.index,
+                    size=len(self.x_test[missing_data]),
+                    replace=True,
+                    p=probabilities.values,
+                )
+
+        return self
