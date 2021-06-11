@@ -432,3 +432,12 @@ class Clean(object):
             self.test_data = self.test_data.drop_duplicates(list_of_cols)
 
         return self
+
+    def drop_duplicate_columns(self):
+
+        self.train_data = self.train_data.T.drop_duplicates().T
+
+        if self.test_data is not None:
+            self.test_data = self.test_data.T.drop_duplicates().T
+
+        return self
