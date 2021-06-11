@@ -664,6 +664,29 @@ class Clean(object):
 
     def replace_missing_forwardfill(self, *list_args, list_of_cols=[], **extra_kwargs):
 
+        """
+        Replaces missing values in a column with the last known data point.
+        This is useful when dealing with timeseries data and you want to replace future missing data with the past.
+        For more info view the following link: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.fillna.html
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+            
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.replace_missing_forwardfill('col1', 'col2')
+        >>> data.replace_missing_forwardfill(['col1', 'col2'])
+        """
+        
         list_of_cols = _input_columns(list_args, list_of_cols)
 
         (self.x_train, self.x_test,) = util.replace_missing_fill(
