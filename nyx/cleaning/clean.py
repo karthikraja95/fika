@@ -508,3 +508,23 @@ class Clean(object):
                 )
 
         return self
+
+    def replace_missing_knn(self, k=5, **knn_kwargs):
+
+
+        neighbors = knn_kwargs.pop("n_neighbors", 5)
+        columns = self.train_data.columns
+        knn = KNNImputer(n_neighbors=neighbors, **knn_kwargs)
+
+        train_knn_transformed = knn.fit_transform(self.train_data.values)
+
+        if self.test_data is not None:
+            warnings.warn(
+                "If your test data does not come from the same distribution of the training data, it may lead to erroneous results."
+            )
+            test_knn_transformed = knn.fit_transform(self.test_data.values)
+
+        self.train_data = pd.DataFrame(data=train_knn_transformed, columns=columns)
+        self.test_data = pd.DataFrame(data=test_knn_transformed, columns=columns)
+
+        return self
