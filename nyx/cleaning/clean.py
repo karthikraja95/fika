@@ -560,3 +560,25 @@ class Clean(object):
         self.test_data = pd.DataFrame(data=test_knn_transformed, columns=columns)
 
         return self
+
+    def replace_missing_interpolate(
+        self, *list_args, list_of_cols=[], method="linear", **inter_kwargs
+    ):
+
+        method = inter_kwargs.pop("method", "linear")
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        for col in list_of_cols:
+            self.x_train[col] = self.x_train[col].interpolate(
+                method=method, **inter_kwargs
+            )
+
+            if self.x_test is not None:
+                warnings.warn(
+                    "If test data does not come from the same distribution of the training data, it may lead to erroneous results."
+                )
+                self.x_test[col] = self.x_test[col].interpolate(
+                    method=method, **inter_kwargs
+                )
+
+        return self
