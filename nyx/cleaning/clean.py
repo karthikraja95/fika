@@ -624,3 +624,18 @@ class Clean(object):
                 )
 
         return self
+
+    def replace_missing_backfill(self, *list_args, list_of_cols=[], **extra_kwargs):
+
+
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        (self.x_train, self.x_test,) = util.replace_missing_fill(
+            x_train=self.x_train,
+            x_test=self.x_test,
+            list_of_cols=list_of_cols,
+            method="bfill",
+            **extra_kwargs,
+        )
+
+        return self
