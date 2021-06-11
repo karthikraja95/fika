@@ -511,6 +511,38 @@ class Clean(object):
 
     def replace_missing_knn(self, k=5, **knn_kwargs):
 
+        """
+        Replaces missing data with data from similar records based off a distance metric.
+        For more info see: https://scikit-learn.org/stable/modules/generated/sklearn.impute.KNNImputer.html#sklearn.impute.KNNImputer
+        
+        Parameters
+        ----------
+        missing_values : number, string, np.nan or None, default=`np.nan`
+            The placeholder for the missing values. All occurrences of missing_values will be imputed.
+        k : int, default=5
+            Number of neighboring samples to use for imputation.
+        weights : {‘uniform’, ‘distance’} or callable, default=’uniform’
+            Weight function used in prediction. Possible values:
+                ‘uniform’ : uniform weights. All points in each neighborhood are weighted equally.
+                ‘distance’ : weight points by the inverse of their distance. in this case, closer neighbors of a query point will have a greater influence than neighbors which are further away.
+                callable : a user-defined function which accepts an array of distances, and returns an array of the same shape containing the weights.
+        metric : {‘nan_euclidean’} or callable, default=’nan_euclidean’
+            Distance metric for searching neighbors. Possible values:
+                ‘nan_euclidean’
+                callable : a user-defined function which conforms to the definition of _pairwise_callable(X, Y, metric, **kwds).
+                The function accepts two arrays, X and Y, and a missing_values keyword in kwds and returns a scalar distance value.
+        add_indicator : bool, default=False
+            If True, a MissingIndicator transform will stack onto the output of the imputer’s transform.
+            This allows a predictive estimator to account for missingness despite imputation.
+            If a feature has no missing values at fit/train time, the feature won’t appear on the missing indicator even if there are missing values at transform/test time.
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.replace_missing_knn(k=8)
+        """
 
         neighbors = knn_kwargs.pop("n_neighbors", 5)
         columns = self.train_data.columns
