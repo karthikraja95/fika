@@ -458,6 +458,32 @@ class Clean(object):
 
     def replace_missing_random_discrete(self, *list_args, list_of_cols=[]):
 
+        """
+        Replace missing values in with a random number based off the distribution (number of occurences) 
+        of the data.
+        For example if your data was [5, 5, NaN, 1, 2]
+        There would be a 50% chance that the NaN would be replaced with a 5, a 25% chance for 1 and a 25% chance for 2.
+        If a list of columns is provided use the list, otherwise use arguemnts.
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+            
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.replace_missing_random_discrete('col1', 'col2')
+        >>> data.replace_missing_random_discrete(['col1', 'col2'])
+        """
+
+
         # If a list of columns is provided use the list, otherwise use arguemnts.
         list_of_cols = _input_columns(list_args, list_of_cols)
 
