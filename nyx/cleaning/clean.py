@@ -435,6 +435,18 @@ class Clean(object):
 
     def drop_duplicate_columns(self):
 
+        """
+        Remove columns from the data that are exact duplicates of each other and leave only 1.
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.drop_duplicate_columns()
+        """
+
         self.train_data = self.train_data.T.drop_duplicates().T
 
         if self.test_data is not None:
