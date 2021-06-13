@@ -698,3 +698,14 @@ class Clean(object):
         )
 
         return self
+
+    def replace_missing_indicator(
+        self,
+        *list_args,
+        list_of_cols=[],
+        missing_indicator=1,
+        valid_indicator=0,
+        keep_col=True,
+    ):
+
+    
