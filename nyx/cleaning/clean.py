@@ -708,6 +708,35 @@ class Clean(object):
         keep_col=True,
     ):
 
+        """
+        Adds a new column describing whether data is missing for each record in a column.
+        This is useful if the missing data has meaning, aka not random.
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+            
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        missing_indicator : int, optional
+            Value to indicate missing data, by default 1
+        valid_indicator : int, optional
+            Value to indicate non missing data, by default 0
+        keep_col : bool, optional
+            True to keep column, False to replace it, by default False
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.replace_missing_indicator('col1', 'col2')
+        >>> data.replace_missing_indicator(['col1', 'col2'])
+        >>> data.replace_missing_indicator(['col1', 'col2'], missing_indicator='missing', valid_indicator='not missing', keep_col=False)
+        """
+
         list_of_cols = _input_columns(list_args, list_of_cols)
 
         for col in list_of_cols:
