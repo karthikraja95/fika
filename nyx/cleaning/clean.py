@@ -708,4 +708,25 @@ class Clean(object):
         keep_col=True,
     ):
 
-    
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        for col in list_of_cols:
+            self.x_train[col + "_missing"] = [
+                missing_indicator if x else valid_indicator
+                for x in self.x_train[col].isnull()
+            ]
+
+            if not keep_col:
+                self.x_train = self.x_train.drop([col], axis=1)
+
+            if self.x_test is not None:
+                self.x_test[col + "_missing"] = [
+                    missing_indicator if x else valid_indicator
+                    for x in self.x_test[col].isnull()
+                ]
+
+                if not keep_col:
+                    self.x_test = self.x_test.drop([col], axis=1)
+
+        return self
+
