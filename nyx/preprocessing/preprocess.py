@@ -25,7 +25,34 @@ class Preprocess(object):
 
     def normalize_numeric(self, *list_args, list_of_cols=[], **normalize_params):
 
-
+        """
+        Function that normalizes all numeric values between 2 values to bring features into same domain.
+        
+        If `list_of_cols` is not provided, the strategy will be applied to all numeric columns.
+        If a list of columns is provided use the list, otherwise use arguments.
+        For more info please see: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html#sklearn.preprocessing.MinMaxScaler 
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        feature_range : tuple(int or float, int or float), optional
+            Min and max range to normalize values to, by default (0, 1)
+        normalize_params : dict, optional
+            Parmaters to pass into MinMaxScaler() constructor from Scikit-Learn
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.normalize_numeric('col1')
+        >>> data.normalize_numeric(['col1', 'col2'])
+        """
+        
         list_of_cols = _input_columns(list_args, list_of_cols)
 
         self.train_data, self.test_data = numeric.scale(
