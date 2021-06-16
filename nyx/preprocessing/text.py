@@ -2,6 +2,39 @@ def process_text(
     corpus, lower=True, punctuation=True, stopwords=True, stemmer=True, numbers=True,
 ):
 
+    """
+    Function that takes text and does the following:
+    - Casts it to lowercase
+    - Removes punctuation
+    - Removes stopwords
+    - Stems the text
+    - Removes any numerical values
+    
+    Parameters
+    ----------
+    corpus : str
+        Text
+    
+    lower : bool, optional
+        True to cast all text to lowercase, by default True
+    
+    punctuation : bool, optional
+        True to remove punctuation, by default True
+    
+    stopwords : bool, optional
+        True to remove stop words, by default True
+    
+    stemmer : bool, optional
+        True to stem the data, by default True
+    numbers : bool, optional
+        True to remove any numbers, by default True
+    
+    Returns
+    -------
+    str
+        Normalized text
+    """
+
     import nltk
     import string
     from nltk.stem.snowball import SnowballStemmer
