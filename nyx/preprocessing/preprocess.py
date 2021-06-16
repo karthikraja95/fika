@@ -19,3 +19,21 @@ from nyx.util import (
 NLTK_STEMMERS = {"porter": PorterStemmer(), "snowball": SnowballStemmer("english")}
 
 NLTK_LEMMATIZERS = {"wordnet": WordNetLemmatizer()}
+
+
+class Preprocess(object):
+
+    def normalize_numeric(self, *list_args, list_of_cols=[], **normalize_params):
+
+
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        self.train_data, self.test_data = numeric.scale(
+            x_train=self.train_data,
+            x_test=self.test_data,
+            list_of_cols=list_of_cols,
+            method="minmax",
+            **normalize_params,
+        )
+
+        return self
