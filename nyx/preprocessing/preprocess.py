@@ -169,6 +169,28 @@ class Preprocess(object):
 
     def split_sentences(self, *list_args, list_of_cols=[], new_col_name="_sentences"):
 
+        """
+        Splits text data into sentences and saves it into another column for analysis.
+        If a list of columns is provided use the list, otherwise use arguments.
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        new_col_name : str, optional
+            New column name to be created when applying this technique, by default `COLUMN_sentences`
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.split_sentences('col1')
+        >>> data.split_sentences(['col1', 'col2'])
+        """
+
         list_of_cols = _input_columns(list_args, list_of_cols)
 
         for col in list_of_cols:
