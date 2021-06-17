@@ -166,3 +166,22 @@ class Preprocess(object):
 
         return self
 
+
+    def split_sentences(self, *list_args, list_of_cols=[], new_col_name="_sentences"):
+
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        for col in list_of_cols:
+            if new_col_name.startswith("_"):
+                new_col_name = col + new_col_name
+
+            self.x_train[new_col_name] = pd.Series(
+                map(sent_tokenize, self.x_train[col])
+            )
+            if self.x_test is not None:
+                self.x_test[new_col_name] = pd.Series(
+                    map(sent_tokenize, self.x_test[col])
+                )
+
+        return self
+
