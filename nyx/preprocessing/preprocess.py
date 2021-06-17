@@ -122,6 +122,28 @@ class Preprocess(object):
 
     def normalize_log(self, *list_args, list_of_cols=[], base=1):
 
+        """
+        Scales data logarithmically.
+        Options are 1 for natural log, 2 for base2, 10 for base10.
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        base : str, optional
+            Base to logarithmically scale by, by default ''
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.normalize_log('col1')
+        >>> data.normalize_log(['col1', 'col2'], base=10)
+        """
 
         list_of_cols = _input_columns(list_args, list_of_cols)
 
