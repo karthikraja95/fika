@@ -67,6 +67,47 @@ class Preprocess(object):
 
     def normalize_quantile_range(self, *list_args, list_of_cols=[], **robust_params):
 
+        """
+        Scale features using statistics that are robust to outliers.
+        This Scaler removes the median and scales the data according to the quantile range (defaults to IQR: Interquartile Range).
+        The IQR is the range between the 1st quartile (25th quantile) and the 3rd quartile (75th quantile).
+        Standardization of a dataset is a common requirement for many machine learning estimators.
+        Typically this is done by removing the mean and scaling to unit variance.
+        However, outliers can often influence the sample mean / variance in a negative way.
+        In such cases, the median and the interquartile range often give better results.
+        
+        If `list_of_cols` is not provided, the strategy will be applied to all numeric columns.
+        If a list of columns is provided use the list, otherwise use arguments.
+        For more info please see: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html#sklearn.preprocessing.RobustScaler
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        with_centering : boolean, True by default
+            If True, center the data before scaling.
+            This will cause transform to raise an exception when attempted on sparse matrices,
+            because centering them entails building a dense matrix which in common use cases is likely to be too large to fit in memory.
+        
+        with_scaling : boolean, True by default
+            If True, scale the data to interquartile range.
+        quantile_range : tuple (q_min, q_max), 0.0 < q_min < q_max < 100.0
+            Default: (25.0, 75.0) = (1st quantile, 3rd quantile) = IQR Quantile range used to calculate scale_.
+        robust_params : dict, optional
+            Parmaters to pass into MinMaxScaler() constructor from Scikit-Learn
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.normalize_quantile_range('col1')
+        >>> data.normalize_quantile_range(['col1', 'col2'])
+        """
+
         list_of_cols = _input_columns(list_args, list_of_cols)
 
         self.train_data, self.test_data = numeric.scale(
