@@ -120,3 +120,27 @@ class Preprocess(object):
 
         return self
 
+    def normalize_log(self, *list_args, list_of_cols=[], base=1):
+
+
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        list_of_cols = _numeric_input_conditions(list_of_cols, self.x_train)
+
+        if not base:
+            log = np.log
+        elif base == 2:
+            log = np.log2
+        elif base == 10:
+            log = np.log10
+        else:
+            log = np.log
+
+        for col in list_of_cols:
+            self.x_train[col] = log(self.x_train[col])
+
+            if self.x_test is not None:
+                self.x_test[col] = log(self.x_test[col])
+
+        return self
+
