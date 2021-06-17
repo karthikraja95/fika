@@ -64,3 +64,18 @@ class Preprocess(object):
         )
 
         return self
+
+    def normalize_quantile_range(self, *list_args, list_of_cols=[], **robust_params):
+
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        self.train_data, self.test_data = numeric.scale(
+            x_train=self.train_data,
+            x_test=self.test_data,
+            list_of_cols=list_of_cols,
+            method="robust",
+            **robust_params,
+        )
+
+        return self
+
