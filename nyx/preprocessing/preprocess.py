@@ -257,3 +257,37 @@ class Preprocess(object):
                 self.x_test[new_col_name] = pd.Series(map(func, self.x_test[col]))
 
         return self
+
+    def split_words_nltk(
+        self, *list_args, list_of_cols=[], regexp="", new_col_name="_tokenized"
+    ):
+
+
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        tokenizer = RegexpTokenizer(regexp)
+
+        for col in list_of_cols:
+            if new_col_name.startswith("_"):
+                new_col_name = col + new_col_name
+
+            if not regexp:
+                self.x_train[new_col_name] = pd.Series(
+                    map(word_tokenize, self.x_train[col])
+                )
+
+                if self.x_test is not None:
+                    self.x_test[new_col_name] = pd.Series(
+                        map(word_tokenize, self.x_test[col])
+                    )
+            else:
+                self.x_train[new_col_name] = pd.Series(
+                    map(tokenizer.tokenize, self.x_train[col])
+                )
+
+                if self.x_test is not None:
+                    self.x_test[new_col_name] = pd.Series(
+                        map(tokenizer.tokenize, self.x_test[col])
+                    )
+
+        return self
