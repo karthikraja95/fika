@@ -262,7 +262,32 @@ class Preprocess(object):
         self, *list_args, list_of_cols=[], regexp="", new_col_name="_tokenized"
     ):
 
-
+        """
+        Splits text into its words using nltk punkt tokenizer by default. 
+    
+        Default is by spaces and punctuation but if a regex expression is provided, it will use that.
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        regexp : str, optional
+            Regex expression used to define what a word is.
+        new_col_name : str, optional
+            New column name to be created when applying this technique, by default `COLUMN_tokenized`
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.split_words_nltk('col1')
+        >>> data.split_words_nltk(['col1', 'col2'])
+        """
+        
         list_of_cols = _input_columns(list_args, list_of_cols)
 
         tokenizer = RegexpTokenizer(regexp)
