@@ -345,7 +345,13 @@ class Preprocess(object):
         >>> data.remove_stopwords_nltk('col1')
         >>> data.remove_stopwords_nltk(['col1', 'col2'])
         """
-        
+
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        stop_words = stopwords.words("english")
+        stop_words.extend(custom_stopwords)
+        stop_list = set(stop_words)
+
         for col in list_of_cols:
             if new_col_name.startswith("_"):
                 new_col_name = col + new_col_name
