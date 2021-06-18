@@ -287,7 +287,7 @@ class Preprocess(object):
         >>> data.split_words_nltk('col1')
         >>> data.split_words_nltk(['col1', 'col2'])
         """
-        
+
         list_of_cols = _input_columns(list_args, list_of_cols)
 
         tokenizer = RegexpTokenizer(regexp)
@@ -316,3 +316,41 @@ class Preprocess(object):
                     )
 
         return self
+
+    def remove_stopwords_nltk(
+        self, *list_args, list_of_cols=[], custom_stopwords=[], new_col_name="_rem_stop"
+    ):
+
+        for col in list_of_cols:
+            if new_col_name.startswith("_"):
+                new_col_name = col + new_col_name
+
+            self.x_train[new_col_name] = list(
+                map(
+                    lambda x: " ".join(
+                        [
+                            word
+                            for word in word_tokenize(x.lower())
+                            if word not in stop_list
+                        ]
+                    ),
+                    self.x_train[col],
+                )
+            )
+
+            if self.x_test is not None:
+                self.x_test[new_col_name] = list(
+                    map(
+                        lambda x: " ".join(
+                            [
+                                word
+                                for word in word_tokenize(x.lower())
+                                if word not in stop_list
+                            ]
+                        ),
+                        self.x_test[col],
+                    )
+                )
+
+        return self
+
