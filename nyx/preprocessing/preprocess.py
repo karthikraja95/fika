@@ -320,7 +320,32 @@ class Preprocess(object):
     def remove_stopwords_nltk(
         self, *list_args, list_of_cols=[], custom_stopwords=[], new_col_name="_rem_stop"
     ):
-
+        """
+        Removes stopwords following the nltk English stopwords list.
+        A list of custom words can be provided as well, usually for domain specific words.
+        Stop words are generally the most common words in a language
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        custom_stop_words : list, optional
+            Custom list of words to also drop with the stop words, must be LOWERCASE, by default []
+        new_col_name : str, optional
+            New column name to be created when applying this technique, by default `COLUMN_rem_stop`
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.remove_stopwords_nltk('col1')
+        >>> data.remove_stopwords_nltk(['col1', 'col2'])
+        """
+        
         for col in list_of_cols:
             if new_col_name.startswith("_"):
                 new_col_name = col + new_col_name
