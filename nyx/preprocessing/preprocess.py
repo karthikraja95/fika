@@ -207,3 +207,21 @@ class Preprocess(object):
 
         return self
 
+    def stem_nltk(
+        self, *list_args, list_of_cols=[], stemmer="porter", new_col_name="_stemmed"
+    ):
+
+        stem = NLTK_STEMMERS[stemmer]
+        # Create partial for speed purposes
+        func = partial(self._apply_text_method, transformer=stem.stem)
+
+        for col in list_of_cols:
+            if new_col_name.startswith("_"):
+                new_col_name = col + new_col_name
+
+            self.x_train[new_col_name] = pd.Series(map(func, self.x_train[col]))
+
+            if self.x_test is not None:
+                self.x_test[new_col_name] = pd.Series(map(func, self.x_test[col]))
+
+        return self
