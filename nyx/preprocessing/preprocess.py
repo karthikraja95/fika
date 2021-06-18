@@ -211,6 +211,8 @@ class Preprocess(object):
         self, *list_args, list_of_cols=[], stemmer="porter", new_col_name="_stemmed"
     ):
 
+
+        list_of_cols = _input_columns(list_args, list_of_cols)
         stem = NLTK_STEMMERS[stemmer]
         # Create partial for speed purposes
         func = partial(self._apply_text_method, transformer=stem.stem)
