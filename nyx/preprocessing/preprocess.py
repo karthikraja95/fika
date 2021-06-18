@@ -210,7 +210,37 @@ class Preprocess(object):
     def stem_nltk(
         self, *list_args, list_of_cols=[], stemmer="porter", new_col_name="_stemmed"
     ):
-
+        """
+        Transforms text to their word stem, base or root form. 
+        For example:
+            dogs --> dog
+            churches --> church
+            abaci --> abacus
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        stemmer : str, optional
+            Type of NLTK stemmer to use, by default porter
+            Current stemming implementations:
+                - porter
+                - snowball
+            For more information please refer to the NLTK stemming api https://www.nltk.org/api/nltk.stem.html
+        new_col_name : str, optional
+            New column name to be created when applying this technique, by default `COLUMN_stemmed`
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.stem_nltk('col1')
+        >>> data.stem_nltk(['col1', 'col2'], stemmer='snowball')
+        """
 
         list_of_cols = _input_columns(list_args, list_of_cols)
         stem = NLTK_STEMMERS[stemmer]
