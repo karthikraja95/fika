@@ -394,6 +394,39 @@ class Preprocess(object):
         new_col_name="_rem_punct",
     ):
 
+        """
+        Removes punctuation from every string entry.
+        Defaults to removing all punctuation, but if regex of punctuation is provided, it will remove them.
+        
+        An example regex would be:
+        (\w+\.|\w+)[^,] - Include all words and words with periods after them but don't include commas.
+        (\w+\.)|(\w+), would also achieve the same result
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        regexp : str, optional
+            Regex expression used to define what to include.
+            
+        exceptions : list, optional
+            List of punctuation to include in the text, by default []
+        new_col_name : str, optional
+            New column name to be created when applying this technique, by default `COLUMN_rem_punct`
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.remove_punctuation('col1')
+        >>> data.remove_punctuation(['col1', 'col2'])
+        >>> data.remove_punctuation('col1', regexp=r'(\w+\.)|(\w+)') # Include all words and words with periods after.
+        """
+
+
         list_of_cols = _input_columns(list_args, list_of_cols)
 
         delete_punct = set(string.punctuation) - set(exceptions)
