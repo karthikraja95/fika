@@ -599,4 +599,13 @@ class Preprocess(object):
 
         return self
 
+    def _apply_text_method(self, text_data, transformer=None):
+
+        transformed_text_data = ""
+
+        for word in text_data.split():
+            transformed_text_data += f"{transformer(word)} "
+
+        return transformed_text_data.strip()
+
 
