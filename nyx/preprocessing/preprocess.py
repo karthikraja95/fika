@@ -467,3 +467,28 @@ class Preprocess(object):
 
         return self
 
+    def remove_numbers(self, *list_args, list_of_cols=[], new_col_name="_rem_num"):
+
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        for col in list_of_cols:
+            if new_col_name.startswith("_"):
+                new_col_name = col + new_col_name
+
+            self.x_train[new_col_name] = pd.Series(
+                map(
+                    lambda x: str.translate(x, str.maketrans("", "", "0123456789")),
+                    self.x_train[col],
+                )
+            )
+
+            if self.x_test is not None:
+                self.x_test[new_col_name] = pd.Series(
+                    map(
+                        lambda x: str.translate(x, str.maketrans("", "", "0123456789")),
+                        self.x_test[col],
+                    )
+                )
+
+        return self
+
