@@ -385,3 +385,17 @@ class Preprocess(object):
 
         return self
 
+    def remove_punctuation(
+        self,
+        *list_args,
+        list_of_cols=[],
+        regexp="",
+        exceptions=[],
+        new_col_name="_rem_punct",
+    ):
+
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        delete_punct = set(string.punctuation) - set(exceptions)
+        tokenizer = RegexpTokenizer(regexp)
+
