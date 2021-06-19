@@ -399,3 +399,38 @@ class Preprocess(object):
         delete_punct = set(string.punctuation) - set(exceptions)
         tokenizer = RegexpTokenizer(regexp)
 
+        for col in list_of_cols:
+            if new_col_name.startswith("_"):
+                new_col_name = col + new_col_name
+
+            if not regexp:
+                self.x_train[new_col_name] = list(
+                    map(
+                        lambda x: "".join(
+                            [letter for letter in x if letter not in delete_punct]
+                        ),
+                        self.x_train[col],
+                    )
+                )
+
+                if self.x_test is not None:
+                    self.x_test[new_col_name] = list(
+                        map(
+                            lambda x: "".join(
+                                [letter for letter in x if letter not in delete_punct]
+                            ),
+                            self.x_test[col],
+                        )
+                    )
+            else:
+                self.x_train[new_col_name] = list(
+                    map(lambda x: " ".join(tokenizer.tokenize(x)), self.x_train[col])
+                )
+
+                if self.x_test is not None:
+                    self.x_test[new_col_name] = list(
+                        map(lambda x: " ".join(tokenizer.tokenize(x)), self.x_test[col])
+                    )
+
+        return self
+
