@@ -512,3 +512,49 @@ class Preprocess(object):
 
         return self
 
+    def clean_text(
+        self,
+        *list_args,
+        list_of_cols=[],
+        lower=True,
+        punctuation=True,
+        stopwords=True,
+        stemmer=True,
+        numbers=True,
+        new_col_name="_clean",
+        ):
+
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        for col in list_of_cols:
+            if new_col_name.startswith("_"):
+                new_col_name = col + new_col_name
+
+            self.x_train[new_col_name] = [
+                text.process_text(
+                    txt,
+                    lower=lower,
+                    punctuation=punctuation,
+                    stopwords=stopwords,
+                    stemmer=stemmer,
+                    numbers=numbers,
+                )
+                for txt in self.x_train[col]
+            ]
+
+            if self.x_test is not None:
+                self.x_test[new_col_name] = [
+                    text.process_text(
+                        txt,
+                        lower=lower,
+                        punctuation=punctuation,
+                        stopwords=stopwords,
+                        stemmer=stemmer,
+                        numbers=numbers,
+                    )
+                    for txt in self.x_test[col]
+                ]
+
+        return self
+
+
