@@ -469,6 +469,26 @@ class Preprocess(object):
 
     def remove_numbers(self, *list_args, list_of_cols=[], new_col_name="_rem_num"):
 
+        """
+        Removes numbers from text in a column.
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        new_col_name : str, optional
+            New column name to be created when applying this technique, by default `COLUMN_rem_num`
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.remove_numbers('col1', new_col_name="text_wo_num)
+        """
+
         list_of_cols = _input_columns(list_args, list_of_cols)
 
         for col in list_of_cols:
