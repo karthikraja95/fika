@@ -524,6 +524,48 @@ class Preprocess(object):
         new_col_name="_clean",
         ):
 
+        """
+        Function that takes text and does the following:
+        - Casts it to lowercase
+        - Removes punctuation
+        - Removes stopwords
+        - Stems the text
+        - Removes any numerical text
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        
+        lower : bool, optional
+            True to cast all text to lowercase, by default True
+        
+        punctuation : bool, optional
+            True to remove punctuation, by default True
+        
+        stopwords : bool, optional
+            True to remove stop words, by default True
+        
+        stemmer : bool, optional
+            True to stem the data, by default True
+        numbers : bool, optional
+            True to remove numerical data, by default True
+        new_col_name : str, optional
+            New column name to be created when applying this technique, by default `COLUMN_clean`            
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.clean_text('col1')
+        >>> data.clean_text(['col1', 'col2'], lower=False)
+        >>> data.clean_text(lower=False, stopwords=False, stemmer=False)
+        """
+
         list_of_cols = _input_columns(list_args, list_of_cols)
 
         for col in list_of_cols:
