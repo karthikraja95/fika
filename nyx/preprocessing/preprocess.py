@@ -601,6 +601,23 @@ class Preprocess(object):
 
     def _apply_text_method(self, text_data, transformer=None):
 
+        """
+        Applies a text based method to the given data, for example
+        a Lemmatizer, Stemmer, etc.
+        Parameters
+        ----------
+        text_data : str
+            Text data to transform
+            
+        transformer : Transformation object, optional
+            trasnformer applied on the data, for example
+            lemmatizer, stemmer, etc. , by default None
+        Returns
+        -------
+        str
+            Transformed data
+        """
+
         transformed_text_data = ""
 
         for word in text_data.split():
