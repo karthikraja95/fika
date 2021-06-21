@@ -18,6 +18,20 @@ class Stats(object):
 
     def predict_data_sample(self):
 
+        """
+        Identifies how similar the train and test set distribution are by trying to predict whether each sample belongs
+        to the train or test set using Random Forest, 10 Fold Stratified Cross Validation.
+        The lower the F1 score, the more similar the distributions are as it's harder to predict which sample belongs to which distribution.
+        Credit: https://www.kaggle.com/nanomathias/distribution-of-test-vs-training-data#1.-t-SNE-Distribution-Overview
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.predict_data_sample()
+        """
+
         if self.x_test is None or not self.target:
             raise ValueError(
                 "Test data or target field must be set. They can be set by assigning values to the `target` or the `x_test` variable."
