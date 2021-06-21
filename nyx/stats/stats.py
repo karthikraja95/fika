@@ -11,3 +11,34 @@ from sklearn.model_selection import StratifiedKFold, cross_val_predict
 from collections import Counter
 from typing import Union
 from nyx.stats.util import run_2sample_ttest
+
+
+class Stats(object):
+
+
+    def predict_data_sample(self):
+
+        if self.x_test is None or not self.target:
+            raise ValueError(
+                "Test data or target field must be set. They can be set by assigning values to the `target` or the `x_test` variable."
+            )
+
+        x_train = self.x_train.drop(self.target, axis=1)
+        x_test = self.x_test.drop(self.target, axis=1)
+
+        x_train["label"] = 1
+        x_test["label"] = 0
+
+        data = pd.concat([x_train, x_test], axis=0)
+        label = data["label"].tolist()
+
+        predictions = cross_val_predict(
+            ExtraTreesClassifier(n_estimators=100),
+            data.drop(columns=["label"]),
+            label,
+            cv=StratifiedKFold(n_splits=10, shuffle=True, random_state=42),
+        )
+
+        print(classification_report(data["label"].tolist(), predictions))
+
+        return self
