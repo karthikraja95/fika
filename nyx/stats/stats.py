@@ -59,6 +59,26 @@ class Stats(object):
 
     def ks_feature_distribution(self, threshold=0.1, show_plots=True):
 
+        """
+        Uses the Kolomogorov-Smirnov test see if the distribution in the training and test sets are similar.
+        
+        Credit: https://www.kaggle.com/nanomathias/distribution-of-test-vs-training-data#1.-t-SNE-Distribution-Overview
+        Parameters
+        ----------
+        threshold : float, optional
+            KS statistic threshold, by default 0.1
+        show_plots : bool, optional
+            True to show histograms of feature distributions, by default True
+        Returns
+        -------
+        DataFrame
+            Columns that are significantly different in the train and test set.
+        Examples
+        --------
+        >>> data.ks_feature_distribution()
+        >>> data.ks_feature_distribution(threshold=0.2)
+        """
+
         import swifter
         from tqdm import tqdm
 
