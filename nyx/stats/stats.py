@@ -151,6 +151,40 @@ class Stats(object):
 
         return diff_df
 
+    def most_common(
+        self, col: str, n=15, plot=False, use_test=False, output_file="", **plot_kwargs
+    ):
+
+        if use_test:
+            data = self.x_test[col].tolist()
+        else:
+            data = self.x_train[col].tolist()
+
+        test_sample = data[0]
+
+        if isinstance(test_sample, list):
+            data = itertools.chain(*map(list, data))
+        elif isinstance(test_sample, str):
+            data = map(str.split, data)
+            data = itertools.chain(*data)
+
+        counter = Counter(data)
+        most_common = dict(counter.most_common(n))
+
+        if plot:
+            df = pd.DataFrame(list(most_common.items()), columns=["Word", "Count"])
+
+            fig = self._viz.barplot(
+                x="Word", y="Count", data=df, output_file=output_file, **plot_kwargs
+            )
+
+            return fig
+        else:
+            for k, v in most_common.items():
+                print(f"{k}: {v}")
+
+            return most_common
+
             
 
        
