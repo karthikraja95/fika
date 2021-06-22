@@ -155,6 +155,28 @@ class Stats(object):
         self, col: str, n=15, plot=False, use_test=False, output_file="", **plot_kwargs
     ):
 
+        """
+        Analyzes the most common values in the column and either prints them or displays a bar chart.
+        
+        Parameters
+        ----------
+        col : str
+            Column to analyze
+        n : int, optional
+            Number of top most common values to display, by default 15
+        plot : bool, optional
+            True to plot a bar chart, by default False
+        use_test : bool, optional
+            True to analyze the test set, by default False
+        output_file : str,
+            File name to save plot as, IF plot=True
+        Examples
+        --------
+        >>> data.most_common('col1', plot=True)
+        >>> data.most_common('col1', n=50, plot=True)
+        >>> data.most_common('col1', n=50)
+        """
+
         if use_test:
             data = self.x_test[col].tolist()
         else:
