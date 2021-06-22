@@ -62,6 +62,12 @@ class Stats(object):
         import swifter
         from tqdm import tqdm
 
+
+        if self.x_test is None:
+            raise ValueError(
+                "Data must be split into train and test set. Please set the `x_test` variable."
+            )
+
        
      
 
