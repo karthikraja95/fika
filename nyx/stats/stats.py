@@ -68,6 +68,25 @@ class Stats(object):
                 "Data must be split into train and test set. Please set the `x_test` variable."
             )
 
+        diff_data = []
+        diff_df = None
+
+        for col in tqdm(self.x_train.columns):
+            statistic, pvalue = ks_2samp(
+                self.x_train[col].values, self.x_test[col].values
+            )
+
+            if pvalue <= 0.05 and np.abs(statistic) > threshold:
+                diff_data.append(
+                    {
+                        "feature": col,
+                        "p": np.round(pvalue, 5),
+                        "statistic": np.round(np.abs(statistic), 2),
+                    }
+                )
+
+            
+
        
      
 
