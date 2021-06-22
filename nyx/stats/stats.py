@@ -85,6 +85,52 @@ class Stats(object):
                     }
                 )
 
+        if diff_data:
+            diff_df = pd.DataFrame(diff_data).sort_values(
+                by=["statistic"], ascending=False
+            )
+
+            if show_plots:
+                n_cols = 4
+                n_rows = int(len(diff_df) / n_cols) + 1
+
+                _, ax = plt.subplots(n_rows, n_cols, figsize=(40, 8 * n_rows))
+
+                for i, (_, row) in enumerate(diff_df.iterrows()):
+                    if i >= len(ax):
+                        break
+
+                    extreme = np.max(
+                        np.abs(
+                            self.x_train[row.feature].tolist()
+                            + self.x_test[row.feature].tolist()
+                        )
+                    )
+                    self.x_train.loc[:, row.feature].swifter.apply(np.log1p).hist(
+                        ax=ax[i],
+                        alpha=0.6,
+                        label="Train",
+                        density=True,
+                        bins=np.arange(-extreme, extreme, 0.25),
+                    )
+
+                    self.x_test.loc[:, row.feature].swifter.apply(np.log1p).hist(
+                        ax=ax[i],
+                        alpha=0.6,
+                        label="Train",
+                        density=True,
+                        bins=np.arange(-extreme, extreme, 0.25),
+                    )
+
+                    ax[i].set_title(f"Statistic = {row.statistic}, p = {row.p}")
+                    ax[i].set_xlabel(f"Log({row.feature})")
+                    ax[i].legend()
+
+                plt.tight_layout()
+                plt.show()
+
+        return diff_df
+
             
 
        
