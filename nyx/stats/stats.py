@@ -56,3 +56,14 @@ class Stats(object):
         print(classification_report(data["label"].tolist(), predictions))
 
         return self
+
+    def ks_feature_distribution(self, threshold=0.1, show_plots=True):
+
+        import swifter
+        from tqdm import tqdm
+
+       
+     
+
+        
+                        
