@@ -341,6 +341,32 @@ class Stats(object):
         verbose=False,
     ):
 
+        """
+        Runs an anova.
+        Anovas are to be used when one wants to compare the means of a condition between 2+ groups.
+        ANOVA tests if there is a difference in the mean somewhere in the model (testing if there was an overall effect), but it does not tell one where the difference is if the there is one.
+        
+        Parameters
+        ----------
+        dep_var : str
+            Dependent variable you want to explore the relationship of
+        num_variables : list, optional
+            Numeric variable columns, by default []
+        cat_variables : list, optional
+            Categorical variable columns, by default []
+        formula : str, optional
+            OLS formula statsmodel lib, by default None
+        verbose : bool, optional
+            True to print OLS model summary and formula, by default False
+        Returns
+        -------
+        Examples
+        --------
+        >>> data.anova('dep_col', num_variables=['col1', 'col2'], verbose=True)
+        >>> data.anova('dep_col', cat_variables=['col1', 'col2'], verbose=True)
+        >>> data.anova('dep_col', num_variables=['col1', 'col2'], cat_variables=['col3'] verbose=True)
+        """
+
         from statsmodels.formula.api import ols
         import statsmodels.api as sm
 
