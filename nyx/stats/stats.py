@@ -207,6 +207,21 @@ class Stats(object):
 
             return most_common
 
+    def ind_ttest(self, group1: str, group2: str, equal_var=True, output_file=None):
+
+        results = run_2sample_ttest(
+            group1, group2, self.x_train, "ind", output_file, equal_var=equal_var
+        )
+
+        matrix = [
+            ["", "Test Statistic", "p-value"],
+            ["Sample Data", results[0], results[1]],
+        ]
+
+        self._viz.create_table(matrix, True, output_file)
+
+        return results
+
             
 
        
