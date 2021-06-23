@@ -295,6 +295,30 @@ class Stats(object):
 
     def onesample_ttest(self, group1: str, mean: Union[float, int], output_file=None):
 
+        """
+        Performs a One Sample t-test.
+        This is to be used when you want to compare the mean of a single group against a known mean.
+        If there are any NaN's they will be omitted.
+        
+        Parameters
+        ----------
+        group1 : str
+            Column for group 1 to compare.
+        
+        mean : float, int, optional
+            Sample mean to compare to.
+        output_file : str, optional
+            Name of the file to output, by default None
+        Returns
+        -------
+        list
+            T test statistic, P value
+        Examples
+        --------
+        >>> data.onesample_ttest('col1', 1)
+        >>> data.onesample_ttest('col1', 1, output_file='ones_ttest.png')
+        """
+
         data_group1 = self.x_train[group1].tolist()
 
         results = sc.stats.ttest_1samp(data_group1, mean, nan_policy="omit")
