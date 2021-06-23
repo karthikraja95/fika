@@ -293,6 +293,21 @@ class Stats(object):
 
         return results
 
+    def onesample_ttest(self, group1: str, mean: Union[float, int], output_file=None):
+
+        data_group1 = self.x_train[group1].tolist()
+
+        results = sc.stats.ttest_1samp(data_group1, mean, nan_policy="omit")
+
+        matrix = [
+            ["", "Test Statistic", "p-value"],
+            ["Sample Data", results[0], results[1]],
+        ]
+
+        self._viz.create_table(matrix, True, output_file)
+
+        return results
+
             
 
        
