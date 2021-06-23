@@ -209,6 +209,35 @@ class Stats(object):
 
     def ind_ttest(self, group1: str, group2: str, equal_var=True, output_file=None):
 
+
+        """
+        Performs an Independent T test.
+        This is to be used when you want to compare the means of 2 groups.
+        If group 2 column name is not provided and there is a test set, it will compare the same column in the train and test set.
+        If there are any NaN's they will be omitted.
+        
+        Parameters
+        ----------
+        group1 : str
+            Column for group 1 to compare.
+        
+        group2 : str, optional
+            Column for group 2 to compare, by default None
+        equal_var : bool, optional
+            If True (default), perform a standard independent 2 sample test that assumes equal population variances.
+            If False, perform Welch's t-test, which does not assume equal population variance, by default True
+        output_file : str, optional
+            Name of the file to output, by default None
+        Returns
+        -------
+        list
+            T test statistic, P value
+        Examples
+        --------
+        >>> data.ind_ttest('col1', 'col2')
+        >>> data.ind_ttest('col1', 'col2', output_file='ind_ttest.png')
+        """
+
         results = run_2sample_ttest(
             group1, group2, self.x_train, "ind", output_file, equal_var=equal_var
         )
