@@ -332,6 +332,41 @@ class Stats(object):
 
         return results
 
+    def anova(
+        self,
+        dep_var: str,
+        num_variables=[],
+        cat_variables=[],
+        formula=None,
+        verbose=False,
+    ):
+
+        from statsmodels.formula.api import ols
+        import statsmodels.api as sm
+
+        assert (
+            num_variables != [] or cat_variables != []
+        ), "You must specify variables, either categorical or numerical."
+
+        # Create the formula string to pass into OLS in the form of `dep_colname` ~ `num_col1` + C(`cat_col1`) + ...
+        cat_variables = [f"C({var})" for var in cat_variables]
+        join = "+" if cat_variables and num_variables else ""
+        formula = (
+            f'{dep_var} ~ {" + ".join(num_variables)} {join} {" + ".join(cat_variables)}'
+            if not formula
+            else formula
+        )
+
+        mod = ols(formula, data=self.x_train).fit()
+
+        if verbose:
+            print(formula)
+            print(mod.summary())
+
+        table = sm.stats.anova_lm(mod, typ=2)
+
+        print(table)
+
             
 
        
