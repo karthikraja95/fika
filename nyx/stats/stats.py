@@ -251,6 +251,20 @@ class Stats(object):
 
         return results
 
+    def paired_ttest(self, group1: str, group2=None, output_file=None):
+
+        # The implementation is the same as an independent t-test
+        results = run_2sample_ttest(group1, group2, self.x_train, "pair", output_file)
+
+        matrix = [
+            ["", "Test Statistic", "p-value"],
+            ["Sample Data", results[0], results[1]],
+        ]
+
+        self._viz.create_table(matrix, True, output_file)
+
+        return results
+
             
 
        
