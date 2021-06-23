@@ -253,6 +253,34 @@ class Stats(object):
 
     def paired_ttest(self, group1: str, group2=None, output_file=None):
 
+        """
+        Performs a Paired t-test.
+        This is to be used when you want to compare the means from the same group at different times.
+        If group 2 column name is not provided and there is a test set, it will compare the same column in the train and test set.
+        If there are any NaN's they will be omitted.
+        
+        Parameters
+        ----------
+        group1 : str
+            Column for group 1 to compare.
+        
+        group2 : str, optional
+            Column for group 2 to compare, by default None
+        equal_var : bool, optional
+            If True (default), perform a standard independent 2 sample test that assumes equal population variances.
+            If False, perform Welch's t-test, which does not assume equal population variance, by default True
+        output_file : str, optional
+            Name of the file to output, by default None
+        Returns
+        -------
+        list
+            T test statistic, P value
+        Examples
+        --------
+        >>> data.paired_ttest('col1', 'col2')
+        >>> data.paired_ttest('col1', 'col2', output_file='pair_ttest.png')
+        """
+
         # The implementation is the same as an independent t-test
         results = run_2sample_ttest(group1, group2, self.x_train, "pair", output_file)
 
