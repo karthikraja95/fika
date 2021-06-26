@@ -56,6 +56,31 @@ def spacy_feature_postag(
     x_train, x_test=None, list_of_cols=[], new_col_name="_postagged", method="s"
 ):
 
+    """
+    Part of Speech tag the text data provided. Used to tag each word as a Noun, Adjective,
+    Verbs, etc.
+    This utilizes the spacy NLP engine.
+    
+    Parameters
+    ----------
+    x_train : DataFrame
+        Dataset
+    x_test : DataFrame
+        Testing dataset, by default None
+    list_of_cols : list, optional
+        A list of specific columns to apply this technique to, by default []
+    new_col_name : str, optional
+        New column name to be created when applying this technique, by default `COLUMN_postagged`
+    method : str {'s', 'd'}, optional
+        Spacey PoS tagging method either simple or detailed
+    
+    Returns
+    -------
+    Dataframe, *Dataframe
+        Transformed dataframe with the new column.
+    Returns 2 Dataframes if x_test is provided. 
+    """
+
     list_of_cols = _get_columns(list_of_cols, x_train)
 
     nlp = spacy.load("en_core_web_sm")
