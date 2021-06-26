@@ -51,3 +51,30 @@ def textblob_features(
             )
 
     return x_train, x_test
+
+def spacy_feature_postag(
+    x_train, x_test=None, list_of_cols=[], new_col_name="_postagged", method="s"
+):
+
+    list_of_cols = _get_columns(list_of_cols, x_train)
+
+    nlp = spacy.load("en_core_web_sm")
+
+    if method == "s":
+        func = lambda x: [(token, token.pos_) for token in x]
+    else:
+        func = lambda x: [(token, token.tag_) for token in x]
+
+    for col in list_of_cols:
+
+        if new_col_name.startswith("_"):
+            new_col_name = col + new_col_name
+
+        transformed_text = map(nlp, x_train[col])
+        x_train[new_col_name] = pd.Series(map(func, transformed_text,))
+
+        if x_test is not None:
+            transformed_text = map(nlp, x_test[col])
+            x_test[new_col_name] = pd.Series(map(func, transformed_text,))
+
+    return x_train, x_test
