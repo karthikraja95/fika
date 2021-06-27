@@ -25,6 +25,22 @@ class Feature(object):
         self, *list_args, list_of_cols=[], keep_col=True, **onehot_kwargs
     ):
 
+        """
+        Creates a matrix of converted categorical columns into binary columns of ones and zeros.
+        For more info see: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html
+        If a list of columns is provided use the list, otherwise use arguments.
+
+
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.onehot_encode('col1', 'col2', 'col3')
+        >>> data.onehot_encode('col1', 'col2', 'col3', drop='first')
+        
+        """
         # If a list of columns is provided use the list, otherwise use arguemnts.
         list_of_cols = _input_columns(list_args, list_of_cols)
 
