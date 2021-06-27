@@ -18,3 +18,5 @@ from nyx.util import (
     drop_replace_columns,
     _numeric_input_conditions,
 )
+
+class Feature(object):
