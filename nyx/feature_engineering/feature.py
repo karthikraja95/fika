@@ -211,3 +211,23 @@ class Feature(object):
         return self
 
     def bag_of_words(self, *list_args, list_of_cols=[], keep_col=True, **bow_kwargs):
+
+        # If a list of columns is provided use the list, otherwise use arguemnts.
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        enc = CountVectorizer(**bow_kwargs)
+        list_of_cols = _get_columns(list_of_cols, self.x_train)
+
+        for col in list_of_cols:
+            enc_data = enc.fit_transform(self.x_train[col]).toarray()
+            enc_df = pd.DataFrame(enc_data, columns=enc.get_feature_names())
+            self.x_train = drop_replace_columns(self.x_train, col, enc_df, keep_col)
+
+            if self.x_test is not None:
+                enc_test = enc.transform(self.x_test[col]).toarray()
+                enc_test_df = pd.DataFrame(enc_test, columns=enc.get_feature_names())
+                self.x_test = drop_replace_columns(
+                    self.x_test, col, enc_test_df, keep_col
+                )
+
+        return self
