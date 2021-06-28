@@ -212,6 +212,14 @@ class Feature(object):
 
     def bag_of_words(self, *list_args, list_of_cols=[], keep_col=True, **bow_kwargs):
 
+        """
+        Creates a matrix of how many times a word appears in a document.
+        The premise is that the more times a word appears the more the word represents that document.
+        For more information see: https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html
+        If a list of columns is provided use the list, otherwise use arguments.
+        
+        """
+
         # If a list of columns is provided use the list, otherwise use arguemnts.
         list_of_cols = _input_columns(list_args, list_of_cols)
 
