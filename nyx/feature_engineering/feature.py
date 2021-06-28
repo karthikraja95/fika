@@ -90,3 +90,7 @@ class Feature(object):
             )
 
         return self
+
+    def tfidf(self, *list_args, list_of_cols=[], keep_col=True, **tfidf_kwargs):
+
+        
