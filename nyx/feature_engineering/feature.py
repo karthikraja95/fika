@@ -209,3 +209,5 @@ class Feature(object):
                 )
 
         return self
+
+    def bag_of_words(self, *list_args, list_of_cols=[], keep_col=True, **bow_kwargs):
