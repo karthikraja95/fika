@@ -179,7 +179,15 @@ class Feature(object):
             Prevents zero divisions.
         sublinear_tf: bool (default=False)
             Apply sublinear tf scaling, i.e. replace tf with 1 + log(tf).
-            
+
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.tfidf('col1', 'col2', 'col3')
+        >>> data.tfidf('col1', 'col2', 'col3', lowercase=False, smoothidf=False)   
         """
 
         # If a list of columns is provided use the list, otherwise use arguemnts.
