@@ -93,6 +93,16 @@ class Feature(object):
 
     def tfidf(self, *list_args, list_of_cols=[], keep_col=True, **tfidf_kwargs):
 
+
+        """
+        Creates a matrix of the tf-idf score for every word in the corpus as it pertains to each document.
+        The higher the score the more important a word is to a document, the lower the score (relative to the other scores)
+        the less important a word is to a document.
+        For more information see: https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html
+        If a list of columns is provided use the list, otherwise use arguments.
+
+        """
+
         # If a list of columns is provided use the list, otherwise use arguemnts.
         list_of_cols = _input_columns(list_args, list_of_cols)
 
