@@ -284,7 +284,15 @@ class Feature(object):
         binary: bool (default=False)
             If True, all non-zero term counts are set to 1.
             This does not mean outputs will have only 0/1 values, only that the tf term in tf-idf is binary. (Set idf and normalization to False to get 0/1 outputs).
-         
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.bag_of_words('col1', 'col2', 'col3')
+        >>> data.bag_of_words('col1', 'col2', 'col3', binary=True)
 
         """
 
