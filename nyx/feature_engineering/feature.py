@@ -351,7 +351,7 @@ class Feature(object):
         --------
         >>> data.text_hash('col1', 'col2', 'col3')
         >>> data.text_hash('col1', 'col2', 'col3', n_features=50)
-                
+
         """
 
         # If a list of columns is provided use the list, otherwise use arguemnts.
@@ -373,3 +373,7 @@ class Feature(object):
                 )
 
         return self
+
+    def postag_nltk(self, *list_args, list_of_cols=[], new_col_name="_postagged"):
+
+        
