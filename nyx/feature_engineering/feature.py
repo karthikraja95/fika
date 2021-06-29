@@ -318,6 +318,20 @@ class Feature(object):
 
     def text_hash(self, *list_args, list_of_cols=[], keep_col=True, **hash_kwargs):
 
+        """
+        Creates a matrix of how many times a word appears in a document. It can possibly normalized as token frequencies if norm=’l1’ or projected on the euclidean unit sphere if norm=’l2’.
+        The premise is that the more times a word appears the more the word represents that document.
+        This text vectorizer implementation uses the hashing trick to find the token string name to feature integer index mapping.
+        This strategy has several advantages:
+            It is very low memory scalable to large datasets as there is no need to store a vocabulary dictionary in memory
+            It is fast to pickle and un-pickle as it holds no state besides the constructor parameters
+            It can be used in a streaming (partial fit) or parallel pipeline as there is no state computed during fit.
+        For more info please see: https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.HashingVectorizer.html
+        If a list of columns is provided use the list, otherwise use arguments.
+
+        
+        """
+
         # If a list of columns is provided use the list, otherwise use arguemnts.
         list_of_cols = _input_columns(list_args, list_of_cols)
 
