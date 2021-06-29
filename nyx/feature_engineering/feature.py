@@ -329,7 +329,29 @@ class Feature(object):
         For more info please see: https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.HashingVectorizer.html
         If a list of columns is provided use the list, otherwise use arguments.
 
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        keep_col : bool, optional
+            True if you want to keep the column(s) or False if you want to drop the column(s)
+        n_features : integer, default=(2 ** 20)
+            The number of features (columns) in the output matrices.
+            Small numbers of features are likely to cause hash collisions, but large numbers will cause larger coefficient dimensions in linear learners.
+        hash_kwargs : dict, optional
+            Parameters you would pass into Bag of Words constructor, by default {}
         
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.text_hash('col1', 'col2', 'col3')
+        >>> data.text_hash('col1', 'col2', 'col3', n_features=50)
+                
         """
 
         # If a list of columns is provided use the list, otherwise use arguemnts.
