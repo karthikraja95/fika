@@ -315,3 +315,7 @@ class Feature(object):
                 )
 
         return self
+
+    def text_hash(self, *list_args, list_of_cols=[], keep_col=True, **hash_kwargs):
+
+        
