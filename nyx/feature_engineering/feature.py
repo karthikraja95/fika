@@ -453,4 +453,18 @@ class Feature(object):
         self, *list_args, list_of_cols=[], new_col_name="_postagged"
     ):
 
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        (self.x_train, self.x_test,) = text.spacy_feature_postag(
+            x_train=self.x_train,
+            x_test=self.x_test,
+            list_of_cols=list_of_cols,
+            new_col_name=new_col_name,
+            method="d",
+        )
+
+        return self
+
+
+
 
