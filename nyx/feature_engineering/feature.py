@@ -449,4 +449,8 @@ class Feature(object):
 
         return self
 
+    def postag_spacy_detailed(
+        self, *list_args, list_of_cols=[], new_col_name="_postagged"
+    ):
+
 
