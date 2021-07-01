@@ -525,7 +525,36 @@ class Feature(object):
 
     def nounphrases_spacy(self, *list_args, list_of_cols=[], new_col_name="_phrases"):
 
-        
+        import spacy
+
+        list_of_cols = _input_columns(list_args, list_of_cols)
+        list_of_cols = _get_columns(list_of_cols, self.x_train)
+
+        nlp = spacy.load("en")
+
+        for col in list_of_cols:
+
+            if new_col_name.startswith("_"):
+                new_col_name = col + new_col_name
+
+            transformed_text = list(map(nlp, self.x_train[col]))
+            self.x_train[new_col_name] = pd.Series(
+                map(
+                    lambda x: [str(phrase) for phrase in x.noun_chunks],
+                    transformed_text,
+                )
+            )
+
+            if self.x_test is not None:
+                transformed_text = map(nlp, self.x_test[col])
+                self.x_test[new_col_name] = pd.Series(
+                    map(
+                        lambda x: [str(phrase) for phrase in x.noun_chunks],
+                        transformed_text,
+                    )
+                )
+
+        return self
 
 
 
