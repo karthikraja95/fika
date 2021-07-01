@@ -525,6 +525,27 @@ class Feature(object):
 
     def nounphrases_spacy(self, *list_args, list_of_cols=[], new_col_name="_phrases"):
 
+        """
+        Extract noun phrases from text using the Textblob packages which uses the NLTK NLP engine.
+        If a list of columns is provided use the list, otherwise use arguments.
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        new_col_name : str, optional
+            New column name to be created when applying this technique, by default `COLUMN_phrases`
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.nounphrases_spacy('col1', 'col2', 'col3')
+        """
+
         import spacy
 
         list_of_cols = _input_columns(list_args, list_of_cols)
