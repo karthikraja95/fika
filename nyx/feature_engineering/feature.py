@@ -625,6 +625,8 @@ class Feature(object):
 
         return self
 
+    def apply(self, func, output_col: str):
+
 
 
 
