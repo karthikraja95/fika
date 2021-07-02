@@ -627,6 +627,34 @@ class Feature(object):
 
     def apply(self, func, output_col: str):
 
+        """
+        Calls pandas apply function. Will apply the function to your dataset, or
+        both your training and testing dataset.
+        
+        Parameters
+        ----------
+        func : Function pointer
+            Function describing the transformation for the new column
+        output_col : str
+            New column name
+        
+        Returns
+        -------
+        Feature:
+            Returns a deep copy of the Feature object.
+        Examples
+        --------
+        >>>     col1  col2  col3 
+            0     1     0     1       
+            1     0     2     0       
+            2     1     0     1
+        >>> data.apply(lambda x: x['col1'] > 0, 'col4')
+        >>>     col1  col2  col3  col4 
+            0     1     0     1     1       
+            1     0     2     0     0  
+            2     1     0     1     1
+        """
+
         import swifter
 
         self.x_train.loc[:, output_col] = self.x_train.swifter.progress_bar().apply(
