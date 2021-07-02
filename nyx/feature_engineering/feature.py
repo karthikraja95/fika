@@ -577,6 +577,8 @@ class Feature(object):
 
         return self
 
+    def polynomial_features(self, *list_args, list_of_cols=[], **poly_kwargs):
+
 
 
 
