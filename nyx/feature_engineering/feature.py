@@ -579,6 +579,33 @@ class Feature(object):
 
     def polynomial_features(self, *list_args, list_of_cols=[], **poly_kwargs):
 
+        """
+        Generate polynomial and interaction features.
+        Generate a new feature matrix consisting of all polynomial combinations of the features with degree less than or equal to the specified degree.
+        
+        For example, if an input sample is two dimensional and of the form [a, b], the degree-2 polynomial features are [1, a, b, a^2, ab, b^2].
+        
+        Parameters
+        ----------
+        list_args : str(s), optional
+            Specific columns to apply this technique to.
+        list_of_cols : list, optional
+            A list of specific columns to apply this technique to., by default []
+        degree : int
+            Degree of the polynomial features, by default 2
+        interaction_only : boolean, 
+            If true, only interaction features are produced: features that are products of at most degree distinct input features (so not x[1] ** 2, x[0] * x[2] ** 3, etc.).
+            by default = False
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.polynomial_features('col1', 'col2', 'col3')
+        """
+
         # If a list of columns is provided use the list, otherwise use arguemnts.
         list_of_cols = _input_columns(list_args, list_of_cols)
 
