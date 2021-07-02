@@ -627,6 +627,19 @@ class Feature(object):
 
     def apply(self, func, output_col: str):
 
+        import swifter
+
+        self.x_train.loc[:, output_col] = self.x_train.swifter.progress_bar().apply(
+            func, axis=1
+        )
+
+        if self.x_test is not None:
+            self.x_test.loc[:, output_col] = self.x_test.swifter.progress_bar().apply(
+                func, axis=1
+            )
+
+        return self
+
 
 
 
