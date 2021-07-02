@@ -579,6 +579,25 @@ class Feature(object):
 
     def polynomial_features(self, *list_args, list_of_cols=[], **poly_kwargs):
 
+        # If a list of columns is provided use the list, otherwise use arguemnts.
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        poly = PolynomialFeatures(**poly_kwargs)
+        list_of_cols = _numeric_input_conditions(list_of_cols, self.x_train)
+
+        scaled_data = poly.fit_transform(self.x_train[list_of_cols])
+        scaled_df = pd.DataFrame(scaled_data, columns=poly.get_feature_names())
+        self.x_train = drop_replace_columns(self.x_train, list_of_cols, scaled_df)
+
+        if self.x_test is not None:
+            scaled_test = poly.transform(self.x_test)
+            scaled_test_df = pd.DataFrame(scaled_test, columns=poly.get_feature_names())
+            self.x_test = drop_replace_columns(
+                self.x_test, list_of_cols, scaled_test_df
+            )
+
+        return self
+
 
 
 
