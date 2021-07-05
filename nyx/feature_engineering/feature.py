@@ -748,7 +748,16 @@ class Feature(object):
             If RandomState instance, random_state is the random number generator;
             If None, the random number generator is the RandomState instance used by np.random.
             Used when svd_solver == ‘arpack’ or ‘randomized’.
-            
+
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.pca(n_components=2)
+        
+
 
         """
 
