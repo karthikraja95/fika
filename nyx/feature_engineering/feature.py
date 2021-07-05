@@ -670,6 +670,32 @@ class Feature(object):
 
     def ordinal_encode_labels(self, col:str, ordered_cat = []):
 
+        """
+        Encode categorial values between 0 and n_classes - 1
+
+        Running this function will automatically set the corresponding mapping for the  target varibale mapping number to the original value.
+
+        Note: that this will not work if your test data will have labels that your train data does not.
+        Note: 
+        Parameters
+        ----------
+        col : str, optional
+            Columnm in the data to ordinally encode.
+        ordered_cat : list, optional
+            A list of ordered categories for the Ordinal encoder. Should be sorted.
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.encode_labels('col1')
+        >>> data.encode_labels('col1', ordered_cat=["Low", "Medium", "High"])
+        
+        
+        """
+
         categories = ordered_cat if ordered_cat else "auto"
 
         enc = OrdinalEncoder(categories=categories)
