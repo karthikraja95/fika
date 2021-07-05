@@ -709,6 +709,10 @@ class Feature(object):
 
     def pca(self, n_components=10, **pca_kwargs):
 
+        self._run_sklearn_dim_reduction("pca", n_components=n_components, **pca_kwargs)
+
+        return self
+
 
 
 
