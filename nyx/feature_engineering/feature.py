@@ -707,6 +707,8 @@ class Feature(object):
 
         return self
 
+    def pca(self, n_components=10, **pca_kwargs):
+
 
 
 
