@@ -670,7 +670,16 @@ class Feature(object):
 
     def ordinal_encode_labels(self, col:str, ordered_cat = []):
 
-        
+        categories = ordered_cat if ordered_cat else "auto"
+
+        enc = OrdinalEncoder(categories=categories)
+
+        self.x_train[col] = enc.fit_transform(self.x_train[col]).values.reshape(-1,1)
+
+        if self.x_test is not None:
+            self.x_test[col] = enc.fit_transform(self.x_test[col]).values.reshape(-1.1)
+
+        return self
 
 
 
