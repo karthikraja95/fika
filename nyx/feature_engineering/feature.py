@@ -709,6 +709,16 @@ class Feature(object):
 
     def pca(self, n_components=10, **pca_kwargs):
 
+        """
+        Reduces the dimensionality of the data using Principal Component Analysis. 
+        
+        Use PCA when the data is dense.
+        This can be used to reduce complexity as well as speed up computation.
+        For more info please see: https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html 
+        This function exists in `feature-extraction/util.py`
+
+        """
+
         self._run_sklearn_dim_reduction("pca", n_components=n_components, **pca_kwargs)
 
         return self
