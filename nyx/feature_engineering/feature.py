@@ -668,6 +668,10 @@ class Feature(object):
 
         return self
 
+    def ordinal_encode_labels(self, col:str, ordered_cat = []):
+
+        
+
 
 
 
