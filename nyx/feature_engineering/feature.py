@@ -767,7 +767,11 @@ class Feature(object):
 
     def truncated_svd(self, n_components=50, **svd_kwargs):
 
-        
+        self._run_sklearn_dim_reduction("tsvd", n_components=n_components, **svd_kwargs)
+
+        return self
+
+
 
 
 
