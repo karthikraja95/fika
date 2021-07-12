@@ -765,6 +765,10 @@ class Feature(object):
 
         return self
 
+    def truncated_svd(self, n_components=50, **svd_kwargs):
+
+        
+
 
 
 
