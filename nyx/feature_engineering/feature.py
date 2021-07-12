@@ -804,7 +804,18 @@ class Feature(object):
         return self
 
      def drop_correlated_features(self, threshold=0.95):
-         
+
+        corr = self.x_train.corr().abs()
+        upper = corr.where(np.triu(np.ones(corr.shape), k=1).astype(np.bool))
+        drop_cols = [col for col in upper.columns if any(upper[col] > threshold)]
+
+        self.x_train.drop(drop_cols, axis=1, inplace=True)
+
+        if self.x_test is not None:
+            self.x_test.drop(drop_cols, axis=1, inplace=True)
+
+        return self
+
 
     
 
