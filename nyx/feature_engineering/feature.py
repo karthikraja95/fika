@@ -883,6 +883,45 @@ class Feature(object):
 
         return self
 
+     def _run_sklearn_dim_reduction(self, algo: str, n_components, **kwargs):
+        """
+        Generalized helper function to run dimensionality reduction algorithms from sklearn.
+        
+        Parameters
+        ----------
+        algo : str {'pca', 'tsne', 'lle', 'tsvd'}
+            Dim Reduction algorithm to run.
+        """
+
+        if self.target:
+            train_target_data = self.x_train[self.target]
+            test_target_data = (
+                self.x_test[self.target] if self.x_test is not None else None
+            )
+            self.x_train = self.x_train.drop(self.target, axis=1)
+            self.x_test = (
+                self.x_test.drop(self.target, axis=1)
+                if self.x_test is not None
+                else None
+            )
+        else:
+            self.x_train = self.x_train
+            self.x_test = self.x_test
+
+        self.x_train, self.x_test = util.sklearn_dim_reduction(
+            x_train=self.x_train,
+            x_test=self.x_test,
+            algo=algo,
+            n_components=n_components,
+            **kwargs,
+        )
+
+        if self.target:
+            self.x_train[self.target] = train_target_data
+            self.x_test[self.target] = (
+                test_target_data if test_target_data is not None else None
+            )
+
 
 
     
