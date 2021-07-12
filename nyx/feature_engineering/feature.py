@@ -767,6 +767,38 @@ class Feature(object):
 
     def truncated_svd(self, n_components=50, **svd_kwargs):
 
+        """
+        Reduces the dimensionality of the data using Truncated SVD.
+        In particular, truncated SVD works on term count/tf-idf matrices.
+        In that context, it is known as latent semantic analysis (LSA).
+        
+        Use Truncated SVD when the data is sparse.
+        This can be used to reduce complexity as well as speed up computation.
+        For more info please see: https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.TruncatedSVD.html
+        This function exists in `feature-extraction/util.py`
+        
+        Parameters
+        ---------- 
+        n_components: int, default = 2
+            Desired dimensionality of output data. Must be strictly less than the number of features.
+            The default value is useful for visualisation. For LSA, a value of 100 is recommended.
+        algorithm: string, default = “randomized”
+            SVD solver to use. Either “arpack” for the ARPACK wrapper in SciPy (scipy.sparse.linalg.svds), or “randomized” for the randomized algorithm due to Halko (2009).
+        n_iter: int, optional (default 5)
+            Number of iterations for randomized SVD solver. Not used by ARPACK.
+            The default is larger than the default in ~sklearn.utils.extmath.randomized_svd to handle sparse matrices that may have large slowly decaying spectrum.
+        tol: float, optional
+            Tolerance for ARPACK. 0 means machine precision. Ignored by randomized SVD solver.
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.truncated_svd(n_components=2)
+        """
+
         self._run_sklearn_dim_reduction("tsvd", n_components=n_components, **svd_kwargs)
 
         return self
