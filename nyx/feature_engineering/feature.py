@@ -803,6 +803,11 @@ class Feature(object):
 
         return self
 
+     def drop_correlated_features(self, threshold=0.95):
+         
+
+    
+
 
 
 
