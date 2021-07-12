@@ -832,6 +832,58 @@ class Feature(object):
 
         return self
 
+    def chi2_feature_selection(self, k: int, verbose=False):
+        """
+        Uses Chi2 to choose the best K features.
+        The Chi2 null hypothesis is that 2 variables are independent.
+        Chi-square test feature selection “weeds out” the features that are the most likely to be independent of class and therefore irrelevant for classification.
+        
+        Parameters
+        ----------
+        k : int or "all"
+            Number of features to keep.
+        verbose : bool
+            True to print p-values for each feature, by default False
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.chi2_feature_selection(k=10)
+        """
+
+        y_train = self.y_train
+        y_test = self.y_test
+        self.x_train = self.x_train.drop(self.target, axis=1)
+        self.x_test = (
+            None if self.x_test is None else self.x_test.drop(self.target, axis=1)
+        )
+
+        chi2_best = SelectKBest(chi2, k=k).fit(self.x_train, y_train)
+
+        column_indices = chi2_best.get_support()
+
+        if verbose:
+            for col, p in zip(
+                self.x_train.columns[column_indices], chi2_best.pvalues_[column_indices]
+            ):
+                print(f"{col} p-value: {p}")
+
+        self.x_train = self.x_train[self.x_train.columns[column_indices]]
+
+        if self.x_test is not None:
+            self.x_test = self.x_test[self.x_test.columns[column_indices]]
+
+        # Re add the target field back to the dataset.
+        self.x_train[self.target] = y_train
+        if self.x_test is not None:
+            self.x_test[self.target] = y_test
+
+        return self
+
+
 
     
 
