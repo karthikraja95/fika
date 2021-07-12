@@ -805,6 +805,22 @@ class Feature(object):
 
      def drop_correlated_features(self, threshold=0.95):
 
+        """
+        Drop features that have a correlation coefficient greater than the specified threshold with other features.
+        
+        Parameters
+        ----------
+        threshold : float, optional
+            Correlation coefficient threshold, by default 0.95
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.drop_correlated_features(threshold=0.9)
+        """ 
+
         corr = self.x_train.corr().abs()
         upper = corr.where(np.triu(np.ones(corr.shape), k=1).astype(np.bool))
         drop_cols = [col for col in upper.columns if any(upper[col] > threshold)]
