@@ -121,5 +121,20 @@ cf.register_option(
     cb=use_itable,
 )
 
+cf.register_option(
+    "project_,metrics",
+    default=[],
+    doc=project_metric_doc,
+    validator=is_list,
+)
+
+cf.register_option(
+    "track_experiments",
+    default=False,
+    doc=track_experiments_doc,
+    validator=is_bool,
+    cb=create_experiment_dir,
+)
+
 
 
