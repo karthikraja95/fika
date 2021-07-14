@@ -11,3 +11,17 @@ with open(
     cfg = yaml.safe_load(ymlfile)
 
 shell = get_ipython().__class__.__name__
+
+
+def _make_image_dir():
+
+    if not cfg["images"]["dir"]:
+        image_dir = DEFAULT_IMAGE_DIR
+    else:
+        image_dir = cfg["images"]["dir"]
+
+    _make_dir(image_dir)
+
+    return image_dir
+
+    
