@@ -80,3 +80,24 @@ track_experiments_doc = """
     Default value is False
     Valid values: False, True
 """
+
+def use_qgird(key):
+
+    import qgrid 
+
+    if shell == "ZMQInterativeShell":
+        if cf.get_option(key):
+            qgrid.enable()
+            qgrid.set_defaults(show_toolbar=True)
+
+        else:
+            qgrid.disable()
+
+
+def use_itable(key):
+    import itables.interactive
+    import itables.options as opt
+
+    opt.lengthMenu = [5, 10, 20, 50, 100, 200, 500]
+    opt.maxBytes = 0
+
