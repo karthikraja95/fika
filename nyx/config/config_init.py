@@ -105,4 +105,21 @@ def create_experiment_dir(key):
     _make_experiment_dir()
 
 
+cf.register_option(
+    "interactive_df",
+    default=False,
+    doc=interactive_df_doc,
+    validator=is_bool,
+    cb=use_qgird,
+)
+
+cf.register_option(
+    "interactive_table",
+    default=False,
+    doc=interactive_table,
+    validator=is_bool,
+    cb=use_itable,
+)
+
+
 
