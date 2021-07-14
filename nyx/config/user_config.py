@@ -24,4 +24,15 @@ def _make_image_dir():
 
     return image_dir
 
-    
+def _make_experiment_dir(): 
+
+    if not cfg["mlflow"]["dir"]:
+        exp_dir = DEFAULT_EXPERIMENTS_DIR
+    else:
+        exp_dir = cfg["mlflow"]["dir"]
+
+    if exp_dir.startswith("file:"):
+        _make_dir(exp_dir[5:])
+
+    return exp_dir
+
