@@ -8,3 +8,7 @@ import plotly.express as px
 import seaborn as sns
 from nyx.config import IMAGE_DIR, cfg
 from nyx.util import _make_dir
+
+class VizCreator(object):
+
+    def raincloud():
