@@ -14,6 +14,23 @@ class VizCreator(object):
     def raincloud(self, col:str, target_col: str,
         data: pd.DataFrame, output_file="", **params):
 
+        """
+        Visualizes 2 columns using raincloud.
+        
+        Parameters
+        ----------
+        col : str
+            Column name of general data
+        target_col : str
+            Column name of measurable data, numerical
+        data : Dataframe
+            Dataframe of the data
+        params: dict
+            Parameters for the RainCloud visualization
+        ouput_file : str
+            Output file name for the image including extension (.jpg, .png, etc.)
+        """
+
         import ptitprince as pt
 
         fig, ax = plt.subplots(figsize=(12,8))
