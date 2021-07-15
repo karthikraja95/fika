@@ -11,4 +11,27 @@ from nyx.util import _make_dir
 
 class VizCreator(object):
 
-    def raincloud():
+    def raincloud(self, col:str, target_col: str,
+        data: pd.DataFrame, output_file="", **params):
+
+        import ptitprince as pt
+
+        fig, ax = plt.subplots(figsize=(12,8))
+
+        if not params:
+
+            params = {
+                "pointplot": True,
+                "width_viol": 0.8,
+                "width_box": 0.4,
+                "orient": "h",
+                "move": 0.0,
+                "ax":ax,
+            }
+
+        ax = pt.RainCloud(x=col, y=target_col, data=data.infer_objects(), **params)
+
+        if output_file:
+            fig.savefig(os.path(IMAGE_DIR, output_file))
+
+        return ax
