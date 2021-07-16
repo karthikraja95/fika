@@ -118,6 +118,30 @@ class VizCreator(object):
         **scatterplot_kwargs,
     ):
 
+        """
+        Plots a scatter plot.
+        
+        Parameters
+        ----------
+        x : str
+            X axis column
+        y : str
+            Y axis column
+        z: str
+            Z axis column
+        data : Dataframe
+            Dataframe
+        color : str, optional
+            Category to group your data, by default None
+        title : str, optional
+            Title of the plot, by default 'Scatterplot'
+        size : int or str, optional
+            Size of the circle, can either be a number
+            or a column name to scale the size, by default 8
+        output_file : str, optional
+            If a name is provided save the plot to an html file, by default ''
+        """
+
        if color:
             data[color] = data[color].astype(str)
 
