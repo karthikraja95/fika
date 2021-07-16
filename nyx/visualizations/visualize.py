@@ -55,3 +55,34 @@ class VizCreator(object):
 
     def barplot(self, x:str, y:str, data:pd.DataFrame,
         method=None, asc=None, output_file="", **barplot_kwargs):
+
+        import ploty.express as px
+
+        orient = barplot_kwargs.get("orientation", None)
+
+        if method:
+
+            if orient == "h":
+                data = data.groupby(y, as_index=False)
+            else:
+                data = data.groupby(x, as_index=False)
+
+            data = getattr(data, method)()
+
+            if not y:
+                y = data.iloc[:, 1].name
+
+        if asc in not None:
+
+            data[x] = data[x].astype(str)
+            data = data.sort_values(y, ascending = asc)
+
+        fig = px.bar(data, x=x, y=y, **barplot_kwargs)
+
+        if as in not None:
+            fig.update_layout(xaxis_type="category")
+
+        if output_file:
+            fig.write_image(os.path.join(IMAGE_DIR, output_file))
+
+        return fig
