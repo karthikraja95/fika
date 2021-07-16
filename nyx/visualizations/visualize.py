@@ -52,3 +52,6 @@ class VizCreator(object):
             fig.savefig(os.path(IMAGE_DIR, output_file))
 
         return ax
+
+    def barplot(self, x:str, y:str, data:pd.DataFrame,
+        method=None, asc=None, output_file="", **barplot_kwargs):
