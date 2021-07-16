@@ -117,3 +117,21 @@ class VizCreator(object):
         output_file="",
         **scatterplot_kwargs,
     ):
+
+       if color:
+            data[color] = data[color].astype(str)
+
+        if z is None:
+            fig = px.scatter(
+                data, x=x, y=y, color=color, title=title, **scatterplot_kwargs
+            )
+
+        else:
+            fig = px.scatter_3d(
+                data, x=x, y=y, z=z, color=color, title=title, **scatterplot_kwargs
+            )
+
+        if output_file:  # pragma: no cover
+            fig.write_image(os.path.join(IMAGE_DIR, output_file))
+
+        return fig 
