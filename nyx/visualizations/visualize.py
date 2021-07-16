@@ -56,6 +56,25 @@ class VizCreator(object):
     def barplot(self, x:str, y:str, data:pd.DataFrame,
         method=None, asc=None, output_file="", **barplot_kwargs):
 
+        """
+        Visualizes a bar plot.
+        
+        Parameters
+        ----------
+        x : str
+            Column name for the x axis.
+        y : str
+            Columns for the y axis
+        data : Dataframe
+            Dataset
+        method : str
+            Method to aggregate groupy data
+            Examples: min, max, mean, etc., optional
+            by default None
+        asc : bool
+            To sort values in ascending order, False for descending
+        """
+
         import ploty.express as px
 
         orient = barplot_kwargs.get("orientation", None)
