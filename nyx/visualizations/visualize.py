@@ -105,3 +105,15 @@ class VizCreator(object):
             fig.write_image(os.path.join(IMAGE_DIR, output_file))
 
         return fig
+
+    def scatterplot(
+        self,
+        x: str,
+        y: str,
+        z=None,
+        data=None,
+        color=None,
+        title="Scatter Plot",
+        output_file="",
+        **scatterplot_kwargs,
+    ):
