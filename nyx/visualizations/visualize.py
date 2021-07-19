@@ -271,6 +271,12 @@ class VizCreator(object):
         **kwargs,
     ):
 
+        plot_mapping = {
+            "scatter": plt.scatter,
+            "kde": sns.kdeplot,
+            "hist": sns.distplot,
+        }
+
         palette = kwargs.pop("color", sns.color_palette("pastel"))
 
         if upper_kind or lower_kind:
