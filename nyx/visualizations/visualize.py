@@ -258,3 +258,15 @@ class VizCreator(object):
             fig.savefig(os.path.join(IMAGE_DIR, output_file))
 
         return ax
+
+    def pairplot(
+        self,
+        df,
+        kind="scatter",
+        diag_kind="auto",
+        upper_kind=None,
+        lower_kind=None,
+        hue=None,
+        output_file=None,
+        **kwargs,
+    ):
