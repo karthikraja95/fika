@@ -214,3 +214,32 @@ class VizCreator(object):
     def viz_correlation_matrix(
         self, df, data_labels=False, hide_mirror=False, output_file="", **kwargs
     ):
+
+        fig, ax = plt.subplots(figsize=(11, 9))
+
+        if hide_mirror:
+            mask = np.zeros_like(df, dtype=np.bool)
+            mask[np.triu_indices_from(mask)] = True
+        else:
+            mask = None
+
+        cmap = sns.diverging_palette(220, 10, as_cmap=True)
+
+        sns.heatmap(
+            df,
+            cmap=cmap,
+            vmax=0.3,
+            center=0,
+            square=True,
+            mask=mask,
+            annot=data_labels,
+            fmt=".2f",
+            linewidths=0.5,
+            cbar_kws={"shrink": 0.5},
+            **kwargs,
+        )
+
+        if output_file:  # pragma: no cover
+            fig.savefig(os.path.join(IMAGE_DIR, output_file))
+
+        return ax
