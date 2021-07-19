@@ -271,6 +271,27 @@ class VizCreator(object):
         **kwargs,
     ):
 
+        """
+        Plots pairplots of the variables in the DataFrame
+        
+        Parameters
+        ----------
+        df : DataFrame
+            Data
+        kind : {'scatter', 'reg'}, optional
+            Type of plot for off-diag plots, by default 'scatter'
+        diag_kind : {'auto', 'hist', 'kde'}, optional
+            Type of plot for diagonal, by default 'auto'
+        upper_kind : str {'scatter', 'kde'}, optional
+            Type of plot for upper triangle of pair plot, by default None
+        lower_kind : str {'scatter', 'kde'}, optional
+            Type of plot for lower triangle of pair plot, by default None
+        hue : str, optional
+            Column to colour points by, by default None
+        ouput_file : str
+            Output file name for the image including extension (.jpg, .png, etc.)
+        """
+
         plot_mapping = {
             "scatter": plt.scatter,
             "kde": sns.kdeplot,
