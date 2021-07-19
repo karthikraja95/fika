@@ -210,3 +210,7 @@ class VizCreator(object):
             fig.write_image(os.path.join(IMAGE_DIR, output_file))
 
         return fig
+
+    def viz_correlation_matrix(
+        self, df, data_labels=False, hide_mirror=False, output_file="", **kwargs
+    ):
