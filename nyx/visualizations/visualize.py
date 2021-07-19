@@ -215,6 +215,21 @@ class VizCreator(object):
         self, df, data_labels=False, hide_mirror=False, output_file="", **kwargs
     ):
 
+        """
+        Plots a correlation matrix.
+        
+        Parameters
+        ----------
+        df : DataFrame
+            Data
+        data_labels : bool, optional
+            Whether to display the correlation values, by default False
+        hide_mirror : bool, optional
+            Whether to display the mirroring half of the correlation plot, by default False
+        ouput_file : str
+            Output file name for the image including extension (.jpg, .png, etc.)
+        """
+
         fig, ax = plt.subplots(figsize=(11, 9))
 
         if hide_mirror:
