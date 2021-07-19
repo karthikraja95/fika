@@ -172,6 +172,27 @@ class VizCreator(object):
         **lineplot_kwargs,
     ):
 
+        """
+        Plots a line plot.
+        
+        Parameters
+        ----------
+        x : str
+            X axis column
+        y : str
+            Y axis column
+        z : str
+            Z axis column
+        data : Dataframe
+            Dataframe
+        color : str
+            Column to draw multiple line plots of
+        title : str, optional
+            Title of the plot, by default 'Line Plot'
+        output_file : str, optional
+            If a name is provided save the plot to an html file, by default ''
+        """
+
         if color:
             data[color] = data[color].astype(str)
 
