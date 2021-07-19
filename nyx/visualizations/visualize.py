@@ -171,3 +171,21 @@ class VizCreator(object):
         output_file="",
         **lineplot_kwargs,
     ):
+
+        if color:
+            data[color] = data[color].astype(str)
+
+        if z is None:
+            fig = px.line(data, x=x, y=y, color=color, title=title, **lineplot_kwargs)
+
+            fig.data[0].update(mode="markers+lines")
+
+        else:
+            fig = px.line_3d(
+                data, x=x, y=y, z=z, color=color, title=title, **lineplot_kwargs
+            )
+
+        if output_file:  # pragma: no cover
+            fig.write_image(os.path.join(IMAGE_DIR, output_file))
+
+        return fig
