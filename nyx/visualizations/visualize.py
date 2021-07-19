@@ -159,3 +159,15 @@ class VizCreator(object):
             fig.write_image(os.path.join(IMAGE_DIR, output_file))
 
         return fig 
+
+    def lineplot(
+        self,
+        x: str,
+        y: str,
+        z: str,
+        data,
+        color=None,
+        title="Line Plot",
+        output_file="",
+        **lineplot_kwargs,
+    ):
