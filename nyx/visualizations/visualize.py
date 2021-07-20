@@ -366,3 +366,89 @@ class VizCreator(object):
         output_file="",
         **kwargs,
     ):
+
+        import math
+
+        sns.set(style="ticks", color_codes=True)
+        sns.set_palette(sns.color_palette("pastel"))
+
+        if hue:
+            classes = np.unique(x_train[hue])
+
+        # Make the single plot look pretty
+        if len(x) == 1:
+            data = x_train[~x_train[x[0]].isnull()]
+
+            if hue:
+                for item in classes:
+                    g = sns.distplot(
+                        data[data[hue] == item][x],
+                        label=f"Train Data, {item}",
+                        **kwargs,
+                    )
+            else:
+                g = sns.distplot(data[x], label="Train Data", **kwargs)
+
+            if x_test is not None:
+                data = x_test[~x_test[x[0]].isnull()]
+
+                if hue:
+                    for item in classes:
+                        g = sns.distplot(
+                            data[data[hue] == item][x],
+                            label=f"Test Data, {item}",
+                            **kwargs,
+                        )
+                else:
+                    g = sns.distplot(data[x], label="Test Data", **kwargs)
+
+            g.legend(loc="upper right")
+            g.set_title(f"Histogram for {x[0].capitalize()}")
+
+        else:
+            n_cols = 2
+            n_rows = math.ceil(len(x) / n_cols)
+
+            _, ax = plt.subplots(n_rows, n_cols, figsize=(30, 5 * n_cols))
+
+            for ax, col in zip(ax.flat, x):
+                g = None
+                data = x_train[~x_train[col].isnull()]
+
+                if hue:
+                    for item in classes:
+                        g = sns.distplot(
+                            data[data[hue] == item][col],
+                            ax=ax,
+                            label=f"Train Data, {item}",
+                            **kwargs,
+                        )
+                else:
+                    g = sns.distplot(data[col], ax=ax, label="Train Data", **kwargs)
+
+                if x_test is not None:
+                    data = x_test[~x_test[col].isnull()]
+
+                    if hue:
+                        for item in classes:
+                            g = sns.distplot(
+                                data[data[hue] == item][col],
+                                ax=ax,
+                                label=f"Test Data, {item}",
+                                **kwargs,
+                            )
+                    else:
+                        g = sns.distplot(data[col], ax=ax, label="Test Data", **kwargs)
+
+                ax.legend(loc="upper right")
+
+                ax.set_title(f"Histogram for {col.capitalize()}", fontsize=20)
+
+            plt.tight_layout()
+
+        if output_file:  # pragma: no cover
+            g.figure.savefig(os.path.join(IMAGE_DIR, output_file))
+
+        return g
+
+
