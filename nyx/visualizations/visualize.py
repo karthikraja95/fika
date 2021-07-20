@@ -541,6 +541,41 @@ class VizCreator(object):
 
         return fig
 
+    def pieplot(
+        self,
+        values: str,
+        names: str,
+        data=None,
+        textposition=None,
+        textinfo=None,
+        output_file="",
+        **pieplot_kwargs,
+    ):
+        """
+        Plots a pie plot.
+        
+        Parameters
+        ----------
+        values : str
+            Values of the pie plot.
+        names : str
+            Labels for the pie plot
+        data : DataFrame, optional
+            Data, by default None
+        textposition : str
+            Text position location
+        textinfo : str
+            Text info
+        output_file : str, optional
+            File name, by default ""
+        """
+
+        fig = px.pie(data, names=names, values=values, **pieplot_kwargs)
+
+        fig.update_traces(textposition=textposition, textinfo=textinfo)
+
+        return fig
+
     
 
 
