@@ -576,6 +576,25 @@ class VizCreator(object):
 
         return fig
 
+    def create_table(self, matrix, index, output_file, **kwargs):
+        """
+        Creates a table using plotly.
+        
+        Parameters
+        ----------
+        matrix : 2d array
+            Table values
+        """
+
+        from plotly.tools import FigureFactory as FF
+
+        table = FF.create_table(matrix, index=True)
+
+        if output_file:  # pragma: no cover
+            table.write_image(os.path.join(IMAGE_DIR, output_file))
+
+        table.show()
+
     
 
 
