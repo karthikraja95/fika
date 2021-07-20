@@ -367,6 +367,23 @@ class VizCreator(object):
         **kwargs,
     ):
 
+        """
+        Plots a histogram.
+        
+        Parameters
+        ----------
+        x : list
+            Columns to plot histogram for.
+        x_train : pd.DataFrame
+            Dataframe of the data.
+        x_test : pd.DataFrame
+            Dataframe of the data.
+        hue : str, optional
+            Column to colour points by, by default None
+        ouput_file : str
+            Output file name for the image including extension (.jpg, .png, etc.)
+        """
+
         import math
 
         sns.set(style="ticks", color_codes=True)
