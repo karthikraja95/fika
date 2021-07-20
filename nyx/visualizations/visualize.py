@@ -468,4 +468,17 @@ class VizCreator(object):
 
         return g
 
+    def boxplot(
+        self,
+        x=None,
+        y=None,
+        data=None,
+        orient="v",
+        title="",
+        output_file="",
+        **boxplot_kwargs,
+    ):
+
+    
+
 
