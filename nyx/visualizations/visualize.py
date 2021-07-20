@@ -320,3 +320,5 @@ class VizCreator(object):
             g.savefig(os.path.join(IMAGE_DIR, output_file))
 
         return g
+
+    def jointplot(self, x, y, df, kind="scatter", output_file="", **kwargs):
