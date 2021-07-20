@@ -323,6 +323,23 @@ class VizCreator(object):
 
     def jointplot(self, x, y, df, kind="scatter", output_file="", **kwargs):
 
+        """
+        Plots a joint plot of 2 variables.
+        
+        Parameters
+        ----------
+        x : str
+            X axis column
+        y : str
+            y axis column
+        df : DataFrame
+            Data
+        kind : { “scatter” | “reg” | “resid” | “kde” | “hex” }, optional
+            Kind of plot to draw, by default 'scatter'
+        ouput_file : str
+            Output file name for the image including extension (.jpg, .png, etc.)
+        """
+
         import warnings
         from scipy import stats
 
