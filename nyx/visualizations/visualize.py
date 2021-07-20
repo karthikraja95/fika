@@ -322,3 +322,20 @@ class VizCreator(object):
         return g
 
     def jointplot(self, x, y, df, kind="scatter", output_file="", **kwargs):
+
+        import warnings
+        from scipy import stats
+
+        warnings.simplefilter("ignore", UserWarning)
+
+        sns.set(style="ticks", color_codes=True)
+        color = kwargs.pop("color", "crimson")
+
+        g = sns.jointplot(x=x, y=y, data=df, kind=kind, color=color, **kwargs).annotate(
+            stats.pearsonr
+        )
+
+        if output_file:  # pragma: no cover
+            g.savefig(os.path.join(IMAGE_DIR, output_file))
+
+        return g
