@@ -356,3 +356,13 @@ class VizCreator(object):
             g.savefig(os.path.join(IMAGE_DIR, output_file))
 
         return g
+
+    def histogram(
+        self,
+        x: list,
+        x_train: pd.DataFrame,
+        x_test=None,
+        hue=None,
+        output_file="",
+        **kwargs,
+    ):
