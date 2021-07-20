@@ -479,6 +479,24 @@ class VizCreator(object):
         **boxplot_kwargs,
     ):
 
+         """
+        Plots a box plot
+        Parameters
+        ----------
+        x : str, optional
+            Column from data, by default None
+        y : str, optional
+            Column from data, by default None
+        data : DataFrame, optional
+            Data, by default None
+        orient : str, optional
+            Orientation of the plot, by default "v"
+        title : str, optional
+            Title of the plot, by default ''
+        output_file : str, optional
+            File name, by default ""
+        """
+
         fig = px.box(data, x=x, y=y, orientation=orient, title=title, **boxplot_kwargs)
 
         if output_file:  # pragma: no cover
