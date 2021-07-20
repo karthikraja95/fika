@@ -479,6 +479,13 @@ class VizCreator(object):
         **boxplot_kwargs,
     ):
 
+        fig = px.box(data, x=x, y=y, orientation=orient, title=title, **boxplot_kwargs)
+
+        if output_file:  # pragma: no cover
+            fig.write_image(os.path.join(IMAGE_DIR, output_file))
+
+        return fig
+
     
 
 
