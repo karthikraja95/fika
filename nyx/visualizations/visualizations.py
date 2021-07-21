@@ -777,3 +777,95 @@ class Visualizations(object):
         )
 
         return fig
+
+    def pieplot(
+        self,
+        values: str,
+        names: str,
+        title="",
+        textposition="inside",
+        textinfo="percent",
+        output_file="",
+        **pieplot_kwargs,
+    ):
+        """
+        Plots a Pie plot of a given column.
+        For more information regarding pie plots please see the following links: https://plot.ly/python/pie-charts/#customizing-a-pie-chart-created-with-pxpie
+        and https://plot.ly/python-api-reference/generated/plotly.express.pie.html#plotly.express.pie.
+        
+        Parameters
+        ----------
+        values : str
+            Column in the DataFrame.
+            Values from this column or array_like are used to set values associated to sectors.
+        names : str
+            Column in the DataFrame.
+            Values from this column or array_like are used as labels for sectors.
+        title : str, optional
+            The figure title, by default ''
+        textposition : {'inside', 'outside'}, optional
+            Position the text in the plot, by default 'inside'
+        textinfo : str, optional
+            textinfo' can take any of the following values, joined with a '+':
+                'label' - displays the label on the segment
+                'text' - displays the text on the segment (this can be set separately to the label)
+                'value' - displays the value passed into the trace
+                'percent' - displayed the computer percentage
+        , by default 'percent'
+        output_file : str, optional
+            Output file name for image with extension (i.e. jpeg, png, etc.)
+        color : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object.
+            Values from this column or array_like are used to assign color to marks.
+        color_discrete_sequence : list of str
+            Strings should define valid CSS-colors.
+            When color is set and the values in the corresponding column are not numeric, values in that column are assigned colors by cycling through color_discrete_sequence in the order described in category_orders, unless the value of color is a key in color_discrete_map.
+            Various useful color sequences are available in the plotly.express.colors submodules, specifically plotly.express.colors.qualitative.
+        color_discrete_map : dict with str keys and str values (default {})
+            String values should define valid CSS-colors Used to override color_discrete_sequence to assign a specific colors to marks corresponding with specific values.
+            Keys in color_discrete_map should be values in the column denoted by color.
+        hover_name : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object.
+            Values from this column or array_like appear in bold in the hover tooltip.
+        hover_data : list of str or int, or Series or array-like
+            Either names of columns in data_frame, or pandas Series, or array_like objects.
+            Values from these columns appear as extra data in the hover tooltip.
+        custom_data : list of str or int, or Series or array-like
+            Either names of columns in data_frame, or pandas Series, or array_like objects Values from these columns are extra data, to be used in widgets or Dash callbacks for example.
+            This data is not user-visible but is included in events emitted by the figure (lasso selection etc.)
+        labels : dict with str keys and str values (default {})
+            By default, column names are used in the figure for axis titles, legend entries and hovers.
+            This parameter allows this to be overridden.
+            The keys of this dict should correspond to column names, and the values should correspond to the desired label to be displayed.
+        width : int (default None)
+            The figure width in pixels.
+        height : int (default 600)
+            The figure height in pixels.
+        opacity : float
+            Value between 0 and 1.
+            Sets the opacity for markers.
+        hole : float
+            Value between 0 and 1.
+            Sets the size of the hole in the middle of the pie chart.
+        
+        Returns
+        -------
+        Plotly Figure
+            Plotly Figure Object of Pie Chart
+        Examples
+        --------
+        >>> data.pieplot(val_column, name_column)
+        """
+
+        fig = self._viz.pieplot(
+            values,
+            names,
+            data=self.x_train.copy(),
+            textposition=textposition,
+            textinfo=textinfo,
+            title=title,
+            output_file=output_file,
+            **pieplot_kwargs,
+        )
+
+        return fig
