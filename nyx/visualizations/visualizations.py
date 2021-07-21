@@ -345,3 +345,99 @@ class Visualizations(object):
         )
 
         return fig
+
+    def lineplot(
+        self,
+        x: str,
+        y: str,
+        z=None,
+        color=None,
+        title="Line Plot",
+        output_file="",
+        **lineplot_kwargs,
+    ):
+        """
+        Plots a lineplot for the given x and y columns provided using Plotly Express.
+        For a list of possible lineplot_kwargs please check out the following links:
+        For 2d:
+            https://plot.ly/python-api-reference/generated/plotly.express.line.html#plotly.express.line
+        For 3d:
+            https://plot.ly/python-api-reference/generated/plotly.express.line_3d.html#plotly.express.line_3d
+        
+        Parameters
+        ----------
+        x : str
+            X column name
+        y : str
+            Column name to plot on the y axis.
+        z: str
+            Column name to plot on the z axis.
+        title : str, optional
+            Title of the plot, by default 'Line Plot'
+        color : str
+            Category column to draw multiple line plots of
+        output_file : str, optional
+            Output html file name for image
+        text : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object.
+            Values from this column or array_like appear in the figure as text labels.
+        facet_row : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object.
+            Values from this column or array_like are used to assign marks to facetted subplots in the vertical direction.
+        facet_col : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object.
+            Values from this column or array_like are used to assign marks to facetted subplots in the horizontal direction.
+        error_x : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object.
+            Values from this column or array_like are used to size x-axis error bars.
+            If error_x_minus is None, error bars will be symmetrical, otherwise error_x is used for the positive direction only.
+        error_x_minus : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object.
+            Values from this column or array_like are used to size x-axis error bars in the negative direction.
+            Ignored if error_x is None.
+        error_y : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object.
+            Values from this column or array_like are used to size y-axis error bars.
+            If error_y_minus is None, error bars will be symmetrical, otherwise error_y is used for the positive direction only.
+        error_y_minus : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object.
+            Values from this column or array_like are used to size y-axis error bars in the negative direction.
+            Ignored if error_y is None.
+        animation_frame : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object.
+            Values from this column or array_like are used to assign marks to animation frames.
+        animation_group : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object.
+            Values from this column or array_like are used to provide object-constancy across animation frames: rows with matching `animation_group`s will be treated as if they describe the same object in each frame.
+        labels : dict with str keys and str values (default {})
+            By default, column names are used in the figure for axis titles, legend entries and hovers. 
+            his parameter allows this to be overridden. The keys of this dict should correspond to column names, and the values should correspond to the desired label to be displayed.
+        color_discrete_sequence : list of str
+            Strings should define valid CSS-colors. 
+            When color is set and the values in the corresponding column are not numeric, values in that column are assigned colors by cycling through color_discrete_sequence in the order described in category_orders, unless the value of color is a key in color_discrete_map.
+            Various useful color sequences are available in the plotly.express.colors submodules, specifically plotly.express.colors.qualitative.
+        color_discrete_map : dict with str keys and str values (default {})
+            String values should define valid CSS-colors Used to override color_discrete_sequence to assign a specific colors to marks corresponding with specific values.
+            Keys in color_discrete_map should be values in the column denoted by color.
+        Returns
+        -------
+        Plotly Figure
+            Plotly Figure Object of Line Plot
+        Examples
+        --------
+        >>> data.line_plot(x='x', y='y')
+        >>> data.line_plot(x='x', y='y', output_file='line')
+        """
+
+        fig = self._viz.lineplot(
+            x,
+            y,
+            z,
+            self.x_train.copy(),
+            color=color,
+            title=title,
+            output_file=output_file,
+            **lineplot_kwargs,
+        )
+
+        return fig
