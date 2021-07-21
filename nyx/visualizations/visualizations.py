@@ -538,3 +538,55 @@ class Visualizations(object):
         )
 
         return fig
+
+    def histogram(self, *x, hue=None, plot_test=False, output_file="", **kwargs):
+        """
+        Plots a histogram of the given column(s).
+        If no columns are provided, histograms are plotted for all numeric columns
+        For more histogram key word arguments, please see https://seaborn.pydata.org/generated/seaborn.distplot.html
+        Parameters
+        ----------
+        x: str or str(s)
+            Column(s) to plot histograms for.
+        hue : str, optional
+            Column to colour points by, by default None
+        plot_test : bool, optional
+            True to plot distribution of the test data for the same variable
+        bins : argument for matplotlib hist(), or None, optional
+            Specification of hist bins, or None to use Freedman-Diaconis rule.
+        hist : bool, optional
+            Whether to plot a (normed) histogram.
+        kde : bool, optional
+            Whether to plot a gaussian kernel density estimate.
+        rug : bool, optional
+            Whether to draw a rugplot on the support axis.
+        fit : random variable object, optional
+            An object with fit method, returning a tuple that can be passed to a pdf method a positional arguments following an grid of values to evaluate the pdf on.
+        output_file : str, optional
+            Output file name for image with extension (i.e. jpeg, png, etc.)
+        Examples
+        --------
+        >>> data.histogram()
+        >>> data.histogram('col1')
+        >>> data.histogram('col1', 'col2', hue='col3', plot_test=True)
+        >>> data.histogram('col1', kde=False)
+        >>> data.histogram('col1', 'col2', hist=False)
+        >>> data.histogram('col1', kde=False, fit=stat.normal)
+        >>> data.histogram('col1', kde=False, output_file='hist.png')
+        """
+
+        x_test = self.x_test if plot_test else None
+        columns = (
+            list(x)
+            if x
+            else list(self.x_train.select_dtypes(include=[np.number]).columns)
+        )
+
+        self._viz.histogram(
+            columns,
+            x_train=self.x_train,
+            x_test=x_test,
+            hue=hue,
+            output_file=output_file,
+            **kwargs,
+        )
