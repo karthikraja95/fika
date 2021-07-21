@@ -18,3 +18,13 @@ class Visualizations(object):
         IFrame(
             "https://python-graph-gallery.com/wp-content/uploads/100_Color_names_python.png"
         )
+
+    @property
+    def plot_colorpalettes(self):  # pragma: no cover
+        """
+        Displays color palette configuration guide.
+        """
+
+        from IPython.display import IFrame
+
+        IFrame("https://seaborn.pydata.org/tutorial/color_palettes.html")
