@@ -498,3 +498,43 @@ class Visualizations(object):
         )
 
         return fig
+
+    def jointplot(self, x: str, y: str, kind="scatter", output_file="", **kwargs):
+        """
+        Plots joint plots of 2 different variables.
+        Scatter ('scatter'): Scatter plot and histograms of x and y.
+        Regression ('reg'): Scatter plot, with regression line and histograms with kernel density fits.
+        Residuals ('resid'): Scatter plot of residuals and histograms of residuals.
+        Kernel Density Estimates ('kde'): Density estimate plot and histograms.
+        Hex ('hex'): Replaces scatterplot with joint histogram using hexagonal bins and histograms on the axes.
+        For more info and kwargs for joint plots, see https://seaborn.pydata.org/generated/seaborn.jointplot.html
+        
+        Parameters
+        ----------
+        x : str
+            X axis column
+        y : str
+            y axis column
+        kind : { “scatter” | “reg” | “resid” | “kde” | “hex” }, optional
+            Kind of plot to draw, by default 'scatter'
+        color : matplotlib color, optional
+            Color used for the plot elements.
+        dropna : bool, optional
+            If True, remove observations that are missing from x and y.
+        {x, y}lim : two-tuples, optional
+            Axis limits to set before plotting.
+        {joint, marginal, annot}_kws : dicts, optional
+            Additional keyword arguments for the plot components.
+        output_file : str, optional
+            Output file name for image with extension (i.e. jpeg, png, etc.)
+        Examples
+        --------
+        >>> data.jointplot(x='x', y='y', kind='kde', color='crimson')
+        >>> data.jointplot(x='x', y='y', kind='kde', color='crimson', output_file='pair.png')
+        """
+
+        fig = self._viz.jointplot(
+            x=x, y=y, df=self.x_train, kind=kind, output_file=output_file, **kwargs
+        )
+
+        return fig
