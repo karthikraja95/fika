@@ -590,3 +590,72 @@ class Visualizations(object):
             output_file=output_file,
             **kwargs,
         )
+
+    def plot_dim_reduction(
+        self, col: str, dim=2, algo="tsne", output_file="", **kwargs
+    ):
+        """
+        Reduce the dimensions of your data and then view similarly grouped data points (clusters)
+        For 2d plotting options, see:
+        
+            https://plot.ly/python-api-reference/generated/plotly.express.scatter.html
+        For 3d plotting options, see:
+            https://www.plotly.express/plotly_express/#plotly_express.scatter_3d
+        
+        Parameters
+        ----------
+        col : str
+            Column name of the labels/data points to highlight in the plot
+            
+        dim : int {2, 3}
+            Dimensions of the plot to show, either 2d or 3d, by default 2
+        algo : str {'tsne', 'lle', 'pca', 'tsvd'}, optional
+            Algorithm to reduce the dimensions by, by default 'tsne'
+        output_file : str, optional
+            Output file name for image with extension (i.e. jpeg, png, etc.)
+        kwargs: 
+            See plotting options
+        Returns
+        -------
+        Plotly Figure
+            Plotly Figure Object of Scatter Plot
+        Examples
+        --------
+        >>> data.plot_dim_reduction('cluster_labels', dim=3)
+        """
+
+        from sklearn.manifold import LocallyLinearEmbedding, TSNE
+        from sklearn.decomposition import PCA, TruncatedSVD
+
+        if dim != 2 and dim != 3:
+            raise ValueError("Dimension must be either 2d (2) or 3d (3)")
+
+        algorithms = {
+            "tsne": TSNE(n_components=dim, random_state=42,),
+            "lle": LocallyLinearEmbedding(n_components=dim, random_state=42,),
+            "pca": PCA(n_components=dim, random_state=42,),
+            "tsvd": TruncatedSVD(n_components=dim, random_state=42,),
+        }
+
+        reducer = algorithms[algo]
+        reduced_df = pd.DataFrame(reducer.fit_transform(self.x_train.drop(col, axis=1)))
+        reduced_df.columns = map(str, reduced_df.columns)
+        reduced_df[col] = self.x_train[col]
+        reduced_df[col] = reduced_df[col].astype(str)
+
+        if dim == 2:
+            fig = self._viz.scatterplot(
+                "0", "1", data=reduced_df, color=col, output_file=output_file, **kwargs,
+            )
+        else:
+            fig = self._viz.scatterplot(
+                "0",
+                "1",
+                "2",
+                data=reduced_df,
+                color=col,
+                output_file=output_file,
+                **kwargs,
+            )
+
+        return fig
