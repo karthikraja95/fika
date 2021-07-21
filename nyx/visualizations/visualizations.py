@@ -224,3 +224,124 @@ class Visualizations(object):
         )
 
         return fig       
+
+    def scatterplot(
+        self,
+        x=None,
+        y=None,
+        z=None,
+        color=None,
+        title="Scatter Plot",
+        output_file="",
+        **scatterplot_kwargs,
+    ):
+        """
+        Plots a scatterplot for the given x and y columns provided using Plotly Express.
+        For a list of possible scatterplot_kwargs for 2 dimensional data please check out the following links:
+            https://plot.ly/python-api-reference/generated/plotly.express.scatter.html
+        For more information on key word arguments for 3d data, please check them out here:
+            https://www.plotly.express/plotly_express/#plotly_express.scatter_3d
+        
+        Parameters
+        ----------
+        x : str
+            X column name
+        y : str
+            Y column name
+        z : str
+            Z column name, 
+        color : str, optional
+            Category to group your data, by default None
+        title : str, optional
+            Title of the plot, by default 'Scatter Plot'
+        output_file : str, optional
+            Output html file name for image
+        symbol : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object. Values from this column or array_like are used to assign symbols to marks.
+        size : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object. Values from this column or array_like are used to assign mark sizes.
+        hover_name : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object. Values from this column or array_like appear in bold in the hover tooltip.
+        hover_data : list of str or int, or Series or array-like, or dict)
+            Either a list of names of columns in data_frame, or pandas Series, or array_like objects or a dict with column names as keys, with values True (for default formatting) False (in order to remove this column from hover information), or a formatting string, for example ‘:.3f’ or ‘|%a’ or list-like data to appear in the hover tooltip or tuples with a bool or formatting string as first element, and list-like data to appear in hover as second element Values from these columns appear as extra data in the hover tooltip.
+        custom_data : list of str or int, or Series or array-like
+            Either names of columns in data_frame, or pandas Series, or array_like objects Values from these columns are extra data, to be used in widgets or Dash callbacks for example. This data is not user-visible but is included in events emitted by the figure (lasso selection etc.)
+        text : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object. Values from this column or array_like appear in the figure as text labels.
+        facet_row : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object. Values from this column or array_like are used to assign marks to facetted subplots in the vertical direction.
+        facet_col : str or int or Series or array-like)
+            Either a name of a column in data_frame, or a pandas Series or array_like object. Values from this column or array_like are used to assign marks to facetted subplots in the horizontal direction.
+        facet_col_wrap : int
+            Maximum number of facet columns. Wraps the column variable at this width, so that the column facets span multiple rows. Ignored if 0, and forced to 0 if facet_row or a marginal is set.
+        error_x : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object. Values from this column or array_like are used to size x-axis error bars. If error_x_minus is None, error bars will be symmetrical, otherwise error_x is used for the positive direction only.
+        error_x_minus : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object. Values from this column or array_like are used to size x-axis error bars in the negative direction. Ignored if error_x is None.
+        error_y : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object. Values from this column or array_like are used to size y-axis error bars. If error_y_minus is None, error bars will be symmetrical, otherwise error_y is used for the positive direction only.
+        error_y_minus : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object. Values from this column or array_like are used to size y-axis error bars in the negative direction. Ignored if error_y is None.
+        animation_frame : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object. Values from this column or array_like are used to assign marks to animation frames.
+        animation_group : str or int or Series or array-like
+            Either a name of a column in data_frame, or a pandas Series or array_like object. Values from this column or array_like are used to provide object-constancy across animation frames: rows with matching `animation_group`s will be treated as if they describe the same object in each frame.
+        labels : dict with str keys and str values (default {})
+            By default, column names are used in the figure for axis titles, legend entries and hovers. This parameter allows this to be overridden. The keys of this dict should correspond to column names, and the values should correspond to the desired label to be displayed.
+        color_discrete_sequence : list of str
+            Strings should define valid CSS-colors. When color is set and the values in the corresponding column are not numeric, values in that column are assigned colors by cycling through color_discrete_sequence in the order described in category_orders, unless the value of color is a key in color_discrete_map. Various useful color sequences are available in the plotly.express.colors submodules, specifically plotly.express.colors.qualitative.
+        color_discrete_map : dict with str keys and str values (default {})
+            String values should define valid CSS-colors Used to override color_discrete_sequence to assign a specific colors to marks corresponding with specific values. Keys in color_discrete_map should be values in the column denoted by color.
+        color_continuous_scale : list of str
+            Strings should define valid CSS-colors This list is used to build a continuous color scale when the column denoted by color contains numeric data. Various useful color scales are available in the plotly.express.colors submodules, specifically plotly.express.colors.sequential, plotly.express.colors.diverging and plotly.express.colors.cyclical.
+        range_color : list of two numbers
+            If provided, overrides auto-scaling on the continuous color scale.
+        color_continuous_midpoint : number (default None)
+            If set, computes the bounds of the continuous color scale to have the desired midpoint. Setting this value is recommended when using plotly.express.colors.diverging color scales as the inputs to color_continuous_scale.
+        opacity : float
+            Value between 0 and 1. Sets the opacity for markers.
+        size_max : int (default 20)
+            Set the maximum mark size when using size.
+        marginal_x : str
+            One of 'rug', 'box', 'violin', or 'histogram'. If set, a horizontal subplot is drawn above the main plot, visualizing the x-distribution.
+        marginal_y : str
+            One of 'rug', 'box', 'violin', or 'histogram'. If set, a vertical subplot is drawn to the right of the main plot, visualizing the y-distribution.
+        trendline : str
+            One of 'ols' or 'lowess'. If 'ols', an Ordinary Least Squares regression line will be drawn for each discrete-color/symbol group. If 'lowess’, a Locally Weighted Scatterplot Smoothing line will be drawn for each discrete-color/symbol group.
+        trendline_color_override : str)
+            Valid CSS color. If provided, and if trendline is set, all trendlines will be drawn in this color.
+        log_x : boolean (default False)
+            If True, the x-axis is log-scaled in cartesian coordinates.
+        log_y : boolean (default False)
+            If True, the y-axis is log-scaled in cartesian coordinates.
+        range_x : list of two numbers
+            If provided, overrides auto-scaling on the x-axis in cartesian coordinates.
+        range_y : list of two numbers
+            If provided, overrides auto-scaling on the y-axis in cartesian coordinates.
+        width : int (default None)
+            The figure width in pixels.
+        height : int (default None)
+            The figure height in pixels.
+        Returns
+        -------
+        Plotly Figure
+            Plotly Figure Object of Scatter Plot
+        Examples
+        --------
+        >>> data.scatterplot(x='x', y='y') #2d
+        >>> data.scatterplot(x='x', y='y', z='z') #3d
+        >>> data.scatterplot(x='x', y='y', z='z', output_file='scatt')
+        """
+
+        fig = self._viz.scatterplot(
+            x,
+            y,
+            z=z,
+            data=self.x_train.copy(),
+            title=title,
+            color=color,
+            output_file=output_file,
+            **scatterplot_kwargs,
+        )
+
+        return fig
