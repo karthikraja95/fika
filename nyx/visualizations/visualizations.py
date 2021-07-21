@@ -441,3 +441,60 @@ class Visualizations(object):
         )
 
         return fig
+
+    def pairplot(
+        self,
+        cols=[],
+        kind="scatter",
+        diag_kind="auto",
+        upper_kind=None,
+        lower_kind=None,
+        hue=None,
+        output_file="",
+        **kwargs,
+    ):
+        """
+        Plots pairplots of the variables from the training data.
+        If hue is not provided and a target variable is set, the data will separated and highlighted by the classes in that column.
+        For more info and kwargs on pair plots, please see: https://seaborn.pydata.org/generated/seaborn.pairplot.html
+        
+        Parameters
+        ----------
+        cols : list
+            Columns to view pairplot of.
+        kind : str {'scatter', 'reg'}, optional
+            Type of plot for off-diag plots, by default 'scatter'
+        diag_kind : str {'auto', 'hist', 'kde'}, optional
+            Type of plot for diagonal, by default 'auto'
+        upper_kind : str {'scatter', 'kde'}, optional
+            Type of plot for upper triangle of pair plot, by default None
+        lower_kind : str {'scatter', 'kde'}, optional
+            Type of plot for lower triangle of pair plot, by default None
+        hue : str, optional
+            Column to colour points by, by default None
+        {x, y}_vars : lists of variable names, optional
+            Variables within data to use separately for the rows and columns of the figure; i.e. to make a non-square plot.
+        palette : dict or seaborn color palette
+            Set of colors for mapping the hue variable. If a dict, keys should be values in the hue variable.
+        output_file : str, optional
+            Output file name for image with extension (i.e. jpeg, png, etc.)
+        Examples
+        --------
+        >>> data.pairplot(kind='kde')
+        >>> data.pairplot(kind='kde', output_file='pair.png')
+        """
+
+        data = self.x_train if not cols else self.x_train[cols]
+
+        fig = self._viz.pairplot(
+            data,
+            kind=kind,
+            diag_kind=diag_kind,
+            upper_kind=upper_kind,
+            lower_kind=lower_kind,
+            hue=hue,
+            output_file=output_file,
+            **kwargs,
+        )
+
+        return fig
