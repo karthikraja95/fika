@@ -53,3 +53,16 @@ def add_to_queue(model_function):
                 )
 
     return wrapper
+
+def get_default_args(func):
+    """
+    Gets default arguments from a function.
+    """
+
+    signature = inspect.signature(func)
+
+    return {
+        k: v.default
+        for k, v in signature.parameters.items()
+        if v.default is not inspect.Parameter.empty
+    }
