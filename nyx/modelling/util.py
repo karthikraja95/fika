@@ -66,3 +66,37 @@ def get_default_args(func):
         for k, v in signature.parameters.items()
         if v.default is not inspect.Parameter.empty
     }
+
+def run_gridsearch(model, gridsearch, cv=5, scoring="accuracy", **gridsearch_kwargs):
+    """
+    Runs Gridsearch on a model
+    
+    Parameters
+    ----------
+    model : Model
+        Model to run gridsearch on
+    gridsearch : dict
+        Dict of params to test
+    cv : int, Crossvalidation Generator, optional
+        Cross validation method, by default 12
+    
+    scoring : str
+        Scoring metric to use when evaluating models
+    
+    Returns
+    -------
+    Model
+        Initialized Gridsearch model
+    """
+
+    if isinstance(gridsearch, dict):
+        gridsearch_grid = gridsearch
+        print(f"Gridsearching with the following parameters: {gridsearch_grid}")
+    else:
+        raise ValueError("Invalid Gridsearch input.")
+
+    model = GridSearchCV(
+        model, gridsearch_grid, cv=cv, scoring=scoring, **gridsearch_kwargs
+    )
+
+    return model
