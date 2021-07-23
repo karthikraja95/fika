@@ -100,3 +100,23 @@ def run_gridsearch(model, gridsearch, cv=5, scoring="accuracy", **gridsearch_kwa
     )
 
     return model
+
+def run_crossvalidation(
+    model, x_train, y_train, cv=5, scoring="accuracy", model_name=None
+):
+
+
+    fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(15, 5))
+    visualizer_scores = CVScores(model, cv=cv, scoring=scoring, ax=axes[0])
+    visualizer_scores.fit(x_train, y_train)
+    visualizer_scores.finalize()
+
+    visualizer_lcurve = LearningCurve(model, cv=cv, scoring=scoring, ax=axes[1])
+    visualizer_lcurve.fit(x_train, y_train)
+    visualizer_lcurve.finalize()
+
+    visualizer_scores.show()
+    visualizer_lcurve.show()
+
+    if _global_config["track_experiments"]:  # pragma: no cover
+        fig.savefig(os.path.join(IMAGE_DIR, model_name, "cv.png"))
