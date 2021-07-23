@@ -154,3 +154,15 @@ def _run_models_parallel(model_obj):
         del model_obj._queued_models[result.model_name]
 
     return results
+
+def _run(model):
+    """
+    Runs a model
+        
+    Returns
+    -------
+    Model
+        Trained model
+    """
+
+    return model()
