@@ -104,7 +104,22 @@ def run_gridsearch(model, gridsearch, cv=5, scoring="accuracy", **gridsearch_kwa
 def run_crossvalidation(
     model, x_train, y_train, cv=5, scoring="accuracy", model_name=None
 ):
-
+    """
+    Runs cross validation on a certain model.
+    
+    Parameters
+    ----------
+    model : Model
+        Model to cross validate
+    x_train : nd-array
+        Training data
+    y_train : nd-array
+        Testing data
+    cv : int, Crossvalidation Generator, optional
+        Cross validation method, by default 5
+    scoring : str, optional
+        Scoring method, by default 'accuracy'
+    """
 
     fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(15, 5))
     visualizer_scores = CVScores(model, cv=cv, scoring=scoring, ax=axes[0])
