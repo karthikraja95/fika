@@ -166,3 +166,20 @@ def _run(model):
     """
 
     return model()
+
+def _get_cv_type(cv_type, n_splits, shuffle, **kwargs):
+    """Takes in cv type from the user and initiates the cross validation generator."""
+
+    n_splits = n_splits
+    shuffle = shuffle
+
+    if cv_type == "kfold":
+        cv_type = KFold(n_splits=n_splits, shuffle=shuffle, random_state=42, **kwargs)
+    elif cv_type == "strat-kfold":
+        cv_type = StratifiedKFold(
+            n_splits=n_splits, shuffle=shuffle, random_state=42, **kwargs
+        )
+    else:
+        raise ValueError("Cross Validation type is invalid.")
+
+    return cv_type
