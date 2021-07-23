@@ -135,3 +135,22 @@ def run_crossvalidation(
 
     if _global_config["track_experiments"]:  # pragma: no cover
         fig.savefig(os.path.join(IMAGE_DIR, model_name, "cv.png"))
+
+def _run_models_parallel(model_obj):
+    """
+    Runs queued models in parallel
+    
+    Parameters
+    ----------
+    model_obj : Model
+        Model object
+    """
+
+    with mp.Pool(mp.cpu_count()) as pool:
+        results = pool.map(_run, list(model_obj._queued_models.values()))
+
+    for result in results:
+        model_obj._models[result.model_name] = result
+        del model_obj._queued_models[result.model_name]
+
+    return results
