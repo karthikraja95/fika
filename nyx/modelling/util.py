@@ -248,3 +248,46 @@ def _validate_model_name(model_obj, model_name: str) -> bool:
         return False
 
     return True
+
+def track_model(
+    exp_name: str, model, model_name: str, model_kwargs: dict, metrics=None
+):  # pragma: no cover
+    """
+    Logs model information into MLFlow console.
+    
+    Parameters
+    ----------
+    exp_name: str
+        Name of the experiment
+    model : Sklearn, LGBM, XGB, or CB Model object
+        Model
+    model_name : str
+        Name of the model
+    model_kwargs : dict
+        Model parameters
+    metrics : dict
+        Metrics for the model
+    """
+
+    mlflow.set_tracking_uri(EXP_DIR)
+    mlflow.set_experiment(exp_name)
+
+    with mlflow.start_run(run_name=model_name) as run:
+
+        mlflow.log_params(model_kwargs)
+        mlflow.set_tag("name", model_name)
+
+        if isinstance(model, xgb.XGBModel):
+            mlflow.xgboost.log_model(model, model_name)
+        else:
+            mlflow.sklearn.log_model(model, model_name)
+
+        mlflow.log_metrics(metrics)
+        mlflow.log_artifacts(os.path.join(IMAGE_DIR, model_name))
+
+        run_id = run.info.run_uuid
+
+        mlflow.end_run()
+
+    return run_id
+
