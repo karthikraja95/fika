@@ -224,3 +224,27 @@ def _make_img_project_dir(model_name: str):
     """
 
     _make_dir(os.path.join(IMAGE_DIR, model_name))
+
+def _validate_model_name(model_obj, model_name: str) -> bool:
+    """
+    Validates the inputted model name. If the object already has an
+    attribute with that model name, it is invalid
+    
+    Parameters
+    ----------
+    model_name : str
+        Proposed name of the model
+        
+    model_obj : Model
+        Model object
+    
+    Returns
+    -------
+    bool
+        True if model name is valid, false otherwise
+    """
+
+    if hasattr(model_obj, model_name) and model_name not in model_obj._models:
+        return False
+
+    return True
