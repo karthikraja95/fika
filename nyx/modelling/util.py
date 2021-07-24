@@ -212,3 +212,15 @@ def to_pickle(model, name, project=False, project_name=None):
     _make_dir(path)
 
     pickle.dump(model, open(os.path.join(path, name + ".pkl"), "wb"))
+
+def _make_img_project_dir(model_name: str):
+    """
+    Make a model dir in images directory.
+    
+    Parameters
+    ----------
+    model_name : str
+        Model name
+    """
+
+    _make_dir(os.path.join(IMAGE_DIR, model_name))
