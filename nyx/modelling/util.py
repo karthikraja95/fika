@@ -183,3 +183,32 @@ def _get_cv_type(cv_type, n_splits, shuffle, **kwargs):
         raise ValueError("Cross Validation type is invalid.")
 
     return cv_type
+
+def to_pickle(model, name, project=False, project_name=None):
+    """
+    Writes model to a pickle file.
+    
+    Parameters
+    ----------
+    model: Model object
+        Model object to serialize
+    name : str
+        Name of the model
+        
+    project : bool
+        Whether to write to the project folder, by default False
+    """
+
+    if not project:
+        if not cfg["models"]["dir"]:  # pragma: no cover
+            path = DEFAULT_MODEL_DIR
+        else:
+            path = cfg["models"]["dir"]
+    else:
+        path = os.path.join(
+            os.path.expanduser("~"), ".aethos", "projects", project_name, "app"
+        )
+
+    _make_dir(path)
+
+    pickle.dump(model, open(os.path.join(path, name + ".pkl"), "wb"))
