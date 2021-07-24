@@ -291,3 +291,20 @@ def track_model(
 
     return run_id
 
+def track_artifacts(run_id, model_name):  # pragma: no cover
+    """
+    Track artificats for modelling.
+    
+    Parameters
+    ----------
+    run_id : str
+        MLFlow run id
+    model_name : str
+        Name of the model
+    """
+
+    with mlflow.start_run(run_id=run_id) as run:
+
+        mlflow.log_artifacts(os.path.join(IMAGE_DIR, model_name))
+        mlflow.end_run()
+
