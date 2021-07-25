@@ -91,3 +91,38 @@ def gensim_textrank_summarizer(
             ]
 
     return x_train, x_test
+
+def gensim_word2vec(x_train, x_test=None, prep=False, col_name=None, **algo_kwargs):
+    """
+    Uses Gensim Text Rank summarize to extract keywords.
+    Note this uses a variant of Text Rank.
+    
+    Parameters
+    ----------
+    x_train : DataFrame
+        Dataset
+    x_test : DataFrame
+        Testing dataset, by default None
+    prep : bool, optional
+        True to prep the text
+        False if text is already prepped.
+        By default, False
+    col_name : str, optional
+        Column name of text data that you want to summarize
+        
+    Returns
+    -------
+    Word2Vec
+        Word2Vec model
+    """
+
+    if prep:
+        w2v = Word2Vec(
+            sentences=[word_tokenize(process_text(text)) for text in x_train[col_name]],
+            **algo_kwargs
+        )
+    else:
+        w2v = Word2Vec(sentences=x_train[col_name], **algo_kwargs)
+
+    return w2v
+
