@@ -126,3 +126,44 @@ def gensim_word2vec(x_train, x_test=None, prep=False, col_name=None, **algo_kwar
 
     return w2v
 
+def gensim_doc2vec(x_train, x_test=None, prep=False, col_name=None, **algo_kwargs):
+    """
+    Uses Gensim Text Rank summarize to extract keywords.
+    Note: this uses a variant of Text Rank.
+    
+    Parameters
+    ----------
+    x_train : DataFrame
+        Dataset
+    x_test : DataFrame
+        Testing dataset, by default None
+    prep : bool, optional
+        True to prep the text
+        False if text is already prepped.
+        By default, False
+    col_name : str, optional
+        Column name of text data that you want to summarize
+    
+    Returns
+    -------
+    Doc2Vec
+        Doc2Vec Model
+    """
+
+    if prep:
+        tagged_data = [
+            TaggedDocument(words=word_tokenize(process_text(text)), tags=[str(i)])
+            for i, text in enumerate(x_train[col_name])
+        ]
+    else:
+        tagged_data = [
+            TaggedDocument(words=text, tags=[str(i)])
+            for i, text in enumerate(x_train[col_name])
+        ]
+
+    d2v = Doc2Vec(tagged_data, **algo_kwargs)
+    d2v.delete_temporary_training_data(keep_doctags_vectors=True, keep_inference=True)
+
+    return d2v
+
+
