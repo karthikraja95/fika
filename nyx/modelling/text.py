@@ -218,5 +218,43 @@ def gensim_lda(x_train, x_test=None, prep=False, col_name=None, **algo_kwargs):
 
     return x_train, x_test, lda_model, corpus, id2word
 
+def _assign_topic_doc(lda_model, texts, corpus):
+    """
+    Helper function to assign the relevant topics to each document
+    
+    Parameters
+    ----------
+    lda_model : LDAModel
+        LDA Model
+    texts : [str]
+        List of text documents
+    corpus : list
+        Corpus list
+    
+    Returns
+    -------
+    list
+        List of topics assigned to each document
+    """
+
+    keywords = []
+
+    for i, row in enumerate(lda_model[corpus]):
+
+        if not row:
+            keywords.append("")
+        else:
+            row = sorted(row, key=lambda x: (x[1]), reverse=True)
+
+            for j, (topic_num, prop_topic) in enumerate(row):
+                if j == 0:
+                    wp = lda_model.show_topic(topic_num)
+                    topic_keywords = ", ".join([word for word, prop in wp])
+                    keywords.append(topic_keywords)
+
+                    break
+
+    return keywords
+
 
 
