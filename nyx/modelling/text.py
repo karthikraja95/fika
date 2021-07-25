@@ -166,4 +166,57 @@ def gensim_doc2vec(x_train, x_test=None, prep=False, col_name=None, **algo_kwarg
 
     return d2v
 
+def gensim_lda(x_train, x_test=None, prep=False, col_name=None, **algo_kwargs):
+    """
+    Runs Gensim LDA model and assigns topics to documents.
+    
+    Parameters
+    ----------
+    x_train : DataFrame
+        Dataset
+    x_test : DataFrame
+        Testing dataset, by default None
+    prep : bool, optional
+        True to prep the text
+        False if text is already prepped.
+        By default, False
+    col_name : str, optional
+        Column name of text data that you want to summarize
+    
+    Returns
+    -------
+    Dataframe, *Dataframe, LDAModel, corpus, list
+        Transformed dataframe with the new column.
+    Returns 2 Dataframes if x_test is provided. 
+    """
+
+    texts = x_train[col_name].tolist()
+
+    if prep:
+        texts = [word_tokenize(process_text(text)) for text in texts]
+    elif isinstance(texts[0], str):
+        texts = [word_tokenize(process_text(text, stemmer=False)) for text in texts]
+
+    id2word = gensim.corpora.Dictionary(texts)
+    corpus = [id2word.doc2bow(text) for text in texts]
+
+    lda_model = gensim.models.LdaModel(corpus=corpus, id2word=id2word, **algo_kwargs)
+
+    x_train["topics"] = _assign_topic_doc(lda_model, texts, corpus)
+
+    if x_test is not None:
+        texts = x_test[col_name].tolist()
+
+        if prep:
+            texts = [word_tokenize(process_text(text)) for text in texts]
+        elif isinstance(texts[0], str):
+            texts = [word_tokenize(text) for text in texts]
+
+        test_corpus = [id2word.doc2bow(text) for text in texts]
+
+        x_test["topics"] = _assign_topic_doc(lda_model, texts, test_corpus)
+
+    return x_train, x_test, lda_model, corpus, id2word
+
+
 
