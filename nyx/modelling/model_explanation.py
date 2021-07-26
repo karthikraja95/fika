@@ -162,3 +162,26 @@ class Shap(object):
             pl.savefig(os.path.join(IMAGE_DIR, self.model_name, output_file))
 
         return s
+
+    def dependence_plot(
+        self, feature, interaction=None, output_file="", **dependenceplot_kwargs
+    ):
+        """
+        Plots a SHAP dependence plot.
+        """
+
+        import shap
+
+        interaction = dependenceplot_kwargs.pop("interaction_index", interaction)
+
+        shap.dependence_plot(
+            feature,
+            self.shap_values,
+            self.x_test,
+            interaction_index=interaction,
+            show=False,
+            **dependenceplot_kwargs,
+        )
+
+        if output_file:  # pragma: no cover
+            pl.savefig(os.path.join(IMAGE_DIR, self.model_name, output_file))
