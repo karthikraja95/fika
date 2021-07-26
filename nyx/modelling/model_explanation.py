@@ -52,3 +52,25 @@ class Shap(object):
 
         # As per SHAP guidelines, test data needs to be dense for plotting functions
         self.x_test_array = self.x_test.values
+
+    def summary_plot(self, output_file="", **summaryplot_kwargs):
+        """
+        Plots a SHAP summary plot.
+        Parameters
+        ----------
+        output_file: str
+            Output file name including extension (.png, .jpg, etc.) to save image as.
+        """
+
+        import shap
+
+        shap.summary_plot(
+            self.shap_values,
+            self.x_test_array,
+            feature_names=self.x_train.columns,
+            show=False,
+            **summaryplot_kwargs,
+        )
+
+        if output_file:  # pragma: no cover
+            pl.savefig(os.path.join(IMAGE_DIR, self.model_name, output_file))
