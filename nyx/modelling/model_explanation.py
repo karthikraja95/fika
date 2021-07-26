@@ -74,3 +74,62 @@ class Shap(object):
 
         if output_file:  # pragma: no cover
             pl.savefig(os.path.join(IMAGE_DIR, self.model_name, output_file))
+
+    def decision_plot(
+        self, num_samples=0.25, sample_no=None, output_file="", **decisionplot_kwargs
+    ):
+        """
+        Plots a SHAP decision plot.
+        
+        Parameters
+        ----------
+        num_samples : int, float, or 'all', optional
+            Number of samples to display, if less than 1 it will treat it as a percentage, 'all' will include all samples
+            , by default 0.25
+        sample_no : int, optional
+            Sample number to isolate and analyze, if provided it overrides num_samples, by default None
+        Returns
+        -------
+        DecisionPlotResult 
+            If return_objects=True (the default). Returns None otherwise.
+        """
+
+        import shap
+
+        return_objects = decisionplot_kwargs.pop("return_objects", True)
+        highlight = decisionplot_kwargs.pop("highlight", None)
+
+        if sample_no is not None:
+            if sample_no < 1 or not isinstance(sample_no, int):
+                raise ValueError("Sample number must be greater than 1.")
+
+            samples = slice(sample_no - 1, sample_no)
+        else:
+            if num_samples == "all":
+                samples = slice(0, len(self.x_test_array))
+            elif num_samples <= 0:
+                raise ValueError(
+                    "Number of samples must be greater than 0. If it is less than 1, it will be treated as a percentage."
+                )
+            elif num_samples > 0 and num_samples < 1:
+                samples = slice(0, int(num_samples * len(self.x_test_array)))
+            else:
+                samples = slice(0, num_samples)
+
+        if highlight is not None:
+            highlight = highlight[samples]
+
+        s = shap.decision_plot(
+            self.expected_value,
+            self.shap_values[samples],
+            self.x_train.columns,
+            return_objects=return_objects,
+            highlight=highlight,
+            show=False,
+            **decisionplot_kwargs,
+        )
+
+        if output_file:  # pragma: no cover
+            pl.savefig(os.path.join(IMAGE_DIR, self.model_name, output_file))
+
+        return s
