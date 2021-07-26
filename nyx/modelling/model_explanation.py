@@ -133,3 +133,32 @@ class Shap(object):
             pl.savefig(os.path.join(IMAGE_DIR, self.model_name, output_file))
 
         return s
+    
+    def force_plot(self, sample_no=None, output_file="", **forceplot_kwargs):
+        """
+        Plots a SHAP force plot.
+        """
+
+        import shap
+
+        shap_values = forceplot_kwargs.pop("shap_values", self.shap_values)
+
+        if sample_no is not None:
+            if sample_no < 1 or not isinstance(sample_no, int):
+                raise ValueError("Sample number must be greater than 1.")
+
+            samples = slice(sample_no - 1, sample_no)
+        else:
+            samples = slice(0, len(shap_values))
+
+        s = shap.force_plot(
+            self.expected_value,
+            shap_values[samples],
+            self.x_train.columns,
+            **forceplot_kwargs,
+        )
+
+        if output_file:  # pragma: no cover
+            pl.savefig(os.path.join(IMAGE_DIR, self.model_name, output_file))
+
+        return s
