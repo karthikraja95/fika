@@ -185,3 +185,24 @@ class Shap(object):
 
         if output_file:  # pragma: no cover
             pl.savefig(os.path.join(IMAGE_DIR, self.model_name, output_file))
+
+    def _calculate_misclassified(self) -> list:
+        """
+        Calculates misclassified points.
+        
+        Returns
+        -------
+        list
+            List specifying which values were misclassified
+        """
+
+        if len(self.shap_values.shape) > 2:
+            y_pred = [
+                x.sum(1) + y > 0 for x, y in zip(self.shap_values, self.expected_value)
+            ]
+            misclassified = [x != self.y_test for x in y_pred]
+        else:
+            y_pred = (self.shap_values.sum(1) + self.expected_value) > 0
+            misclassified = y_pred != self.y_test
+
+        return misclassified
