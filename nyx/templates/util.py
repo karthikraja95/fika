@@ -24,3 +24,21 @@ def _create_dir():
     _make_dir(dep_dir)
 
     return dep_dir
+
+def _create_project_dir(project_dir: str, name: str):
+    """
+    Creates the projects directory.
+    
+    Parameters
+    ----------
+    project_dir : str
+        Full path of the project dir.
+    name : str
+        Name of the project
+    """
+
+    project_dir = os.path.join(project_dir, name)
+
+    _make_dir(project_dir)
+
+    return project_dir
