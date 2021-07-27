@@ -1,0 +1,11 @@
+{% if service %}
+fastapi
+uvicorn
+{% endif %}
+{% if xgboost %}
+xgboost
+{% elif lgbm %}
+lightgbm
+{% else %}
+sklearn
+{% endif %}
