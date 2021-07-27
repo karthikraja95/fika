@@ -42,3 +42,24 @@ def _create_project_dir(project_dir: str, name: str):
     _make_dir(project_dir)
 
     return project_dir
+
+def _get_model_type_kwarg(model):
+    """
+    Helper function to determine what model to import in requirements.txt service file.
+    """
+
+    import xgboost as xgb
+    import lightgbm as lgb
+
+    kwargs = {
+        "xgboost": False,
+        "lgbm": False,
+    }
+
+    if isinstance(model, xgb.XGBModel):
+        kwargs["xgboost"] = True
+
+    if isinstance(model, lgb.LGBMModel):
+        kwargs["lgbm"] = True
+
+    return kwargs
