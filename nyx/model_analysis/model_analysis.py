@@ -40,3 +40,22 @@ class ModelAnalysisBase(Visualizations, Stats):
             data = self.train_results
 
         return data
+
+    @property
+    def train_results(self):
+
+        data = self.x_train.copy()
+        data["predicted"] = self.model.predict(data)
+        data["actual"] = self.y_train
+
+        return data
+
+    @property
+    def test_results(self):
+
+        data = self.x_test
+        data["actual"] = self.y_test
+
+        data["predicted"] = self.y_pred
+
+        return data
