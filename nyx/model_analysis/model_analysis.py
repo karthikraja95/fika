@@ -27,3 +27,16 @@ from nyx.model_analysis.constants import (
     PROBLEM_TYPE,
     SHAP_LEARNERS,
 )
+
+class ModelAnalysisBase(Visualizations, Stats):
+
+    # TODO: Add more SHAP use cases
+
+    def _repr_html(self):
+
+        if hasattr(self, "x_test"):
+            data = self.test_results
+        else:
+            data = self.train_results
+
+        return data
