@@ -72,3 +72,26 @@ class ModelAnalysisBase(Visualizations, Stats):
 
         to_pickle(self.model, self.model_name)
 
+    def to_service(self, project_name: str):
+        """
+        Creates an app.py, requirements.txt and Dockerfile in `~/.nyx/projects` and the necessary folder structure
+        to run the model as a microservice.
+        
+        Parameters
+        ----------
+        project_name : str
+            Name of the project that you want to create.
+        Examples
+        --------
+        >>> m = Model(df)
+        >>> m_results = m.LogisticRegression()
+        >>> m_results.to_service('your_proj_name')
+        """
+
+        to_pickle(self.model, self.model_name, project=True, project_name=project_name)
+        tg.generate_service(project_name, f"{self.model_name}.pkl", self.model)
+
+        print("To run:")
+        print("\tdocker build -t `image_name` ./")
+        print("\tdocker run -d --name `container_name` -p `port_num`:80 `image_name`")
+
