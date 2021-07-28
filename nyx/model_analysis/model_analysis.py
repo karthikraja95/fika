@@ -59,3 +59,16 @@ class ModelAnalysisBase(Visualizations, Stats):
         data["predicted"] = self.y_pred
 
         return data
+
+    def to_pickle(self):
+        """
+        Writes model to a pickle file.
+        Examples
+        --------
+        >>> m = Model(df)
+        >>> m_results = m.LogisticRegression()
+        >>> m_results.to_pickle()
+        """
+
+        to_pickle(self.model, self.model_name)
+
