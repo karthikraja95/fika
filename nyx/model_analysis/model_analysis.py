@@ -340,6 +340,57 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
 
         return dp
 
+    def force_plot(
+        self, sample_no=None, misclassified=False, output_file="", **forceplot_kwargs
+    ):
+        """
+        Visualize the given SHAP values with an additive force layout
+        
+        Parameters
+        ----------
+        sample_no : int, optional
+            Sample number to isolate and analyze, by default None
+        misclassified : bool, optional
+            True to only show the misclassified results, by default False
+        output_file: str
+            Output file name including extension (.png, .jpg, etc.) to save image as.
+        link : "identity" or "logit"
+            The transformation used when drawing the tick mark labels. Using logit will change log-odds numbers
+            into probabilities. 
+        matplotlib : bool
+            Whether to use the default Javascript output, or the (less developed) matplotlib output. Using matplotlib
+            can be helpful in scenarios where rendering Javascript/HTML is inconvenient. 
+        
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.force_plot() # The entire test dataset
+        >>> m.forceplot(no_sample=1, misclassified=True) # Analyze the first misclassified result
+        """
+
+        if self.shap is None:
+            raise NotImplementedError(
+                f"SHAP is not implemented yet for {str(type(self))}"
+            )
+
+        if misclassified:
+            if not any(self.shap.misclassified_values):
+                raise AttributeError("There are no misclassified values!")
+
+            forceplot_kwargs["shap_values"] = self.shap.shap_values[
+                self.shap.misclassified_values
+            ]
+
+        fp = self.shap.force_plot(
+            sample_no, output_file=output_file, **forceplot_kwargs
+        )
+
+        if _global_config["track_experiments"]:  # pragma: no cover
+            track_artifacts(self.run_id, self.model_name)
+
+        return fp
+
+
 
 
     
