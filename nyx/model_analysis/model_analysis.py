@@ -463,6 +463,25 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
 
         return sample_list
 
+    def interpret_model(self, show=True):  # pragma: no cover
+        """
+        Displays a dashboard interpreting your model's performance, behaviour and individual predictions.
+        If you have run any other `interpret` functions, they will be included in the dashboard, otherwise all the other intrepretable methods will be included in the dashboard.
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.interpret_model()
+        """
+
+        warnings.simplefilter("ignore")
+
+        if isinstance(self.model, xgb.XGBModel):
+            return "Using MSFT interpret is currently unsupported with XGBoost."
+
+        if show:
+            self.interpret.create_dashboard()
+
+
 
 
 
