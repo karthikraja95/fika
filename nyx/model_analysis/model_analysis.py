@@ -130,6 +130,42 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
             PROBLEM_TYPE[type(self.model)],
         )
 
+    def model_weights(self):
+        """
+        Prints and logs all the features ranked by importance from most to least important.
+        
+        Returns
+        -------
+        dict
+            Dictionary of features and their corresponding weights
+        
+        Raises
+        ------
+        AttributeError
+            If model does not have coefficients to display
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.model_weights()
+        """
+
+        report_strings = []
+
+        try:
+            model_dict = dict(zip(self.features, self.model.coef_.flatten()))
+        except Exception as e:
+            raise AttributeError("Model does not have coefficients to view.")
+
+        sorted_features = OrderedDict(
+            sorted(model_dict.items(), key=lambda kv: abs(kv[1]), reverse=True)
+        )
+
+        for feature, weight in sorted_features.items():
+            report_string = "\t{} : {:.2f}".format(feature, weight)
+            report_strings.append(report_string)
+
+            print(report_string.strip())
+
 
 
     
