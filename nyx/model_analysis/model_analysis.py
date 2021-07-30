@@ -654,6 +654,74 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
                 method=method, predictions=predictions, show=show, **interpret_kwargs
             )
 
+    def view_tree(self, tree_num=0, output_file=None, **kwargs):
+        """
+        Plot decision trees.
+        
+        Parameters
+        ----------
+        tree_num: int, optional
+            For ensemble, boosting, and stacking methods - the tree number to plot, by default 0
+        output_file : str, optional
+            Name of the file including extension, by default None
+        Examples
+        --------
+        >>> m = model.DecisionTreeClassifier()
+        >>> m.view_tree()
+        >>> m = model.XGBoostClassifier()
+        >>> m.view_tree(2)
+        """
+
+        import lightgbm as lgb
+        from graphviz import Source
+
+        if hasattr(self, "classes"):
+            classes = self.classes
+        else:
+            classes = None
+
+        if isinstance(self.model, sklearn.tree.BaseDecisionTree):
+            graph = Source(
+                sklearn.tree.export_graphviz(
+                    self.model,
+                    out_file=None,
+                    feature_names=self.features,
+                    class_names=classes,
+                    rounded=True,
+                    precision=True,
+                    filled=True,
+                )
+            )
+
+            display(SVG(graph.pipe(format="svg")))
+
+        elif isinstance(self.model, xgb.XGBModel):
+            return xgb.plot_tree(self.model)
+
+        elif isinstance(self.model, lgb.sklearn.LGBMModel):
+            return lgb.plot_tree(self.model)
+
+        elif isinstance(self.model, sklearn.ensemble.BaseEnsemble):
+            estimator = self.model.estimators_[tree_num]
+
+            graph = Source(
+                sklearn.tree.export_graphviz(
+                    estimator,
+                    out_file=None,
+                    feature_names=self.features,
+                    class_names=classes,
+                    rounded=True,
+                    precision=True,
+                    filled=True,
+                )
+            )
+
+            display(SVG(graph.pipe(format="svg")))
+        else:
+            raise NotImplementedError(
+                f"Model {str(self.model)} cannot be viewed as a tree"
+            )
+
 
 
 
