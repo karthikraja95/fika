@@ -110,3 +110,27 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
         )  # Specifying columns for XGBoost
         self.run_id = None
 
+        if hasattr(model, "predict_proba"):
+            self.probabilities = self.model.predict_proba(self.x_test[self.features])
+
+        self.shap = Shap(
+            self.model,
+            self.model_name,
+            self.x_train,
+            self.x_test,
+            self.y_test,
+            SHAP_LEARNERS[type(self.model)],
+        )
+        self.interpret = MSFTInterpret(
+            self.model,
+            self.x_train,
+            self.x_test,
+            self.y_train,
+            self.y_test,
+            PROBLEM_TYPE[type(self.model)],
+        )
+
+
+
+    
+
