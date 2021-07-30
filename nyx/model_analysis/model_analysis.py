@@ -216,6 +216,131 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
             track_artifacts(self.run_id, self.model_name)
 
 
+    def decision_plot(
+        self,
+        num_samples=0.6,
+        sample_no=None,
+        highlight_misclassified=False,
+        output_file="",
+        **decisionplot_kwargs,
+    ):
+        """
+        Visualize model decisions using cumulative SHAP values.
+        
+        Each colored line in the plot represents the model prediction for a single observation. 
+        
+        Note that plotting too many samples at once can make the plot unintelligible.
+        When is a decision plot useful:        
+            - Show a large number of feature effects clearly.
+            
+            - Visualize multioutput predictions.
+            
+            - Display the cumulative effect of interactions.
+            
+            - Explore feature effects for a range of feature values.
+            
+            - Identify outliers.
+            
+            - Identify typical prediction paths.
+            
+            - Compare and contrast predictions for several models.
+        Explanation:
+            - The plot is centered on the x-axis at the models expected value.
+            - All SHAP values are relative to the model's expected value like a linear model's effects are relative to the intercept.
+            
+            - The y-axis lists the model's features. By default, the features are ordered by descending importance. 
+            
+            - The importance is calculated over the observations plotted. This is usually different than the importance ordering for the entire dataset. In addition to feature importance ordering, the decision plot also supports hierarchical cluster feature ordering and user-defined feature ordering.
+            
+            - Each observation's prediction is represented by a colored line. 
+            
+            - At the top of the plot, each line strikes the x-axis at its corresponding observation's predicted value. This value determines the color of the line on a spectrum.
+            
+            - Moving from the bottom of the plot to the top, SHAP values for each feature are added to the model's base value. This shows how each feature contributes to the overall prediction.
+            
+            - At the bottom of the plot, the observations converge at the models expected value.
+        Parameters
+        ----------
+        output_file: str
+            Output file name including extension (.png, .jpg, etc.) to save image as.
+        num_samples : int, float, or 'all', optional
+            Number of samples to display, if less than 1 it will treat it as a percentage, 'all' will include all samples
+            , by default 0.6
+        sample_no : int, optional
+            Sample number to isolate and analyze, if provided it overrides num_samples, by default None
+        highlight_misclassified : bool, optional
+            True to highlight the misclassified results, by default False
+        feature_order : str or None or list or numpy.ndarray
+            Any of "importance" (the default), "hclust" (hierarchical clustering), "none", or a list/array of indices.
+            hclust is useful for finding outliers.
+        feature_display_range: slice or range
+            The slice or range of features to plot after ordering features by feature_order. A step of 1 or None will display the features in ascending order. A step of -1 will display the features in descending order. If feature_display_range=None, slice(-1, -21, -1) is used (i.e. show the last 20 features in descending order). If shap_values contains interaction values, the number of features is automatically expanded to include all possible interactions: N(N + 1)/2 where N = shap_values.shape[1].
+        highlight : Any 
+            Specify which observations to draw in a different line style. All numpy indexing methods are supported. For example, list of integer indices, or a bool array.
+        link : str 
+            Use "identity" or "logit" to specify the transformation used for the x-axis. The "logit" link transforms log-odds into probabilities.
+        plot_color : str or matplotlib.colors.ColorMap 
+            Color spectrum used to draw the plot lines. If str, a registered matplotlib color name is assumed.
+        axis_color : str or int 
+            Color used to draw plot axes.
+        y_demarc_color : str or int 
+            Color used to draw feature demarcation lines on the y-axis.
+        alpha : float 
+            Alpha blending value in [0, 1] used to draw plot lines.
+        color_bar : bool 
+            Whether to draw the color bar.
+        auto_size_plot : bool 
+            Whether to automatically size the matplotlib plot to fit the number of features displayed. If False, specify the plot size using matplotlib before calling this function.
+        title : str 
+            Title of the plot.
+        xlim: tuple[float, float] 
+            The extents of the x-axis (e.g. (-1.0, 1.0)). If not specified, the limits are determined by the maximum/minimum predictions centered around base_value when link='identity'. When link='logit', the x-axis extents are (0, 1) centered at 0.5. x_lim values are not transformed by the link function. This argument is provided to simplify producing multiple plots on the same scale for comparison.
+        show : bool 
+            Whether to automatically display the plot.
+        return_objects : bool 
+            Whether to return a DecisionPlotResult object containing various plotting features. This can be used to generate multiple decision plots using the same feature ordering and scale, by default True.
+        ignore_warnings : bool 
+            Plotting many data points or too many features at a time may be slow, or may create very large plots. Set this argument to True to override hard-coded limits that prevent plotting large amounts of data.
+        new_base_value : float 
+            SHAP values are relative to a base value; by default, the expected value of the model's raw predictions. Use new_base_value to shift the base value to an arbitrary value (e.g. the cutoff point for a binary classification task).
+        legend_labels : list of str 
+            List of legend labels. If None, legend will not be shown.
+        legend_location : str 
+            Legend location. Any of "best", "upper right", "upper left", "lower left", "lower right", "right", "center left", "center right", "lower center", "upper center", "center".
+    
+        Returns
+        -------
+        DecisionPlotResult 
+            If return_objects=True (the default). Returns None otherwise.
+        Examples
+        --------
+        >>> # Plot two decision plots using the same feature order and x-axis.
+        >>> m = model.LogisticRegression()
+        >>> r = m.decision_plot()
+        >>> m.decision_plot(no_sample=42, feature_order=r.feature_idx, xlim=r.xlim)
+        """
+
+        if self.shap is None:
+            raise NotImplementedError(
+                f"SHAP is not implemented yet for {str(type(self))}"
+            )
+
+        if highlight_misclassified:
+            if not any(self.shap.misclassified_values):
+                raise AttributeError("There are no misclassified values!")
+
+            decisionplot_kwargs["highlight"] = self.shap.misclassified_values
+
+        dp = self.shap.decision_plot(
+            num_samples, sample_no, output_file=output_file, **decisionplot_kwargs
+        )
+
+        if _global_config["track_experiments"]:  # pragma: no cover
+            track_artifacts(self.run_id, self.model_name)
+
+        return dp
+
+
 
     
 
