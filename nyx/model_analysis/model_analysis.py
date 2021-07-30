@@ -445,6 +445,25 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
 
         return dp
 
+    def shap_get_misclassified_index(self):
+        """
+        Prints the sample numbers of misclassified samples.
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.shap_get_misclassified_index()
+        """
+
+        sample_list = list(
+            compress(
+                range(len(self.shap.misclassified_values)),
+                self.shap.misclassified_values,
+            )
+        )
+
+        return sample_list
+
+
 
 
 
