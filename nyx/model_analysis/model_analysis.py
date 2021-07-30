@@ -603,6 +603,57 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
                 **interpret_kwargs,
             )
 
+    def interpret_model_behavior(
+        self, method="all", predictions="default", show=True, **interpret_kwargs
+    ):
+        """
+        Provides an interpretable summary of your models behaviour based off an explainer.
+        Can either be 'morris' or 'dependence' for Partial Dependence.
+        
+        If 'all' a dashboard is displayed with morris and dependence analysis displayed.
+        
+        Parameters
+        ----------
+        method : str, optional
+            Explainer type, can either be 'all', 'morris' or 'dependence', by default 'all'
+        predictions : str, optional
+            Prediction type, can either be 'default' (.predict) or 'probability' if the model can predict probabilities, by default 'default'
+        show : bool, optional 
+            False to not display the plot, by default True
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.interpret_model_behavior()
+        """
+
+        import interpret
+        from aethos.model_analysis.constants import INTERPRET_EXPLAINERS
+
+        warnings.simplefilter("ignore")
+
+        if isinstance(self.model, xgb.XGBModel):  # pragma: no cover
+            return "Using MSFT interpret is currently unsupported with XGBoost."
+
+        dashboard = []
+
+        if method == "all":
+            for explainer in INTERPRET_EXPLAINERS["global"]:
+                dashboard.append(
+                    self.interpret.blackbox_global_explanation(
+                        method=explainer,
+                        predictions=predictions,
+                        show=False,
+                        **interpret_kwargs,
+                    )
+                )
+
+            if show:
+                interpret.show(dashboard)
+        else:
+            self.interpret.blackbox_global_explanation(
+                method=method, predictions=predictions, show=show, **interpret_kwargs
+            )
+
 
 
 
