@@ -481,6 +481,61 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
         if show:
             self.interpret.create_dashboard()
 
+    def interpret_model_performance(
+        self, method="all", predictions="default", show=True, **interpret_kwargs
+    ):
+        """
+        Plots an interpretable display of your model based off a performance metric.
+        Can either be 'ROC' or 'PR' for precision, recall for classification problems.
+        Can be 'regperf' for regression problems.
+        If 'all' a dashboard is displayed with the corresponding explainers for the problem type.
+        ROC: Receiver Operator Characteristic
+        PR: Precision Recall
+        regperf: RegeressionPerf
+        
+        Parameters
+        ----------
+        method : str
+            Performance metric, either 'all', 'roc' or 'PR', by default 'all'
+        predictions : str, optional
+            Prediction type, can either be 'default' (.predict) or 'probability' if the model can predict probabilities, by default 'default'
+        show : bool, optional 
+            False to not display the plot, by default True
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.interpret_model_performance()
+        """
+
+        import interpret
+        from aethos.model_analysis.constants import INTERPRET_EXPLAINERS
+
+        warnings.simplefilter("ignore")
+
+        if isinstance(self.model, xgb.XGBModel):  # pragma: no cover
+            return "Using MSFT interpret is currently unsupported with XGBoost."
+
+        dashboard = []
+
+        if method == "all":
+            for explainer in INTERPRET_EXPLAINERS["problem"][self.interpret.problem]:
+                dashboard.append(
+                    self.interpret.blackbox_show_performance(
+                        method=explainer,
+                        predictions=predictions,
+                        show=False,
+                        **interpret_kwargs,
+                    )
+                )
+
+            if show:
+                interpret.show(dashboard)
+        else:
+            self.interpret.blackbox_show_performance(
+                method=method, predictions=predictions, show=show, **interpret_kwargs
+            )
+
+
 
 
 
