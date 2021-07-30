@@ -95,3 +95,18 @@ class ModelAnalysisBase(Visualizations, Stats):
         print("\tdocker build -t `image_name` ./")
         print("\tdocker run -d --name `container_name` -p `port_num`:80 `image_name`")
 
+class SupervisedModelAnalysis(ModelAnalysisBase):
+    def __init__(self, model, x_train, x_test, y_train, y_test, model_name):
+
+        self.model = model
+        self.model_name = model_name
+        self.x_train = x_train
+        self.x_test = x_test
+        self.y_train = y_train
+        self.y_test = y_test
+        self.features = x_test.columns
+        self.y_pred = self.model.predict(
+            self.x_test[self.features]
+        )  # Specifying columns for XGBoost
+        self.run_id = None
+
