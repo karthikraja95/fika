@@ -722,6 +722,19 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
                 f"Model {str(self.model)} cannot be viewed as a tree"
             )
 
+    def _cross_validate(self, cv_type, score, n_splits, shuffle, **kwargs):
+        """Runs crossvalidation on a model"""
+
+        cv = _get_cv_type(cv_type, n_splits, shuffle, **kwargs)
+
+        cv_scores = run_crossvalidation(
+            self.model,
+            self.x_train,
+            self.y_train,
+            cv=cv,
+            scoring=score,
+            model_name=self.model_name,
+        )
 
 
 
