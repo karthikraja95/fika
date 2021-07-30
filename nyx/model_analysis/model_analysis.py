@@ -535,6 +535,74 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
                 method=method, predictions=predictions, show=show, **interpret_kwargs
             )
 
+    def interpret_model_predictions(
+        self,
+        num_samples=0.25,
+        sample_no=None,
+        method="all",
+        predictions="default",
+        show=True,
+        **interpret_kwargs,
+    ):
+        """
+        Plots an interpretable display that explains individual predictions of your model.
+        Supported explainers are either 'lime' or 'shap'.
+        If 'all' a dashboard is displayed with morris and dependence analysis displayed.
+        
+        Parameters
+        ----------
+        num_samples : int, float, or 'all', optional
+            Number of samples to display, if less than 1 it will treat it as a percentage, 'all' will include all samples
+            , by default 0.25
+        sample_no : int, optional
+            Sample number to isolate and analyze, if provided it overrides num_samples, by default None
+        method : str, optional
+            Explainer type, can either be 'all', 'lime', or 'shap', by default 'all'
+        predictions : str, optional
+            Prediction type, can either be 'default' (.predict) or 'probability' if the model can predict probabilities, by default 'default'
+        show : bool, optional 
+            False to not display the plot, by default True
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.interpret_model_predictions()
+        """
+
+        import interpret
+        from aethos.model_analysis.constants import INTERPRET_EXPLAINERS
+
+        warnings.simplefilter("ignore")
+
+        if isinstance(self.model, xgb.XGBModel):  # pragma: no cover
+            return "Using MSFT interpret is currently unsupported with XGBoost."
+
+        dashboard = []
+
+        if method == "all":
+            for explainer in INTERPRET_EXPLAINERS["local"]:
+                dashboard.append(
+                    self.interpret.blackbox_local_explanation(
+                        num_samples=num_samples,
+                        sample_no=sample_no,
+                        method=explainer,
+                        predictions=predictions,
+                        show=False,
+                        **interpret_kwargs,
+                    )
+                )
+
+            if show:
+                interpret.show(dashboard)
+        else:
+            self.interpret.blackbox_local_explanation(
+                num_samples=num_samples,
+                sample_no=sample_no,
+                method=method,
+                predictions=predictions,
+                show=show,
+                **interpret_kwargs,
+            )
+
 
 
 
