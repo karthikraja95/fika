@@ -155,3 +155,30 @@ class TextModelAnalysis(ModelAnalysisBase):
         )
 
         fig.show()
+
+    def model_perplexity(self):
+        """
+        Displays the model perplexity of the topic model.
+        Perplexity is a measurement of how well a probability distribution or probability model predicts a sample. It may be used to compare probability models.
+        
+        A low perplexity indicates the probability distribution is good at predicting the sample.
+        Examples
+        --------
+        >>> m = model.LDA()
+        >>> m.model_perplexity()
+        """
+
+        import plotly.graph_objects as go
+
+        fig = go.Figure(
+            go.Indicator(
+                domain={"x": [0, 1], "y": [0, 1]},
+                value=self.model.log_perplexity(self.corpus),
+                mode="number",
+                title={"text": "Model Perplexity"},
+            )
+        )
+
+        fig.show()
+
+        print("Note: The lower the better.")
