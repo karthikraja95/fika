@@ -86,3 +86,37 @@ class TextModelAnalysis(ModelAnalysisBase):
         """
 
         return self.model.show_topic(topicid=topic_num, **kwargs)
+
+    def visualize_topics(self, **kwargs):  # pragma: no cover
+        """
+        Visualize topics using pyLDAvis.
+        Parameters
+        ----------
+        R : int
+            The number of terms to display in the barcharts of the visualization. Default is 30. Recommended to be roughly between 10 and 50.
+        lambda_step : float, between 0 and 1
+            Determines the interstep distance in the grid of lambda values over which to iterate when computing relevance. Default is 0.01. Recommended to be between 0.01 and 0.1.
+        mds : function or {'tsne', 'mmds}
+            A function that takes topic_term_dists as an input and outputs a n_topics by 2 distance matrix.
+            The output approximates the distance between topics. See js_PCoA() for details on the default function.
+            A string representation currently accepts pcoa (or upper case variant), mmds (or upper case variant) and tsne (or upper case variant), if sklearn package is installed for the latter two.
+        n_jobs : int
+            The number of cores to be used to do the computations. The regular joblib conventions are followed so -1, which is the default, will use all cores.
+        plot_opts : dict, with keys ‘xlab’ and ylab
+            Dictionary of plotting options, right now only used for the axis labels.
+        sort_topics : bool
+            Sort topics by topic proportion (percentage of tokens covered).
+            Set to false to keep original topic order.
+        Examples
+        --------
+        >>> m = model.LDA()
+        >>> m.visualize_topics()
+        """
+
+        import pyLDAvis
+        import pyLDAvis.gensim
+
+        pyLDAvis.enable_notebook()
+
+        return pyLDAvis.gensim.prepare(self.model, self.corpus, self.id2word, **kwargs)
+
