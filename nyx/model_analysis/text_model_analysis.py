@@ -47,3 +47,23 @@ class TextModelAnalysis(ModelAnalysisBase):
         results = self.x_train[[original_text, model_output]]
 
         display(HTML(results.to_html()))
+
+    def view_topics(self, num_topics=10, **kwargs):
+        """
+        View topics from topic modelling model.
+        
+        Parameters
+        ----------
+        num_topics : int, optional
+            Number of topics to view, by default 10
+        Returns
+        --------
+        str
+            String representation of topics and probabilities
+        Examples
+        --------
+        >>> m = model.LDA()
+        >>> m.view_topics()
+        """
+
+        return self.model.show_topics(num_topics=num_topics, **kwargs)
