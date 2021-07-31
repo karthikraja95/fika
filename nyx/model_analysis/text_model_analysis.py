@@ -27,3 +27,23 @@ class TextModelAnalysis(ModelAnalysisBase):
         # LDA dependant variables
         self.corpus = kwargs.pop("corpus", None)
         self.id2word = kwargs.pop("id2word", None)
+
+    def view(self, original_text, model_output):
+        """
+        View the original text and the model output in a more user friendly format
+        
+        Parameters
+        ----------
+        original_text : str
+            Column name of the original text
+        model_output : str
+            Column name of the model text
+        Examples
+        --------
+        >>> m = model.LDA()
+        >>> m.view('original_text_col_name', 'model_output_col_name')
+        """
+
+        results = self.x_train[[original_text, model_output]]
+
+        display(HTML(results.to_html()))
