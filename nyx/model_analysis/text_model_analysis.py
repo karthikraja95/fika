@@ -67,3 +67,22 @@ class TextModelAnalysis(ModelAnalysisBase):
         """
 
         return self.model.show_topics(num_topics=num_topics, **kwargs)
+
+    def view_topic(self, topic_num: int, **kwargs):
+        """
+        View a specific topic from topic modelling model.
+        
+        Parameters
+        ----------
+        topic_num : int
+        Returns
+        --------
+        str
+            String representation of topic and probabilities
+        Examples
+        --------
+        >>> m = model.LDA()
+        >>> m.view_topic(1)
+        """
+
+        return self.model.show_topic(topicid=topic_num, **kwargs)
