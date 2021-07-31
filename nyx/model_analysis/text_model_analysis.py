@@ -120,3 +120,38 @@ class TextModelAnalysis(ModelAnalysisBase):
 
         return pyLDAvis.gensim.prepare(self.model, self.corpus, self.id2word, **kwargs)
 
+    def coherence_score(self, col_name):
+        """
+        Displays the coherence score of the topic model.
+        For more info on topic coherence: https://rare-technologies.com/what-is-topic-coherence/ 
+        
+        Parameters
+        ----------
+        col_name : str
+            Column name that was used as input for the LDA model
+        Examples
+        --------
+        >>> m = model.LDA()
+        >>> m.coherence_score()
+        """
+
+        import gensim
+        import plotly.graph_objects as go
+
+        texts = self.x_train[col_name].tolist()
+
+        coherence_model_lda = gensim.models.CoherenceModel(
+            model=self.model, texts=texts, dictionary=self.id2word, coherence="c_v"
+        )
+        coherence_lda = coherence_model_lda.get_coherence()
+
+        fig = go.Figure(
+            go.Indicator(
+                domain={"x": [0, 1], "y": [0, 1]},
+                value=coherence_lda,
+                mode="number",
+                title={"text": "Coherence Score"},
+            )
+        )
+
+        fig.show()
