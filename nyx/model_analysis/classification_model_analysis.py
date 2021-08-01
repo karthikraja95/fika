@@ -244,3 +244,28 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
             return metrics.log_loss(self.y_test, self.probabilities, **kwargs)
         else:
             return np.nan
+
+    def jaccard(self, **kwargs):
+        """
+        The Jaccard index, or Jaccard similarity coefficient,
+        defined as the size of the intersection divided by the size of the union of two label sets,
+        is used to compare set of predicted labels for a sample to the corresponding set of labels in y_true.
+        
+        Returns
+        -------
+        float
+            Jaccard Score
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.jaccard()
+        """
+
+        avg = kwargs.pop("average", "macro")
+
+        if self.multiclass:
+            return metrics.jaccard_score(
+                self.y_test, self.y_pred, average=avg, **kwargs
+            )
+        else:
+            return metrics.jaccard_score(self.y_test, self.y_pred, **kwargs)
