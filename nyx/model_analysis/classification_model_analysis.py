@@ -336,3 +336,25 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
             )
         else:
             return metrics.fbeta_score(self.y_test, self.y_pred, beta, **kwargs)
+
+    def f1(self, **kwargs):
+        """
+        The F1 score can be interpreted as a weighted average of the precision and recall, where an F1 score reaches its best value at 1 and worst score at 0. The relative contribution of precision and recall to the F1 score are equal. The formula for the F1 score is:
+        F1 = 2 * (precision * recall) / (precision + recall)
+        In the multi-class and multi-label case, this is the average of the F1 score of each class with weighting depending on the average parameter.
+        
+        Returns
+        -------
+        float
+            F1 Score
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.f1()
+        """
+        avg = kwargs.pop("average", "macro")
+
+        if self.multiclass:
+            return metrics.f1_score(self.y_test, self.y_pred, average=avg, **kwargs)
+        else:
+            return metrics.f1_score(self.y_test, self.y_pred, **kwargs)
