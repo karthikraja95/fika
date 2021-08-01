@@ -103,3 +103,34 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
             )
         else:
             return np.nan
+
+    def roc_auc(self, **kwargs):
+        """
+        This metric tells us that this metric shows how good at ranking predictions your model is.
+        It tells you what is the probability that a randomly chosen positive instance is ranked higher than a randomly chosen negative instance.
+        
+        Returns
+        -------
+        float
+            ROC AUC Score
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.roc_auc()
+        """
+
+        multi_class = kwargs.pop("multi_class", "ovr")
+
+        if self.multiclass:
+            roc_auc = metrics.roc_auc_score(
+                self.y_test, self.probabilities, multi_class=multi_class, **kwargs
+            )
+        else:
+            if hasattr(self.model, "decision_function"):
+                roc_auc = metrics.roc_auc_score(
+                    self.y_test, self.model.decision_function(self.x_test), **kwargs
+                )
+            else:
+                roc_auc = np.nan
+
+        return roc_auc
