@@ -358,3 +358,23 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
             return metrics.f1_score(self.y_test, self.y_pred, average=avg, **kwargs)
         else:
             return metrics.f1_score(self.y_test, self.y_pred, **kwargs)
+
+    def cohen_kappa(self, **kwargs):
+        """
+        Cohen Kappa tells you how much better is your model over the random classifier that predicts based on class frequencies
+        
+        This measure is intended to compare labelings by different human annotators, not a classifier versus a ground truth.
+        The kappa score (see docstring) is a number between -1 and 1.
+        Scores above .8 are generally considered good agreement; zero or lower means no agreement (practically random labels).
+        
+        Returns
+        -------
+        float
+            Cohen Kappa score.
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.cohen_kappa()
+        """
+
+        return metrics.cohen_kappa_score(self.y_test, self.y_pred, **kwargs)
