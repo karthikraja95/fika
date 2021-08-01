@@ -658,3 +658,26 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
             track_artifacts(self.run_id, self.model_name)
 
         return roc_plot
+
+    def classification_report(self):
+        """
+        Prints and logs the classification report.
+        The classification report displays and logs the information in this format:
+                    precision    recall  f1-score   support
+                    1       1.00      0.67      0.80         3
+                    2       0.00      0.00      0.00         0
+                    3       0.00      0.00      0.00         0
+            micro avg       1.00      0.67      0.80         3
+            macro avg       0.33      0.22      0.27         3
+         weighted avg       1.00      0.67      0.80         3
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.classification_report()
+        """
+
+        classification_report = metrics.classification_report(
+            self.y_test, self.y_pred, target_names=self.classes, digits=2
+        )
+
+        print(classification_report)
