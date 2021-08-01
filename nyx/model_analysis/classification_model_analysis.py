@@ -493,3 +493,128 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
             filt_metrics = list(metrics) if metrics else metric_table.index
 
         return metric_table.loc[filt_metrics, :].round(3)
+
+    def confusion_matrix(
+        self,
+        title=None,
+        normalize=False,
+        hide_counts=False,
+        x_tick_rotation=0,
+        figsize=None,
+        cmap="Blues",
+        title_fontsize="large",
+        text_fontsize="medium",
+        output_file="",
+    ):
+        """
+        Prints a confusion matrix as a heatmap.
+    
+        Arguments
+        ---------
+        title : str
+            The text to display at the top of the matrix, by default 'Confusion Matrix'
+        normalize : bool
+            If False, plot the raw numbers
+            If True, plot the proportions,
+            by default False
+        hide_counts : bool
+            If False, display the counts and percentage
+            If True, hide display of the counts and percentage
+            by default, False
+        x_tick_rotation : int
+            Degree of rotation to rotate the x ticks
+            by default, 0
+        figsize : tuple(int, int)
+            Size of the figure
+            by default, None
+        cmap : str   
+            The gradient of the values displayed from matplotlib.pyplot.cm
+            see http://matplotlib.org/examples/color/colormaps_reference.html
+            plt.get_cmap('jet') or plt.cm.Blues
+            by default, 'Blues'
+        title_fontsize : str
+            Size of the title, by default 'large'
+        text_fontsize : str
+            Size of the text of the rest of the plot, by default 'medium' 
+        output_file: str
+            Output file name including extension (.png, .jpg, etc.) to save image as.
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.confusion_matrix()      
+        >>> m.confusion_matrix(normalize=True)      
+        """
+
+        import seaborn as sns
+
+        y_true = self.y_test
+        y_pred = self.y_pred
+
+        if figsize:
+            plt.figure(figsize=figsize)
+
+        confusion_matrix = metrics.confusion_matrix(y_true, y_pred)
+
+        if normalize:
+            confusion_matrix = (
+                confusion_matrix.astype("float")
+                / confusion_matrix.sum(axis=1)[:, np.newaxis]
+            )
+
+        accuracy = np.trace(confusion_matrix) / float(np.sum(confusion_matrix))
+        mis_class = 1 - accuracy
+
+        if title:
+            plt.title(title, fontsize=title_fontsize)
+        elif normalize:
+            plt.title("Normalized Confusion Matrix", fontsize=title_fontsize)
+        else:
+            plt.title("Confusion Matrix", fontsize=title_fontsize)
+
+        cm_sum = np.sum(confusion_matrix, axis=1)
+        cm_perc = confusion_matrix / cm_sum.astype(float) * 100
+        nrows, ncols = confusion_matrix.shape
+
+        if not hide_counts:
+            annot = np.zeros_like(confusion_matrix).astype("str")
+
+            for i in range(nrows):
+                for j in range(ncols):
+                    c = confusion_matrix[i, j]
+                    p = cm_perc[i, j]
+                    if i == j:
+                        s = cm_sum[i]
+                        annot[i, j] = "{:.2f}%\n{}/{}".format(float(p), int(c), int(s))
+                    elif c == 0:
+                        annot[i, j] = ""
+                    else:
+                        annot[i, j] = "{:.2f}%\n{}".format(p, c)
+        else:
+            annot = np.zeros_like(confusion_matrix, dtype=str)
+
+        df_cm = pd.DataFrame(confusion_matrix, index=self.classes, columns=self.classes)
+
+        heatmap = sns.heatmap(
+            df_cm, annot=annot, square=True, cmap=plt.cm.get_cmap(cmap), fmt=""
+        )
+
+        plt.tight_layout()
+        plt.ylabel("True label", fontsize=text_fontsize)
+        plt.xlabel(
+            "Predicted label\naccuracy={:0.4f}; misclassified={:0.4f}".format(
+                accuracy, mis_class
+            ),
+            fontsize=text_fontsize,
+        )
+        plt.xticks(
+            np.arange(len(self.classes)) + 0.5, self.classes, rotation=x_tick_rotation
+        )
+        plt.show()
+
+        if output_file or _global_config["track_experiments"]:  # pragma: no cover
+            heatmap.figure.savefig(
+                os.path.join(IMAGE_DIR, self.model_name, output_file)
+            )
+
+        if _global_config["track_experiments"]:  # pragma: no cover
+            track_artifacts(self.run_id, self.model_name)
