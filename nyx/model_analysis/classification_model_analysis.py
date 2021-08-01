@@ -134,3 +134,21 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
                 roc_auc = np.nan
 
         return roc_auc
+
+    def zero_one_loss(self, **kwargs):
+        """
+        Return the fraction of misclassifications (float), else it returns the number of misclassifications (int).
+        
+        The best performance is 0.
+        
+        Returns
+        -------
+        float
+            Zero one loss
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.zero_one_loss()
+        """
+
+        return metrics.zero_one_loss(self.y_test, self.y_pred, **kwargs)
