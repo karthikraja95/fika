@@ -47,3 +47,19 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
         self.classes = [
             str(item) for item in np.unique(list(self.y_train) + list(self.y_test))
         ]
+
+    def accuracy(self, **kwargs):
+        """
+        It measures how many observations, both positive and negative, were correctly classified.
+        
+        Returns
+        -------
+        float
+            Accuracy
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.accuracy()
+        """
+
+        return metrics.accuracy_score(self.y_test, self.y_pred, **kwargs)
