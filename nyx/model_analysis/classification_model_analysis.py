@@ -402,3 +402,94 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
             return -999
 
         return metrics.brier_score_loss(self.y_test, self.y_pred, **kwargs)
+
+
+    def metrics(self, *metrics):
+        """
+        Measures how well your model performed against certain metrics.
+        For multiclassification problems, the 'macro' average is used.
+        If a project metrics has been specified, it will display those metrics, otherwise it will display the specified metrics or all metrics.
+        For more detailed information and parameters please see the following link: https://scikit-learn.org/stable/modules/classes.html#classification-metrics
+        
+        Supported metrics are:
+            'Accuracy': 'Measures how many observations, both positive and negative, were correctly classified.',
+            
+            'Balanced Accuracy': 'The balanced accuracy in binary and multiclass classification problems to deal with imbalanced datasets. It is defined as the average of recall obtained on each class.',
+            
+            'Average Precision': 'Summarizes a precision-recall curve as the weighted mean of precisions achieved at each threshold',
+            
+            'ROC AUC': 'Shows how good at ranking predictions your model is. It tells you what is the probability that a randomly chosen positive instance is ranked higher than a randomly chosen negative instance.',
+            
+            'Zero One Loss': 'Fraction of misclassifications.',
+            
+            'Precision': 'It measures how many observations predicted as positive are positive. Good to use when False Positives are costly.',
+            
+            'Recall': 'It measures how many observations out of all positive observations have we classified as positive. Good to use when catching call positive occurences, usually at the cost of false positive.',
+            
+            'Matthews Correlation Coefficient': 'It’s a correlation between predicted classes and ground truth.',
+            
+            'Log Loss': 'Difference between ground truth and predicted score for every observation and average those errors over all observations.',
+            
+            'Jaccard': 'Defined as the size of the intersection divided by the size of the union of two label sets, is used to compare set of predicted labels for a sample to the corresponding set of true labels.',
+            
+            'Hinge Loss': 'Computes the average distance between the model and the data using hinge loss, a one-sided metric that considers only prediction errors.',
+            
+            'Hamming Loss': 'The Hamming loss is the fraction of labels that are incorrectly predicted.',
+            
+            'F-Beta': 'It’s the harmonic mean between precision and recall, with an emphasis on one or the other. Takes into account both metrics, good for imbalanced problems (spam, fraud, etc.).',
+            
+            'F1': 'It’s the harmonic mean between precision and recall. Takes into account both metrics, good for imbalanced problems (spam, fraud, etc.).',
+            
+            'Cohen Kappa': 'Cohen Kappa tells you how much better is your model over the random classifier that predicts based on class frequencies. Works well for imbalanced problems.',
+            
+            'Brier Loss': 'It is a measure of how far your predictions lie from the true values. Basically, it is a mean square error in the probability space.'
+        
+        Parameters
+        ----------
+        metrics : str(s), optional
+            Specific type of metrics to view
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.metrics()
+        >>> m.metrics('F1', 'F-Beta')
+        """
+
+        from nyx.model_analysis.constants import CLASS_METRICS_DESC
+
+        metric_list = {
+            "Accuracy": self.accuracy(),
+            "Balanced Accuracy": self.balanced_accuracy(),
+            "Average Precision": self.average_precision(),
+            "ROC AUC": self.roc_auc(),
+            "Zero One Loss": self.zero_one_loss(),
+            "Precision": self.precision(),
+            "Recall": self.recall(),
+            "Matthews Correlation Coefficient": self.matthews_corr_coef(),
+            "Log Loss": self.log_loss(),
+            "Jaccard": self.jaccard(),
+            "Hinge Loss": self.hinge_loss(),
+            "Hamming Loss": self.hamming_loss(),
+            "F-Beta": self.fbeta(),
+            "F1": self.f1(),
+            "Cohen Kappa": self.cohen_kappa(),
+            "Brier Loss": self.brier_loss(),
+        }
+
+        metric_table = pd.DataFrame(
+            index=metric_list.keys(),
+            columns=[self.model_name],
+            data=metric_list.values(),
+        )
+        metric_table["Description"] = [
+            CLASS_METRICS_DESC[x] for x in metric_table.index
+        ]
+
+        pd.set_option("display.max_colwidth", -1)
+
+        if not metrics and _global_config["project_metrics"]:  # pragma: no cover
+            filt_metrics = _global_config["project_metrics"]
+        else:
+            filt_metrics = list(metrics) if metrics else metric_table.index
+
+        return metric_table.loc[filt_metrics, :].round(3)
