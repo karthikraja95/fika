@@ -81,3 +81,25 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
         """
 
         return metrics.balanced_accuracy_score(self.y_test, self.y_pred, **kwargs)
+
+    def average_precision(self, **kwargs):
+        """
+        AP summarizes a precision-recall curve as the weighted mean of precisions achieved at each threshold,
+        with the increase in recall from the previous threshold used as the weight
+        
+        Returns
+        -------
+        float
+            Average Precision Score
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.average_precision()
+        """
+
+        if hasattr(self.model, "decision_function"):
+            return metrics.average_precision_score(
+                self.y_test, self.model.decision_function(self.x_test), **kwargs
+            )
+        else:
+            return np.nan
