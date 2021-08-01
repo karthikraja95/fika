@@ -223,3 +223,24 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
         """
 
         return metrics.matthews_corrcoef(self.y_test, self.y_pred, **kwargs)
+
+    def log_loss(self, **kwargs):
+        """
+        Log loss, aka logistic loss or cross-entropy loss.
+        This is the loss function used in (multinomial) logistic regression and extensions of it
+        such as neural networks, defined as the negative log-likelihood of the true labels given a probabilistic classifier’s predictions.
+        
+        Returns
+        -------
+        Float
+            Log loss
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.log_loss()
+        """
+
+        if self.probabilities is not None:
+            return metrics.log_loss(self.y_test, self.probabilities, **kwargs)
+        else:
+            return np.nan
