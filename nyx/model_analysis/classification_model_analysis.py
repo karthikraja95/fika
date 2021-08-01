@@ -269,3 +269,24 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
             )
         else:
             return metrics.jaccard_score(self.y_test, self.y_pred, **kwargs)
+
+    def hinge_loss(self, **kwargs):
+        """
+        Computes the average distance between the model and the data using hinge loss, a one-sided metric that considers only prediction errors.
+        
+        Returns
+        -------
+        float
+            Hinge loss
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.hinge_loss()
+        """
+
+        if hasattr(self.model, "decision_function"):
+            return metrics.hinge_loss(
+                self.y_test, self.model.decision_function(self.x_test), **kwargs
+            )
+        else:
+            return np.nan
