@@ -203,3 +203,23 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
             )
         else:
             return metrics.precision_score(self.y_test, self.y_pred, **kwargs)
+
+    def matthews_corr_coef(self, **kwargs):
+        """
+        The Matthews correlation coefficient is used in machine learning as a measure of the quality of binary and multiclass classifications.
+        It takes into account true and false positives and negatives and is generally regarded as a balanced measure which can be used even if the classes are of very different sizes.
+        The MCC is in essence a correlation coefficient value between -1 and +1. 
+        A coefficient of +1 represents a perfect prediction, 0 an average random prediction and -1 an inverse prediction.
+        The statistic is also known as the phi coefficient. 
+        
+        Returns
+        -------
+        float
+            Matthews Correlation Coefficient
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.mathews_corr_coef()
+        """
+
+        return metrics.matthews_corrcoef(self.y_test, self.y_pred, **kwargs)
