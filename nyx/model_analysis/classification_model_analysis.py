@@ -63,3 +63,21 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
         """
 
         return metrics.accuracy_score(self.y_test, self.y_pred, **kwargs)
+
+    def balanced_accuracy(self, **kwargs):
+        """
+        The balanced accuracy in binary and multiclass classification problems to deal with imbalanced datasets.
+        It is defined as the average of recall obtained on each class.
+        The best value is 1 and the worst value is 0 when adjusted=False.
+        
+        Returns
+        -------
+        float
+            Balanced accuracy
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.balanced_accuracy()
+        """
+
+        return metrics.balanced_accuracy_score(self.y_test, self.y_pred, **kwargs)
