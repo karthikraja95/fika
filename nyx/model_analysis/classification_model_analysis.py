@@ -306,3 +306,33 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
         """
 
         return metrics.hamming_loss(self.y_test, self.y_pred, **kwargs)
+
+    def fbeta(self, beta=0.5, **kwargs):
+        """
+        The F-beta score is the weighted harmonic mean of precision and recall, reaching its optimal value at 1 and its worst value at 0.
+        The beta parameter determines the weight of recall in the combined score.
+        Beta < 1 lends more weight to precision, while beta > 1 favors recall (beta -> 0 considers only precision, beta -> inf only recall).
+        
+        Parameters
+        ----------
+        beta : float, optional
+            Weight of precision in harmonic mean, by default 0.5
+        
+        Returns
+        -------
+        float
+            Fbeta score
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.fbeta()
+        """
+
+        avg = kwargs.pop("average", "macro")
+
+        if self.multiclass:
+            return metrics.fbeta_score(
+                self.y_test, self.y_pred, beta, average=avg, **kwargs
+            )
+        else:
+            return metrics.fbeta_score(self.y_test, self.y_pred, beta, **kwargs)
