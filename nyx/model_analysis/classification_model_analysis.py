@@ -290,3 +290,19 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
             )
         else:
             return np.nan
+
+    def hamming_loss(self, **kwargs):
+        """
+        The Hamming loss is the fraction of labels that are incorrectly predicted.
+        
+        Returns
+        -------
+        float
+            Hamming loss
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.hamming_loss()
+        """
+
+        return metrics.hamming_loss(self.y_test, self.y_pred, **kwargs)
