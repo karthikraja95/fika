@@ -618,3 +618,43 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
 
         if _global_config["track_experiments"]:  # pragma: no cover
             track_artifacts(self.run_id, self.model_name)
+
+    def roc_curve(self, title=True, output_file=""):
+        """
+        Plots an ROC curve and displays the ROC statistics (area under the curve).
+        Parameters
+        ----------
+        figsize : tuple(int, int), optional
+            Figure size, by default (600,450)
+        title : bool
+            Whether to display title, by default True
+        output_file : str, optional
+            If a name is provided save the plot to an html file, by default ''
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.roc_curve()
+        """
+
+        if self.multiclass:
+            raise NotImplementedError(
+                "ROC Curve not implemented for multiclassification problems yet."
+            )
+        else:
+            roc_auc = self.roc_auc()
+
+            roc_plot = metrics.plot_roc_curve(self.model, self.x_test, self.y_test)
+            roc_plot.ax_.set_xlabel("False Positive Rate or (1 - Specifity)")
+            roc_plot.ax_.set_ylabel("True Positive Rate or (Sensitivity)")
+            if title:
+                roc_plot.figure_.suptitle("ROC Curve (area = {:.2f})".format(roc_auc))
+
+        if output_file:  # pragma: no cover
+            roc_plot.figure_.savefig(
+                os.path.join(IMAGE_DIR, self.model_name, output_file)
+            )
+
+        if _global_config["track_experiments"]:  # pragma: no cover
+            track_artifacts(self.run_id, self.model_name)
+
+        return roc_plot
