@@ -176,3 +176,30 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
             return metrics.recall_score(self.y_test, self.y_pred, average=avg, **kwargs)
         else:
             return metrics.recall_score(self.y_test, self.y_pred, **kwargs)
+
+
+    def precision(self, **kwargs):
+        """
+        The precision is the ratio tp / (tp + fp) where tp is the number of true positives and fp the number of false positives.
+        
+        The precision is intuitively the ability of the classifier not to label as positive a sample that is negative.
+        The best value is 1 and the worst value is 0.
+        
+        Returns
+        -------
+        float
+            Precision
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.precision()
+        """
+
+        avg = kwargs.pop("average", "macro")
+
+        if self.multiclass:
+            return metrics.precision_score(
+                self.y_test, self.y_pred, average=avg, **kwargs
+            )
+        else:
+            return metrics.precision_score(self.y_test, self.y_pred, **kwargs)
