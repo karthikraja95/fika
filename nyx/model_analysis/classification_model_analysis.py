@@ -378,3 +378,27 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
         """
 
         return metrics.cohen_kappa_score(self.y_test, self.y_pred, **kwargs)
+
+    def brier_loss(self, **kwargs):
+        """
+        Compute the Brier score. The smaller the Brier score, the better, hence the naming with “loss”.  
+        Across all items in a set N predictions, the Brier score measures the mean squared difference between (1) the predicted probability assigned to the possible outcomes for item i, and (2) the actual outcome.
+        Therefore, the lower the Brier score is for a set of predictions, the better the predictions are calibrated.
+        
+        The Brier score is appropriate for binary and categorical outcomes that can be structured as true or false,
+        but is inappropriate for ordinal variables which can take on three or more values (this is because the Brier score assumes that all possible outcomes are equivalently “distant” from one another)
+        Returns
+        -------
+        float
+            Brier loss
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.brier_loss()
+        """
+
+        if self.multiclass:
+            warnings.warn("Brier Loss can only be used for binary classification.")
+            return -999
+
+        return metrics.brier_score_loss(self.y_test, self.y_pred, **kwargs)
