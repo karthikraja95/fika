@@ -152,3 +152,27 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
         """
 
         return metrics.zero_one_loss(self.y_test, self.y_pred, **kwargs)
+
+    def recall(self, **kwargs):
+        """
+        The recall is the ratio tp / (tp + fn) where tp is the number of true positives and fn the number of false negatives. 
+        
+        The recall is intuitively the ability of the classifier to find all the positive samples.
+        The best value is 1 and the worst value is 0.
+        
+        Returns
+        -------
+        float
+            Recall
+        Examples
+        --------
+        >>> m = model.LogisticRegression()
+        >>> m.recall()
+        """
+
+        avg = kwargs.pop("average", "macro")
+
+        if self.multiclass:
+            return metrics.recall_score(self.y_test, self.y_pred, average=avg, **kwargs)
+        else:
+            return metrics.recall_score(self.y_test, self.y_pred, **kwargs)
