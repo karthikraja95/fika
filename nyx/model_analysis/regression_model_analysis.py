@@ -217,3 +217,19 @@ class RegressionModelAnalysis(SupervisedModelAnalysis):
                 / (np.abs(self.y_test) + np.abs(self.y_pred))
             )
         )
+
+    def root_mean_sq_error(self):
+        """
+        Root mean squared error.
+        Calculated by taking the square root of the Mean Squared Error.
+        Returns
+        -------
+        float
+            Root mean squared error.
+        Examples
+        --------
+        >>> m = model.LinearRegression()
+        >>> m.root_mean_sq_error()
+        """
+
+        return math.sqrt(self.mean_sq_error())
