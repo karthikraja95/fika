@@ -37,3 +37,21 @@ class RegressionModelAnalysis(SupervisedModelAnalysis):
             x_test[target],
             model_name,
         )
+
+    def plot_predicted_actual(self, output_file="", **scatterplot_kwargs):
+        """
+        Plots the actual data vs. predictions
+        Parameters
+        ----------
+        output_file : str, optional
+            Output file name, by default ""
+        """
+
+        self._viz.scatterplot(
+            x="actual",
+            y="predicted",
+            data=self.test_results,
+            title="Actual vs. Predicted",
+            output_file=output_file,
+            **scatterplot_kwargs
+        )
