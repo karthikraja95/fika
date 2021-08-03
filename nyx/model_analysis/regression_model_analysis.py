@@ -172,3 +172,23 @@ class RegressionModelAnalysis(SupervisedModelAnalysis):
         """
 
         return sklearn.metrics.median_absolute_error(self.y_test, self.y_pred)
+
+    def r2(self, **kwargs):
+        """
+        R^2 (coefficient of determination) regression score function.
+        R-squared (R2) is a statistical measure that represents the proportion of the variance for a dependent variable
+        that is explained by an independent variable or variables in a regression model.
+        Best possible score is 1.0 and it can be negative (because the model can be arbitrarily worse).
+        A constant model that always predicts the expected value of y, disregarding the input features, would get a R^2 score of 0.0.
+        
+        Returns
+        -------
+        float
+            R2 coefficient.
+        Examples
+        --------
+        >>> m = model.LinearRegression()
+        >>> m.r2()
+        """
+
+        return sklearn.metrics.r2_score(self.y_test, self.y_pred)
