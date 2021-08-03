@@ -55,3 +55,34 @@ class RegressionModelAnalysis(SupervisedModelAnalysis):
             output_file=output_file,
             **scatterplot_kwargs
         )
+
+    def explained_variance(self, multioutput="uniform_average", **kwargs):
+        """
+        Explained variance regression score function
+        Best possible score is 1.0, lower values are worse.
+        
+        Parameters
+        ----------
+        multioutput : string in [‘raw_values’, ‘uniform_average’, ‘variance_weighted’] or array-like of shape (n_outputs)
+            Defines aggregating of multiple output scores. Array-like value defines weights used to average scores.
+            ‘raw_values’ :
+                Returns a full set of scores in case of multioutput input.
+            ‘uniform_average’ :
+                Scores of all outputs are averaged with uniform weight.
+            ‘variance_weighted’ :
+                Scores of all outputs are averaged, weighted by the variances of each individual output.
+            By default 'uniform_average'
+        
+        Returns
+        -------
+        float
+            Explained Variance
+        Examples
+        --------
+        >>> m = model.LinearRegression()
+        >>> m.explained_variance()
+        """
+
+        return sklearn.metrics.explained_variance_score(
+            self.y_test, self.y_pred, multioutput="uniform_average", **kwargs
+        )
