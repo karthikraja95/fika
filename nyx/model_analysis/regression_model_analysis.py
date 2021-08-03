@@ -118,3 +118,19 @@ class RegressionModelAnalysis(SupervisedModelAnalysis):
         """
 
         return sklearn.metrics.mean_absolute_error(self.y_test, self.y_pred)
+
+    def mean_sq_error(self, **kwargs):
+        """
+        Mean squared error.
+        
+        Returns
+        -------
+        float
+            Mean squared error.
+        Examples
+        --------
+        >>> m = model.LinearRegression()
+        >>> m.mean_sq_error()
+        """
+
+        return sklearn.metrics.mean_squared_error(self.y_test, self.y_pred)
