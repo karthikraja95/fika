@@ -86,3 +86,19 @@ class RegressionModelAnalysis(SupervisedModelAnalysis):
         return sklearn.metrics.explained_variance_score(
             self.y_test, self.y_pred, multioutput="uniform_average", **kwargs
         )
+
+    def max_error(self):
+        """
+        Returns the single most maximum residual error.
+        
+        Returns
+        -------
+        float
+            Max error
+        Examples
+        --------
+        >>> m = model.LinearRegression()
+        >>> m.max_error()
+        """
+
+        return sklearn.metrics.max_error(self.y_test, self.y_pred)
