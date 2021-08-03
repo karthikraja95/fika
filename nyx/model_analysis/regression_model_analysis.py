@@ -134,3 +134,25 @@ class RegressionModelAnalysis(SupervisedModelAnalysis):
         """
 
         return sklearn.metrics.mean_squared_error(self.y_test, self.y_pred)
+
+    def mean_sq_log_error(self, **kwargs):
+        """
+        Mean squared log error.
+        
+        Returns
+        -------
+        float
+            Mean squared log error.
+        Examples
+        --------
+        >>> m = model.LinearRegression()
+        >>> m.mean_sq_log_error()
+        """
+
+        try:
+            return sklearn.metrics.mean_squared_log_error(self.y_test, self.y_pred)
+        except ValueError as e:
+            warnings.warn(
+                "Mean Squared Logarithmic Error cannot be used when targets contain negative values."
+            )
+            return -999
