@@ -192,3 +192,28 @@ class RegressionModelAnalysis(SupervisedModelAnalysis):
         """
 
         return sklearn.metrics.r2_score(self.y_test, self.y_pred)
+
+    def smape(self, **kwargs):
+        """
+        Symmetric mean absolute percentage error.
+        It is an accuracy measure based on percentage (or relative) errors.
+        
+        Returns
+        -------
+        float
+            SMAPE
+        Examples
+        --------
+        >>> m = model.LinearRegression()
+        >>> m.smape()
+        """
+
+        return (
+            1
+            / len(self.y_test)
+            * np.sum(
+                2
+                * np.abs(self.y_pred - self.y_test)
+                / (np.abs(self.y_test) + np.abs(self.y_pred))
+            )
+        )
