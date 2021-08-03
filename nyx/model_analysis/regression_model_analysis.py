@@ -299,3 +299,39 @@ class RegressionModelAnalysis(SupervisedModelAnalysis):
             filt_metrics = list(metrics) if metrics else metric_table.index
 
         return metric_table.loc[filt_metrics, :].round(3)
+
+
+    def cross_validate(
+        self,
+        cv_type="kfold",
+        score="neg_root_mean_squared_error",
+        n_splits=5,
+        shuffle=False,
+        **kwargs
+    ):
+        """
+        Runs cross validation on a Regression model.
+        Scoring Metrics: 
+            - ‘explained_variance’ 	 
+            - ‘max_error’ 	 
+            - ‘neg_mean_absolute_error’ --> MAE 
+            - ‘neg_mean_squared_error’ --> MSE
+            - ‘neg_mean_squared_log_error’ --> MSLE 
+            - ‘neg_median_absolute_error’ --> MeAE 
+            - ‘r2’
+            - ‘neg_mean_poisson_deviance’
+            - ‘neg_mean_gamma_deviance’
+        
+        Parameters
+        ----------
+        cv_type : {kfold, strat-kfold}, optional
+            Crossvalidation type, by default "kfold"
+        score : str, optional
+            Scoring metric, by default "accuracy"
+        n_splits : int, optional
+            Number of times to split the data, by default 5
+        shuffle : bool, optional
+            True to shuffle the data, by default False
+        """
+
+        super()._cross_validate(cv_type, score, n_splits, shuffle, **kwargs)
