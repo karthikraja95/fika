@@ -156,3 +156,19 @@ class RegressionModelAnalysis(SupervisedModelAnalysis):
                 "Mean Squared Logarithmic Error cannot be used when targets contain negative values."
             )
             return -999
+
+    def median_abs_error(self, **kwargs):
+        """
+        Median absolute error.
+        
+        Returns
+        -------
+        float
+            Median absolute error.
+        Examples
+        --------
+        >>> m = model.LinearRegression()
+        >>> m.median_abs_error()
+        """
+
+        return sklearn.metrics.median_absolute_error(self.y_test, self.y_pred)
