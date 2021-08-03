@@ -102,3 +102,19 @@ class RegressionModelAnalysis(SupervisedModelAnalysis):
         """
 
         return sklearn.metrics.max_error(self.y_test, self.y_pred)
+
+    def mean_abs_error(self, **kwargs):
+        """
+        Mean absolute error.
+        
+        Returns
+        -------
+        float
+            Mean absolute error.
+        Examples
+        --------
+        >>> m = model.LinearRegression()
+        >>> m.mean_abs_error()
+        """
+
+        return sklearn.metrics.mean_absolute_error(self.y_test, self.y_pred)
