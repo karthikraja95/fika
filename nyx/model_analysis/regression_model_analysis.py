@@ -233,3 +233,69 @@ class RegressionModelAnalysis(SupervisedModelAnalysis):
         """
 
         return math.sqrt(self.mean_sq_error())
+
+
+    def metrics(self, *metrics):
+        """
+        Measures how well your model performed against certain metrics.
+        If a project metrics has been specified, it will display those metrics, otherwise it will display the specified metrics or all metrics.
+        For more detailed information and parameters please see the following link: https://scikit-learn.org/stable/modules/classes.html#regression-metrics
+        
+        Supported metrics are:
+            'Explained Variance': 'Explained variance regression score function. Best possible score is 1.0, lower values are worse.',
+            
+            'Max Error': 'Returns the single most maximum residual error.',
+            
+            'Mean Absolute Error': 'Postive mean value of all residuals',
+            
+            'Mean Squared Error': 'Mean of the squared sum the residuals',
+            
+            'Root Mean Sqaured Error': 'Square root of the Mean Squared Error',
+            
+            'Mean Squared Log Error': 'Mean of the squared sum of the log of all residuals',
+            
+            'Median Absolute Error': 'Postive median value of all residuals',
+            
+            'R2': 'R-squared (R2) is a statistical measure that represents the proportion of the variance for a dependent variable that is explained by an independent variable or variables in a regression model.',
+            
+            'SMAPE': 'Symmetric mean absolute percentage error. It is an accuracy measure based on percentage (or relative) errors.'
+        Parameters
+        ----------
+        metrics : str(s), optional
+            Specific type of metrics to view
+        Examples
+        --------
+        >>> m = model.LinearRegression()
+        >>> m.metrics()
+        >>> m.metrics('SMAPE', 'Root Mean Squared Error')
+        """
+
+        from nyx.model_analysis.constants import REG_METRICS_DESC
+
+        metric_list = {
+            "Explained Variance": self.explained_variance(),
+            "Max Error": self.max_error(),
+            "Mean Absolute Error": self.mean_abs_error(),
+            "Mean Squared Error": self.mean_sq_error(),
+            "Root Mean Sqaured Error": self.root_mean_sq_error(),
+            "Mean Squared Log Error": self.mean_sq_log_error(),
+            "Median Absolute Error": self.median_abs_error(),
+            "R2": self.r2(),
+            "SMAPE": self.smape(),
+        }
+
+        metric_table = pd.DataFrame(
+            index=metric_list.keys(),
+            columns=[self.model_name],
+            data=metric_list.values(),
+        )
+        metric_table["Description"] = [REG_METRICS_DESC[x] for x in metric_table.index]
+
+        pd.set_option("display.max_colwidth", -1)
+
+        if not metrics and _global_config["project_metrics"]:  # pragma: no cover
+            filt_metrics = _global_config["project_metrics"]
+        else:
+            filt_metrics = list(metrics) if metrics else metric_table.index
+
+        return metric_table.loc[filt_metrics, :].round(3)
