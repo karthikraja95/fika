@@ -29,3 +29,25 @@ class UnsupervisedModelAnalysis(ModelAnalysisBase):
             self.y_pred = self.model.fit_predict(self.x_train)
 
         self.x_train[self.cluster_col] = self.y_pred
+
+     def filter_cluster(self, cluster_no: int):
+        """
+        Filters data by a cluster number for analysis.
+        
+        Parameters
+        ----------
+        cluster_no : int
+            Cluster number to filter by
+        
+        Returns
+        -------
+        Dataframe
+            Filtered data or test dataframe
+        Examples
+        --------
+        >>> m = model.KMeans()
+        >>> m.filter_cluster(1)
+        """
+
+        return self.x_train[self.x_train[self.cluster_col] == cluster_no]
+   
