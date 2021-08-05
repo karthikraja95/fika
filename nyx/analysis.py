@@ -119,3 +119,25 @@ class Analysis(Visualizations, Stats):
                 self.target = "label"
                 self.x_test["label"] = value
                 print('Added a target (predictor) field (column) named "label".')
+
+
+    @property
+    def y_train(self):
+        """
+        Property function for the training predictor variable
+        """
+
+        return self.x_train[self.target] if self.target else None
+
+    @y_train.setter
+    def y_train(self, value):
+        """
+        Setter function for the training predictor variable
+        """
+
+        if self.target:
+            self.x_train[self.target] = value
+        else:
+            self.target = "label"
+            self.x_train["label"] = value
+            print('Added a target (predictor) field (column) named "label".')
