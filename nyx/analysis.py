@@ -217,3 +217,33 @@ class Analysis(Visualizations, Stats):
         """
 
         return copy.deepcopy(self)
+
+    def standardize_column_names(self):
+        """
+        Utility function that standardizes all column names to lowercase and underscores for spaces.
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.standardize_column_names()
+        """
+
+        new_column_names = {}
+        pattern = re.compile("\W+")
+
+        for name in self.x_train.columns:
+            new_column_names[name] = re.sub(pattern, "_", name.lower())
+
+        if self.target is not None:
+            self.target = re.sub(pattern, "_", self.target.lower())
+
+        self.col_mapping = new_column_names
+
+        self.x_train.rename(columns=new_column_names, inplace=True)
+
+        if self.x_test is not None:
+            self.x_test.rename(columns=new_column_names, inplace=True)
+
+        return self
