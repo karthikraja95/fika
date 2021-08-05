@@ -67,3 +67,17 @@ class Analysis(Visualizations, Stats):
 
     def __getattr__(self, key):
         return _get_attr_(self, key)
+
+
+    def __deepcopy__(self, memo):
+
+        x_test = self.x_test.copy() if self.x_test is not None else None
+
+        new_inst = type(self)(
+            x_train=self.x_train.copy(), x_test=x_test, target=self.target,
+        )
+
+        new_inst.target_mapping = self.target_mapping
+
+        return new_inst
+
