@@ -247,3 +247,32 @@ class Analysis(Visualizations, Stats):
             self.x_test.rename(columns=new_column_names, inplace=True)
 
         return self
+
+    def expand_json_column(self, col):
+        """
+        Utility function that expands a column that has JSON elements into columns, where each JSON key is a column. 
+        Parameters
+        ----------
+        cols: str
+            Column in the data that has the nested data.
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.expand_json_column('col1')
+        """
+
+        from pandas.io.json import json_normalize
+
+        df = json_normalize(self.x_train[col], sep="_")
+        self.x_train.drop(col, axis=1, inplace=True)
+        self.x_train = pd.concat([self.x_train, df], axis=1)
+
+        if self.x_test is not None:
+            df = json_normalize(self.x_test[col], sep="_")
+            self.x_test.drop(col, axis=1, inplace=True)
+            self.x_test = pd.concat([self.x_test, df], axis=1)
+
+        return self
