@@ -48,3 +48,22 @@ class Analysis(Visualizations, Stats):
         self.x_test = x_test
         self.target = target
         self.target_mapping = None
+
+    def __repr__(self):
+
+        return self.x_train.head().to_string()
+
+    def _repr_html_(self):  # pragma: no cover
+
+        if self.target:
+            cols = self.features + [self.target]
+        else:
+            cols = self.features
+
+        return self.x_train[cols].head()._repr_html_()
+
+    def __getitem__(self, column):
+        return _get_item_(self, column)
+
+    def __getattr__(self, key):
+        return _get_attr_(self, key)
