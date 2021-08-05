@@ -141,3 +141,44 @@ class Analysis(Visualizations, Stats):
             self.target = "label"
             self.x_train["label"] = value
             print('Added a target (predictor) field (column) named "label".')
+
+    @property
+    def columns(self):
+        """
+        Property to return columns in the dataset.
+        """
+
+        return self.x_train.columns.tolist()
+
+    @property
+    def missing_values(self):
+        """
+        Property function that shows how many values are missing in each column.
+        """
+
+        dataframes = list(
+            filter(lambda x: x is not None, [self.x_train, self.x_test,],)
+        )
+
+        missing_df = []
+        for ind, dataframe in enumerate(dataframes):
+            caption = (
+                "Train set missing values." if ind == 0 else "Test set missing values."
+            )
+
+            if not dataframe.isnull().values.any():
+                print("No missing values!")  # pragma: no cover
+            else:
+                total = dataframe.isnull().sum().sort_values(ascending=False)
+                percent = (
+                    dataframe.isnull().sum() / dataframe.isnull().count()
+                ).sort_values(ascending=False)
+                missing_data = pd.concat(
+                    [total, percent], axis=1, keys=["Total", "Percent"]
+                )
+
+                missing_df.append(
+                    missing_data.style.format({"Percent": "{:.2%}"}).set_caption(
+                        caption
+                    )
+                )
