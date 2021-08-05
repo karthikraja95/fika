@@ -182,3 +182,38 @@ class Analysis(Visualizations, Stats):
                         caption
                     )
                 )
+
+
+        def multi_table(table_list):
+            """ Acceps a list of IpyTable objects and returns a table which contains each IpyTable in a cell
+            """
+            return HTML(
+                '<table><tr style="background-color:white;">'
+                + "".join(
+                    [
+                        "<td style='padding-right:25px'>"
+                        + table._repr_html_()
+                        + "</td>"
+                        for table in table_list
+                    ]
+                )
+                + "</tr></table>"
+            )
+
+        if shell == "ZMQInteractiveShell":
+            display(multi_table(missing_df))
+        else:
+            for table in missing_df:
+                print(table)
+
+    def copy(self):
+        """
+        Returns deep copy of object.
+        
+        Returns
+        -------
+        Object
+            Deep copy of object
+        """
+
+        return copy.deepcopy(self)
