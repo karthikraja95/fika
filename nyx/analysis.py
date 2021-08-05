@@ -25,3 +25,26 @@ from nyx.visualizations.visualizations import Visualizations
 from IPython import get_ipython
 from IPython.display import HTML, display
 from ipywidgets import Layout
+
+
+class Analysis(Visualizations, Stats):
+    """
+    Core class thats run analytical techniques.
+    Parameters
+    -----------
+    x_train: pd.DataFrame
+        Training data or aethos data object
+    x_test: pd.DataFrame
+        Test data, by default None
+    target: str
+        For supervised learning problems, the name of the column you're trying to predict.
+    """
+
+    def __init__(
+        self, x_train, x_test=None, target="",
+    ):
+
+        self.x_train = x_train
+        self.x_test = x_test
+        self.target = target
+        self.target_mapping = None
