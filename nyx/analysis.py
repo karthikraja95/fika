@@ -81,3 +81,41 @@ class Analysis(Visualizations, Stats):
 
         return new_inst
 
+    @property
+    def features(self):
+        """Features for modelling"""
+
+        cols = self.x_train.columns.tolist()
+
+        if self.target:
+            cols.remove(self.target)
+
+        return cols
+
+    @property
+    def y_test(self):
+        """
+        Property function for the testing predictor variable
+        """
+
+        if self.x_test is not None:
+            if self.target:
+                return self.x_test[self.target]
+            else:
+                return None
+        else:
+            return None
+
+    @y_test.setter
+    def y_test(self, value):
+        """
+        Setter function for the testing predictor variable
+        """
+
+        if self.x_test is not None:
+            if self.target:
+                self.x_test[self.target] = value
+            else:
+                self.target = "label"
+                self.x_test["label"] = value
+                print('Added a target (predictor) field (column) named "label".')
