@@ -464,3 +464,57 @@ class Analysis(Visualizations, Stats):
             x_test_summary = DataFrameSummary(self.x_test)
 
             return x_test_summary[column]
+
+    def drop(self, *drop_columns, keep=[], regexp="", reason=""):
+        """
+        Drops columns from the dataframe.
+        
+        Parameters
+        ----------
+        keep : list: optional
+            List of columns to not drop, by default []
+        regexp : str, optional
+            Regular Expression of columns to drop, by default ''
+        reason : str, optional
+            Reasoning for dropping columns, by default ''
+        Column names must be provided as strings that exist in the data.
+        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.drop('A', 'B', reason="Columns were unimportant")
+        >>> data.drop('col1', keep=['col2'], regexp=r"col*") # Drop all columns that start with "col" except column 2
+        >>> data.drop(keep=['A']) # Drop all columns except column 'A'
+        >>> data.drop(regexp=r'col*') # Drop all columns that start with 'col'       
+        """
+
+        if not isinstance(keep, list):
+            raise TypeError("Keep parameter must be a list.")
+
+        # Handles if columns do not exist in the dataframe
+        data_columns = self.x_train.columns
+        regex_columns = []
+
+        if regexp:
+            regex = re.compile(regexp)
+            regex_columns = list(filter(regex.search, data_columns))
+
+        drop_columns = set(drop_columns).union(regex_columns)
+
+        # If there are columns to be dropped, exclude the ones in the keep list
+        # If there are no columns to be dropped, drop everything except the keep list
+        if drop_columns:
+            drop_columns = list(drop_columns.difference(keep))
+        else:
+            keep = set(data_columns).difference(keep)
+            drop_columns = list(drop_columns.union(keep))
+
+        self.x_train = self.x_train.drop(drop_columns, axis=1)
+
+        if self.x_test is not None:
+            self.x_test = self.x_test.drop(drop_columns, axis=1)
+
+        return self
