@@ -664,3 +664,34 @@ class Analysis(Visualizations, Stats):
             print(f"{k}: {v}")
 
         return self
+
+    def to_csv(self, name: str, index=False, **kwargs):
+        """
+        Write data to csv with the name and path provided.
+        The function will automatically add '.csv' to the end of the name.
+        By default it writes 10000 rows at a time to file to consider memory on different machines.
+        Training data will end in '_train.csv' andt test data will end in '_test.csv'.
+        For a full list of keyword args for writing to csv please see the following link: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html
+        
+        Parameters
+        ----------
+        name : str
+            File path
+        index : bool, optional
+            True to write 'index' column, by default False
+        Examples
+        --------
+        >>> data.to_csv('titanic')
+        """
+
+        index = kwargs.pop("index", index)
+        chunksize = kwargs.pop("chunksize", 10000)
+
+        self.x_train.to_csv(
+            name + "_train.csv", index=index, chunksize=chunksize, **kwargs
+        )
+
+        if self.x_test is not None:
+            self.x_test.to_csv(
+                name + "_test.csv", index=index, chunksize=chunksize, **kwargs
+            )
