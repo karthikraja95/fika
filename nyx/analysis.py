@@ -623,3 +623,15 @@ class Analysis(Visualizations, Stats):
             max_rows_analyzed=max_rows,
             verbose=verbose,
         )
+
+    def interpret_data(self, show=True):
+        """
+        Interpret your data using MSFT Interpret dashboard.
+        """
+
+        if self.target:
+            _interpret_data(
+                self.x_train.drop(self.target, axis=1), self.y_train, show=show
+            )
+        else:
+            return "Unsupported without a target variable."
