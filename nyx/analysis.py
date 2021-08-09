@@ -323,3 +323,38 @@ class Analysis(Visualizations, Stats):
 
         if not suppress:
             return report
+
+    def describe(self, dataset="train"):
+        """
+        Describes your dataset using the DataFrameSummary library with basic descriptive info.
+        Extends the DataFrame.describe() method to give more info.
+        Credits go to @mouradmourafiq for his pandas-summary library.
+        
+        Parameters
+        ----------
+        dataset : str, optional
+            Type of dataset to describe. Can either be `train` or `test`.
+            If you are using the full dataset it will automatically describe
+            your full dataset no matter the input, 
+            by default 'train'
+        
+        Returns
+        -------
+        DataFrame
+            Dataframe describing your dataset with basic descriptive info
+        Examples
+        ---------
+        >>> data.describe()
+        """
+
+        from pandas_summary import DataFrameSummary
+
+        if dataset == "train":
+            x_train_summary = DataFrameSummary(self.x_train)
+
+            return x_train_summary.summary()
+        else:
+            x_test_summary = DataFrameSummary(self.x_test)
+
+            return x_test_summary.summary()
+
