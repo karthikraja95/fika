@@ -398,3 +398,69 @@ class Analysis(Visualizations, Stats):
 
             return x_test_summary.columns_stats
 
+    def describe_column(self, column, dataset="train"):
+        """
+        Analyzes a column and reports descriptive statistics about the columns.
+        Credits go to @mouradmourafiq for his pandas-summary library.
+        Statistics
+        ----------
+        std                                      
+        max                                      
+        min                                      
+        variance                                 
+        mean
+        mode                                     
+        5%                                       
+        25%                                      
+        50%                                      
+        75%                                      
+        95%                                      
+        iqr                                      
+        kurtosis                                 
+        skewness                                 
+        sum                                      
+        mad                                      
+        cv                                       
+        zeros_num                                
+        zeros_perc                               
+        deviating_of_mean                        
+        deviating_of_mean_perc                   
+        deviating_of_median                      
+        deviating_of_median_perc                 
+        top_correlations                         
+        counts                                   
+        uniques                                  
+        missing                                  
+        missing_perc                             
+        types                            
+        
+        Parameters
+        ----------
+        column : str
+            Column in your dataset you want to analze.
+        dataset : str, optional
+            Type of dataset to describe. Can either be `train` or `test`.
+            If you are using the full dataset it will automatically describe
+            your full dataset no matter the input, 
+            by default 'train'
+        
+        Returns
+        -------
+        dict
+            Dictionary mapping a statistic and its value for a specific column
+            
+        Examples
+        --------
+        >>> data.describe_column('col1')
+        """
+
+        from pandas_summary import DataFrameSummary
+
+        if dataset == "train":
+            x_train_summary = DataFrameSummary(self.x_train)
+
+            return x_train_summary[column]
+        else:
+            x_test_summary = DataFrameSummary(self.x_test)
+
+            return x_test_summary[column]
