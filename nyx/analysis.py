@@ -276,3 +276,50 @@ class Analysis(Visualizations, Stats):
             self.x_test = pd.concat([self.x_test, df], axis=1)
 
         return self
+
+    def data_report(self, title="Profile Report", output_file="", suppress=False):
+        """
+        Generates a full Exploratory Data Analysis report using Pandas Profiling.
+        Credits: https://github.com/pandas-profiling/pandas-profiling
+        
+        For each column the following statistics - if relevant for the column type - are presented in an interactive HTML report:
+        - Essentials: type, unique values, missing values
+        - Quantile statistics like minimum value, Q1, median, Q3, maximum, range, interquartile range
+        - Descriptive statistics like mean, mode, standard deviation, sum, median absolute deviation, coefficient of variation, kurtosis, skewness
+        - Most frequent values
+        - Histogram
+        - Correlations highlighting of highly correlated variables, Spearman, Pearson and Kendall matrices
+        - Missing values matrix, count, heatmap and dendrogram of missing values
+        
+        Parameters
+        ----------
+        title : str, optional
+            Title of the report, by default 'Profile Report'
+        output_file : str, optional
+            File name of the output file for the report, by default ''
+        suppress : bool, optional
+            True if you do not want to display the report, by default False
+        
+        Returns
+        -------
+        HTML display of Exploratory Data Analysis report
+        Examples
+        --------
+        >>> data.data_report()
+        >>> data.data_report(title='Titanic EDA', output_file='titanic.html')
+        """
+
+        import pandas_profiling
+
+        if shell == "ZMQInteractiveShell":  # pragma : no cover
+            report = self.x_train.profile_report(
+                title=title, html={"style": {"full_width": True}}
+            )
+        else:
+            report = self.x_train.profile_report(title=title)
+
+        if output_file:
+            report.to_file(output_file=output_file)
+
+        if not suppress:
+            return report
