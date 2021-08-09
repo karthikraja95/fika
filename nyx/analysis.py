@@ -518,3 +518,34 @@ class Analysis(Visualizations, Stats):
             self.x_test = self.x_test.drop(drop_columns, axis=1)
 
         return self
+
+    def correlation_matrix(
+        self, data_labels=False, hide_mirror=False, output_file="", **kwargs
+    ):
+        """
+        Plots a correlation matrix of all the numerical variables.
+        For more information on possible kwargs please see: https://seaborn.pydata.org/generated/seaborn.heatmap.html
+        
+        Parameters
+        ----------
+        data_labels : bool, optional
+            True to display the correlation values in the plot, by default False
+        hide_mirror : bool, optional
+            Whether to display the mirroring half of the correlation plot, by default False
+        output_file : str, optional
+            Output file name for image with extension (i.e. jpeg, png, etc.)
+        Examples
+        --------
+        >>> data.correlation_matrix(data_labels=True)
+        >>> data.correlation_matrix(data_labels=True, output_file='corr.png')
+        """
+
+        fig = self._viz.viz_correlation_matrix(
+            self.x_train.corr(),
+            data_labels=data_labels,
+            hide_mirror=hide_mirror,
+            output_file=output_file,
+            **kwargs,
+        )
+
+        return fig
