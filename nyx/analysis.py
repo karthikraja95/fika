@@ -764,3 +764,21 @@ class Analysis(Visualizations, Stats):
         tab.set_title(4, "Preparation")
 
         display(tab)
+
+    def to_df(self):
+        """
+        Return Dataframes for x_train and x_test if it exists.
+        Returns
+        -------
+        Dataframe, *Dataframe
+            Transformed dataframe with rows with a missing values in a specific column are missing
+            Returns 2 Dataframes test if x_test is provided.
+        Examples
+        --------
+        >>> data.to_df()
+        """
+
+        if self.x_test is None:
+            return self.x_train
+        else:
+            return self.x_train, self.x_test
