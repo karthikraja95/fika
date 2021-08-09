@@ -549,3 +549,44 @@ class Analysis(Visualizations, Stats):
         )
 
         return fig
+
+    def predictive_power(
+        self, col=None, data_labels=False, hide_mirror=False, output_file="", **kwargs
+    ):
+        """
+        Calculated the Predictive Power Score of each feature.
+        If a column is provided, it will calculate it in regards to the target variable.
+        Credits go to Florian Wetschorek - https://towardsdatascience.com/rip-correlation-introducing-the-predictive-power-score-3d90808b9598
+        Parameters
+        ----------
+        col : str
+            Column in the dataframe
+        data_labels : bool, optional
+            True to display the correlation values in the plot, by default False
+        hide_mirror : bool, optional
+            Whether to display the mirroring half of the correlation plot, by default False
+        output_file : str, optional
+            Output file name for image with extension (i.e. jpeg, png, etc.)
+        Examples
+        --------
+        >>> data.predictive_power(data_labels=True)
+        >>> data.predictive_power(col='col1')
+        """
+
+        import ppscore as pps
+        import seaborn as sns
+
+        if col:
+            return pps.score(self.x_train, col, self.target)
+        else:
+            pp_df = pps.matrix(self.x_train)
+
+            fig = self._viz.viz_correlation_matrix(
+                pp_df,
+                data_labels=data_labels,
+                hide_mirror=hide_mirror,
+                output_file=output_file,
+                **kwargs,
+            )
+
+            return fig
