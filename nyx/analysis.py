@@ -358,3 +358,43 @@ class Analysis(Visualizations, Stats):
 
             return x_test_summary.summary()
 
+    def column_info(self, dataset="train"):
+        """
+        Describes your columns using the DataFrameSummary library with basic descriptive info.
+        Credits go to @mouradmourafiq for his pandas-summary library.
+        Info
+        ----
+        counts
+        uniques
+        missing
+        missing_perc
+        types
+        
+        Parameters
+        ----------
+        dataset : str, optional
+            Type of dataset to describe. Can either be `train` or `test`.
+            If you are using the full dataset it will automatically describe
+            your full dataset no matter the input, 
+            by default 'train'
+        
+        Returns
+        -------
+        DataFrame
+            Dataframe describing your columns with basic descriptive info
+        Examples
+        ---------
+        >>> data.column_info()
+        """
+
+        from pandas_summary import DataFrameSummary
+
+        if dataset == "train":
+            x_train_summary = DataFrameSummary(self.x_train)
+
+            return x_train_summary.columns_stats
+        else:
+            x_test_summary = DataFrameSummary(self.x_test)
+
+            return x_test_summary.columns_stats
+
