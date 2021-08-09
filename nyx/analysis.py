@@ -635,3 +635,32 @@ class Analysis(Visualizations, Stats):
             )
         else:
             return "Unsupported without a target variable."
+
+    def encode_target(self):
+        """
+        Encodes target variables with value between 0 and n_classes-1.
+        Running this function will automatically set the corresponding mapping for the target variable mapping number to the original value.
+        Note that this will not work if your test data will have labels that your train data does not.        
+        Returns
+        -------
+        Data:
+            Returns a deep copy of the Data object.
+        Examples
+        --------
+        >>> data.encode_target()
+        """
+
+        if not self.target:
+            raise ValueError("Please set the `target` field variable before encoding.")
+
+        (self.x_train, self.x_test, self.target_mapping,) = label_encoder(
+            x_train=self.x_train,
+            x_test=self.x_test,
+            list_of_cols=[self.target],
+            target=True,
+        )
+
+        for k, v in self.target_mapping.items():
+            print(f"{k}: {v}")
+
+        return self
