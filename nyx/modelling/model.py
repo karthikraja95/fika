@@ -195,3 +195,15 @@ class ModelBase(object):
         """
 
         return self.x_train.columns.tolist()
+
+    def copy(self):
+        """
+        Returns deep copy of object.
+        
+        Returns
+        -------
+        Object
+            Deep copy of object
+        """
+
+        return copy.deepcopy(self)
