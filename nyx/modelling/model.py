@@ -727,4 +727,87 @@ class ModelBase(object):
 
         return self._models[model_name]
 
+    @add_to_queue
+    def LDA(self, col_name, prep=False, model_name="lda", run=True, **kwargs):
+        # region
+        """
+        Extracts topics from your data using Latent Dirichlet Allocation.
+        For more information on LDA, you can view it here https://radimrehurek.com/gensim/models/ldamodel.html.
+        
+        Parameters
+        ----------
+        col_name : str, optional
+            Column name of text data that you want to summarize
+        prep : bool, optional
+            True to prep the data. Use when passing in raw text data.
+            False if passing in text that is already prepped.
+            By default False
+        model_name : str, optional
+            Name for this model, default to `lda`
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        num_topics: (int, optional)
+            The number of requested latent topics to be extracted from the training corpus.
+        distributed: (bool, optional)
+            Whether distributed computing should be used to accelerate training.
+        chunksize: (int, optional)
+            Number of documents to be used in each training chunk.
+        passes: (int, optional)
+            Number of passes through the corpus during training.
+        update_every: (int, optional)
+            Number of documents to be iterated through for each update. Set to 0 for batch learning, > 1 for online iterative learning.
+        alpha: ({numpy.ndarray, str}, optional)
+            Can be set to an 1D array of length equal to the number of expected topics that expresses our a-priori belief for the each topics’ probability. Alternatively default prior selecting strategies can be employed by supplying a string:
+                    ’asymmetric’: Uses a fixed normalized asymmetric prior of 1.0 / topicno.
+                    ’auto’: Learns an asymmetric prior from the corpus (not available if distributed==True).
+        eta: ({float, np.array, str}, optional)
+            A-priori belief on word probability, this can be:
+                    scalar for a symmetric prior over topic/word probability,
+                    vector of length num_words to denote an asymmetric user defined probability for each word,
+                    matrix of shape (num_topics, num_words) to assign a probability for each word-topic combination,
+                    the string ‘auto’ to learn the asymmetric prior from the data.
+        decay: (float, optional)
+            A number between (0.5, 1] to weight what percentage of the previous lambda value is forgotten when each new document is examined. Corresponds to Kappa from Matthew D. Hoffman, David M. Blei, Francis Bach: “Online Learning for Latent Dirichlet Allocation NIPS’10”.
+        offset: (float, optional)
+            Hyper-parameter that controls how much we will slow down the first steps the first few iterations. Corresponds to Tau_0 from Matthew D. Hoffman, David M. Blei, Francis Bach: “Online Learning for Latent Dirichlet Allocation NIPS’10”.
+        eval_every: (int, optional)
+            Log perplexity is estimated every that many updates. Setting this to one slows down training by ~2x.
+        iterations: (int, optional)
+            Maximum number of iterations through the corpus when inferring the topic distribution of a corpus.
+        gamma_threshold: (float, optional)
+            Minimum change in the value of the gamma parameters to continue iterating.
+        minimum_probability: (float, optional)
+            Topics with a probability lower than this threshold will be filtered out.
+        random_state: ({np.random.RandomState, int}, optional)
+            Either a randomState object or a seed to generate one. Useful for reproducibility.
+        ns_conf: (dict of (str, object), optional)
+            Key word parameters propagated to gensim.utils.getNS() to get a Pyro4 Nameserved. Only used if distributed is set to True.
+        minimum_phi_value: (float, optional)
+            if per_word_topics is True, this represents a lower bound on the term probabilities.per_word_topics (bool) – If True, the model also computes a list of topics, sorted in descending order of most likely topics for each word, along with their phi values multiplied by the feature length (i.e. word count).
+        
+        Returns
+        -------
+        TextModelAnalysis
+            Resulting model
+        Examples
+        --------
+        >>> model.LDA('col1', prep=True)
+        >>> model.LDA('col1', run=False) # Add model to the queue
+        """
+        # endregion
+
+        (self.x_train, self.x_test, lda_model, corpus, id2word,) = text.gensim_lda(
+            x_train=self.x_train,
+            x_test=self.x_test,
+            prep=prep,
+            col_name=col_name,
+            **kwargs,
+        )
+
+        self._models[model_name] = TextModelAnalysis(
+            lda_model, self.x_train, model_name, corpus=corpus, id2word=id2word
+        )
+
+        return self._models[model_name]
+
 
