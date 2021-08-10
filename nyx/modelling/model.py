@@ -185,3 +185,13 @@ class ModelBase(object):
                 self.target = "label"
                 self.x_test["label"] = value
                 print('Added a target (predictor) field (column) named "label".')
+
+
+
+    @property
+    def columns(self):
+        """
+        Property to return columns in the dataset.
+        """
+
+        return self.x_train.columns.tolist()
