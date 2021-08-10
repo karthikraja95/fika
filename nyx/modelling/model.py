@@ -207,3 +207,36 @@ class ModelBase(object):
         """
 
         return copy.deepcopy(self)
+
+    def help_debug(self):
+        """
+        Displays a tips for helping debugging model outputs and how to deal with over and underfitting.
+        Credit: Andrew Ng's and his book Machine Learning Yearning
+        Examples
+        --------
+        >>> model.help_debug()
+        """
+
+        from nyx.model_analysis.constants import DEBUG_OVERFIT, DEBUG_UNDERFIT
+
+        overfit_labels = [
+            widgets.Checkbox(description=item, layout=Layout(width="100%"))
+            for item in DEBUG_OVERFIT
+        ]
+        underfit_labels = [
+            widgets.Checkbox(description=item, layout=Layout(width="100%"))
+            for item in DEBUG_UNDERFIT
+        ]
+
+        overfit_box = widgets.VBox(overfit_labels)
+        underfit_box = widgets.VBox(underfit_labels)
+
+        tab_list = [overfit_box, underfit_box]
+
+        tab = widgets.Tab()
+        tab.children = tab_list
+        tab.set_title(0, "Overfit")
+        tab.set_title(1, "Underfit")
+
+        display(tab)
+
