@@ -1146,3 +1146,62 @@ class ModelBase(object):
         print(model)
 
         return self._models[model_name]
+
+    def _run_unsupervised_model(
+        self, model, model_name, run=True, **kwargs,
+    ):
+        """
+        Helper function that generalizes model orchestration.
+        """
+
+        #############################################################
+        ################## Initialize Variables #####################
+        #############################################################
+
+        # Hard coding OneClassSVM due to its parent having random_state and the child not allowing it.
+        random_state = kwargs.pop("random_state", None)
+        if (
+            not random_state
+            and "random_state" in dir(model())
+            and not isinstance(model(), sklearn.svm.OneClassSVM)
+        ):
+            random_state = 42
+
+        _make_img_project_dir(model_name)
+
+        #############################################################
+        #################### Initialize Model #######################
+        #############################################################
+
+        if random_state:
+            model = model(random_state=random_state, **kwargs)
+        else:
+            model = model(**kwargs)
+
+        #############################################################
+        ###################### Train Model ##########################
+        #############################################################
+
+        model.fit(self.train_data)
+
+        #############################################################
+        ############### Initialize Model Analysis ###################
+        #############################################################
+
+        self._models[model_name] = UnsupervisedModelAnalysis(
+            model, self.x_train, model_name
+        )
+
+        #############################################################
+        ######################## Tracking ###########################
+        #############################################################
+
+        if _global_config["track_experiments"]:  # pragma: no cover
+            if random_state is not None:
+                kwargs["random_state"] = random_state
+
+            track_model(self.exp_name, model, model_name, kwargs)
+
+        print(model)
+
+        return self._models[model_name]
