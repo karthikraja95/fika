@@ -396,3 +396,62 @@ class ModelBase(object):
         print("\tdocker run -d --name `container_name` -p `port_num`:80 `image_name`")
 
 
+    ################### TEXT MODELS ########################
+
+    @add_to_queue
+    def summarize_gensim(
+        self,
+        *list_args,
+        list_of_cols=[],
+        new_col_name="_summarized",
+        model_name="model_summarize_gensim",
+        run=True,
+        **summarizer_kwargs,
+    ):
+        # region
+        """
+        Summarize bodies of text using Gensim's Text Rank algorithm. Note that it uses a Text Rank variant as stated here:
+        https://radimrehurek.com/gensim/summarization/summariser.html
+        The output summary will consist of the most representative sentences and will be returned as a string, divided by newlines.
+        
+        Parameters
+        ----------
+        list_of_cols : list, optional
+            Column name(s) of text data that you want to summarize
+        new_col_name : str, optional
+            New column name to be created when applying this technique, by default `_extracted_keywords`
+        model_name : str, optional
+            Name for this model, default to `model_summarize_gensim`
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        ratio : float, optional
+            Number between 0 and 1 that determines the proportion of the number of sentences of the original text to be chosen for the summary.
+        word_count : int or None, optional
+            Determines how many words will the output contain. If both parameters are provided, the ratio will be ignored.
+        split : bool, optional
+            If True, list of sentences will be returned. Otherwise joined strings will be returned.
+        Returns
+        -------
+        TextModelAnalysis
+            Resulting model
+        Examples
+        --------
+        >>> model.summarize_gensim('col1')
+        >>> model.summarize_gensim('col1', run=False) # Add model to the queue
+        """
+        # endregion
+
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        (self.x_train, self.x_test,) = text.gensim_textrank_summarizer(
+            x_train=self.x_train,
+            x_test=self.x_test,
+            list_of_cols=list_of_cols,
+            new_col_name=new_col_name,
+            **summarizer_kwargs,
+        )
+
+        self._models[model_name] = TextModelAnalysis(None, self.x_train, model_name)
+
+        return self._models[model_name]
+
