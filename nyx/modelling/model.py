@@ -240,3 +240,78 @@ class ModelBase(object):
 
         display(tab)
 
+    def run_models(self, method="parallel"):
+        """
+        Runs all queued models.
+        The models can either be run one after the other ('series') or at the same time in parallel.
+        Parameters
+        ----------
+        method : str, optional
+            How to run models, can either be in 'series' or in 'parallel', by default 'parallel'
+        Examples
+        --------
+        >>> model.run_models()
+        >>> model.run_models(method='series')
+        """
+
+        models = []
+
+        if method == "parallel":
+            models = _run_models_parallel(self)
+        elif method == "series":
+            for model in self._queued_models:
+                models.append(self._queued_models[model]())
+        else:
+            raise ValueError(
+                'Invalid run method, accepted run methods are either "parallel" or "series".'
+            )
+
+        return models
+
+    def list_models(self):
+        """
+        Prints out all queued and ran models.
+        Examples
+        --------
+        >>> model.list_models()
+        """
+
+        print("######## QUEUED MODELS ########")
+        if self._queued_models:
+            for key in self._queued_models:
+                print(key)
+        else:
+            print("No queued models.")
+
+        print()
+
+        print("######### RAN MODELS ##########")
+        if self._models:
+            for key in self._models:
+                print(key)
+        else:
+            print("No ran models.")
+
+    def delete_model(self, name):
+        """
+        Deletes a model, specified by it's name - can be viewed by calling list_models.
+        Will look in both queued and ran models and delete where it's found.
+        Parameters
+        ----------
+        name : str
+            Name of the model
+        Examples
+        --------
+        >>> model.delete_model('model1')
+        """
+
+        if name in self._queued_models:
+            del self._queued_models[name]
+        elif name in self._models:
+            del self._models[name]
+        else:
+            raise ValueError(f"Model {name} does not exist")
+
+        self.list_models()
+
+
