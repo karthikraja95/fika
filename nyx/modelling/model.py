@@ -342,4 +342,57 @@ class ModelBase(object):
 
         return results_table
 
+    def to_pickle(self, name: str):
+        """
+        Writes model to a pickle file.
+        
+        Parameters
+        ----------
+        name : str
+            Name of the model
+        Examples
+        --------
+        >>> m = Model(df)
+        >>> m.LogisticRegression()
+        >>> m.to_pickle('log_reg')
+        """
+
+        model_obj = self._models[name]
+
+        to_pickle(model_obj.model, model_obj.model_name)
+
+    def to_service(self, model_name: str, project_name: str):
+        """
+        Creates an app.py, requirements.txt and Dockerfile in `~/.aethos/projects` and the necessary folder structure
+        to run the model as a microservice.
+        
+        Parameters
+        ----------
+        model_name : str
+            Name of the model to create a microservice of.
+        project_name : str
+            Name of the project that you want to create.
+        Examples
+        --------
+        >>> m = Model(df)
+        >>> m.LogisticRegression()
+        >>> m.to_service('log_reg', 'your_proj_name')
+        """
+
+        model_obj = self._models[model_name]
+
+        to_pickle(
+            model_obj.model,
+            model_obj.model_name,
+            project=True,
+            project_name=project_name,
+        )
+        tg.generate_service(
+            project_name, f"{model_obj.model_name}.pkl", model_obj.model
+        )
+
+        print("To run:")
+        print("\tdocker build -t `image_name` ./")
+        print("\tdocker run -d --name `container_name` -p `port_num`:80 `image_name`")
+
 
