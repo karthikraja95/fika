@@ -455,3 +455,70 @@ class ModelBase(object):
 
         return self._models[model_name]
 
+    @add_to_queue
+    def extract_keywords_gensim(
+        self,
+        *list_args,
+        list_of_cols=[],
+        new_col_name="_extracted_keywords",
+        model_name="model_extracted_keywords_gensim",
+        run=True,
+        **keyword_kwargs,
+    ):
+        # region
+        """
+        Extracts keywords using Gensim's implementation of the Text Rank algorithm. 
+        Get most ranked words of provided text and/or its combinations.
+        
+        Parameters
+        ----------
+        list_of_cols : list, optional
+            Column name(s) of text data that you want to summarize
+        new_col_name : str, optional
+            New column name to be created when applying this technique, by default `_extracted_keywords`
+        model_name : str, optional
+            Name for this model, default to `model_extract_keywords_gensim`
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        ratio : float, optional
+            Number between 0 and 1 that determines the proportion of the number of sentences of the original text to be chosen for the summary.
+        words : int, optional
+            Number of returned words.
+        split : bool, optional
+            If True, list of sentences will be returned. Otherwise joined strings will be returned.
+        scores : bool, optional
+            Whether score of keyword.
+        pos_filter : tuple, optional
+            Part of speech filters.
+        lemmatize : bool, optional 
+            If True - lemmatize words.
+        deacc : bool, optional
+            If True - remove accentuation.
+        
+        Returns
+        -------
+        TextModelAnalysis
+            Resulting model
+        
+        Examples
+        --------
+        >>> model.extract_keywords_gensim('col1')
+        >>> model.extract_keywords_gensim('col1', run=False) # Add model to the queue
+        """
+        # endregion
+
+        list_of_cols = _input_columns(list_args, list_of_cols)
+
+        self.x_train, self.x_test = text.gensim_textrank_keywords(
+            x_train=self.x_train,
+            x_test=self.x_test,
+            list_of_cols=list_of_cols,
+            new_col_name=new_col_name,
+            **keyword_kwargs,
+        )
+
+        self._models[model_name] = TextModelAnalysis(None, self.x_train, model_name)
+
+        return self._models[model_name]
+
+
