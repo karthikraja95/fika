@@ -810,4 +810,116 @@ class ModelBase(object):
 
         return self._models[model_name]
 
+    ################## PRE TRAINED MODELS #######################
+
+    def pretrained_sentiment_analysis(
+        self, col: str, model_type=None, new_col_name="sent_score", run=True
+    ):
+        # region
+        """
+        Uses Huggingface's pipeline to automatically run sentiment analysis on text.
+        The default model is 'tf_distil_bert_for_sequence_classification_2'
+        Possible model types are:
+            - bert-base-uncased
+            - bert-large-uncased
+            - bert-base-cased
+            - bert-large-cased
+            - bert-base-multilingual-uncased
+            - bert-base-multilingual-cased
+            - bert-base-chinese
+            - bert-base-german-cased
+            - bert-large-uncased-whole-word-masking
+            - bert-large-cased-whole-word-masking
+            - bert-large-uncased-whole-word-masking-finetuned-squad
+            - bert-large-cased-whole-word-masking-finetuned-squad
+            - bert-base-cased-finetuned-mrpc
+            - bert-base-german-dbmdz-cased
+            - bert-base-german-dbmdz-uncased
+            - bert-base-japanese
+            - bert-base-japanese-whole-word-masking
+            - bert-base-japanese-char
+            - bert-base-japanese-char-whole-word-masking
+            - bert-base-finnish-cased-v1
+            - bert-base-finnish-uncased-v1
+            - openai-gpt
+            - gpt2
+            - gpt2-medium
+            - gpt2-large
+            - gpt2-xl
+            - transfo-xl-wt103
+            - xlnet-base-cased
+            - xlnet-large-cased
+            - xlm-mlm-en-2048
+            - xlm-mlm-ende-1024
+            - xlm-mlm-enfr-1024
+            - xlm-mlm-enro-1024
+            - xlm-mlm-xnli15-1024
+            - xlm-mlm-tlm-xnli15-1024
+            - xlm-clm-enfr-1024
+            - xlm-clm-ende-1024
+            - xlm-mlm-17-1280
+            - xlm-mlm-100-1280
+            - roberta-base
+            - roberta-large
+            - roberta-large-mnli
+            - distilroberta-base
+            - roberta-base-openai-detector
+            - roberta-large-openai-detector
+            - distilbert-base-uncased
+            - distilbert-base-uncased-distilled-squad
+            - distilgpt2
+            - distilbert-base-german-cased
+            - distilbert-base-multilingual-cased
+            - ctrl
+            - camembert-base
+            - albert-base-v1
+            - albert-large-v1
+            - albert-xlarge-v1
+            - albert-xxlarge-v1
+            - albert-base-v2
+            - albert-large-v2
+            - albert-xlarge-v2
+            - albert-xxlarge-v2
+            - t5-small
+            - t5-base
+            - t5-large
+            - t5-3B
+            - t5-11B
+            - xlm-roberta-base
+            - xlm-roberta-large
+        Parameters
+        ----------
+        col : str
+            Column of text to get sentiment analysis
+        model_type : str, optional
+            Type of model, by default None
+        new_col_name : str, optional
+            New column name for the sentiment scores, by default "sent_score"
+        
+        Returns
+        -------
+        TF or PyTorch of model
+        Examples
+        --------
+        >>> m.pretrained_sentiment_analysis('col1')
+        >>> m.pretrained_sentiment_analysis('col1', model_type='albert-base-v1')
+        """
+        # endregion
+
+        try:
+            from transformers import pipeline
+        except ModuleNotFoundError as e:
+            raise EnvironmentError(
+                "Pre trained model dependencies have not been installed. Please run pip install aethos[ptmodels]"
+            )
+
+        nlp = pipeline("sentiment-analysis", model=model_type)
+
+        self.x_train[new_col_name] = pd.Series(map(nlp, self.x_train[col].tolist()))
+
+        if self.x_test is not None:
+            self.x_test[new_col_name] = pd.Series(map(nlp, self.x_test[col].tolist()))
+
+        return nlp.model
+
 
