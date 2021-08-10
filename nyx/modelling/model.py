@@ -101,3 +101,22 @@ class ModelBase(object):
             cols = self.features
 
         return self.x_train[cols].head()._repr_html_()
+
+
+    def __deepcopy__(self, memo):
+
+        x_test = self.x_test.copy() if self.x_test is not None else None
+
+        new_inst = type(self)(
+            x_train=self.x_train.copy(),
+            target=self.target,
+            x_test=x_test,
+            test_split_percentage=self.test_split_percentage,
+            exp_name=self.exp_name,
+        )
+
+        new_inst.target_mapping = self.target_mapping
+        new_inst._models = self._models
+        new_inst._queued_models = self._queued_models
+
+        return new_inst
