@@ -60,3 +60,44 @@ class ModelBase(object):
             )
             self.x_train = self.x_train.reset_index(drop=True)
             self.x_test = self.x_test.reset_index(drop=True)
+
+    def __getitem__(self, key):
+
+        return _get_item_(self, key)
+
+    def __getattr__(self, key):
+
+        # For when doing multi processing when pickle is reconstructing the object
+        if key in {"__getstate__", "__setstate__"}:
+            return object.__getattr__(self, key)
+
+        if key in self._models:
+            return self._models[key]
+
+        return _get_attr_(self, key)
+
+    def __setattr__(self, key, value):
+
+        if key not in self.__dict__ or hasattr(self, key):
+            # any normal attributes are handled normally
+            dict.__setattr__(self, key, value)
+        else:
+            self.__setitem__(key, value)
+
+    def __setitem__(self, key, value):
+
+        if key in self.__dict__:
+            dict.__setitem__(self.__dict__, key, value)
+
+    def __repr__(self):
+
+        return self.x_train.head().to_string()
+
+    def _repr_html_(self):  # pragma: no cover
+
+        if self.target:
+            cols = self.features + [self.target]
+        else:
+            cols = self.features
+
+        return self.x_train[cols].head()._repr_html_()
