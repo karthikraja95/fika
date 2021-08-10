@@ -1054,3 +1054,95 @@ class ModelBase(object):
             )
 
         return nlp.model
+
+    ################### HELPER FUNCTIONS ########################
+
+    def _run_supervised_model(
+        self,
+        model,
+        model_name,
+        model_type,
+        cv_type=None,
+        gridsearch=None,
+        score="accuracy",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        """
+        Helper function that generalizes model orchestration.
+        """
+
+        #############################################################
+        ################## Initialize Variables #####################
+        #############################################################
+
+        # Hard coding SVR due to its parent having random_state and the child not allowing it.
+        random_state = kwargs.pop("random_state", None)
+        if (
+            not random_state
+            and hasattr(model(), "random_state")
+            and not isinstance(model(), sklearn.svm.SVR)
+        ):
+            random_state = 42
+
+        run_id = None
+
+        _make_img_project_dir(model_name)
+
+        #############################################################
+        #################### Initialize Model #######################
+        #############################################################
+
+        if random_state:
+            model = model(random_state=random_state, **kwargs)
+        else:
+            model = model(**kwargs)
+
+        #############################################################
+        ####################### Gridsearch ##########################
+        #############################################################
+
+        if gridsearch:
+            grid_cv = _get_cv_type(cv_type, 5, False) if cv_type is not None else 5
+
+            model = run_gridsearch(model, gridsearch, grid_cv, score, verbose=verbose)
+
+        #############################################################
+        ###################### Train Model ##########################
+        #############################################################
+
+        # Train a model and predict on the test test.
+        model.fit(self.train_data, self.y_train)
+
+        #############################################################
+        ############### Initialize Model Analysis ###################
+        #############################################################
+
+        if gridsearch:
+            model = model.best_estimator_
+
+        self._models[model_name] = model_type(
+            model, self.x_train, self.x_test, self.target, model_name,
+        )
+
+        #############################################################
+        ######################## Tracking ###########################
+        #############################################################
+
+        if _global_config["track_experiments"]:  # pragma: no cover
+            if random_state is not None:
+                kwargs["random_state"] = random_state
+
+            run_id = track_model(
+                self.exp_name,
+                model,
+                model_name,
+                kwargs,
+                self.compare_models()[model_name].to_dict(),
+            )
+            self._models[model_name].run_id = run_id
+
+        print(model)
+
+        return self._models[model_name]
