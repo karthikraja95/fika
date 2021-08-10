@@ -314,4 +314,32 @@ class ModelBase(object):
 
         self.list_models()
 
+    def compare_models(self):
+        """
+        Compare different models across every known metric for that model.
+        
+        Returns
+        -------
+        Dataframe
+            Dataframe of every model and metrics associated for that model
+        
+        Examples
+        --------
+        >>> model.compare_models()
+        """
+
+        results = []
+
+        for model in self._models:
+            results.append(self._models[model].metrics())
+
+        results_table = pd.concat(results, axis=1, join="inner")
+        results_table = results_table.loc[:, ~results_table.columns.duplicated()]
+
+        # Move descriptions column to end of dataframe.
+        descriptions = results_table.pop("Description")
+        results_table["Description"] = descriptions
+
+        return results_table
+
 
