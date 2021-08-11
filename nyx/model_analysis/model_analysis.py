@@ -508,7 +508,7 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
         """
 
         import interpret
-        from aethos.model_analysis.constants import INTERPRET_EXPLAINERS
+        from nyx.model_analysis.constants import INTERPRET_EXPLAINERS
 
         warnings.simplefilter("ignore")
 
@@ -569,7 +569,7 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
         """
 
         import interpret
-        from aethos.model_analysis.constants import INTERPRET_EXPLAINERS
+        from nyx.model_analysis.constants import INTERPRET_EXPLAINERS
 
         warnings.simplefilter("ignore")
 
@@ -627,7 +627,7 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
         """
 
         import interpret
-        from aethos.model_analysis.constants import INTERPRET_EXPLAINERS
+        from nyx.model_analysis.constants import INTERPRET_EXPLAINERS
 
         warnings.simplefilter("ignore")
 

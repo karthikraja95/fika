@@ -34,7 +34,7 @@ def groupby_analysis(df: pd.DataFrame, groupby: list, col_filter=[]):
     Returns
     -------
     Analysis
-        Aethos Analysis object to analyze data
+        nyx Analysis object to analyze data
     Examples
     --------
     >>> analysis = data.groupby_analysis(df, ["col1", "col2"])

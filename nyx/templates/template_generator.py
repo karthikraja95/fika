@@ -15,7 +15,7 @@ class TemplateGenerator(object):
 
     # Prepare environment and source data
     env = Environment(
-        loader=PackageLoader("aethos", "templates"),
+        loader=PackageLoader("nyx", "templates"),
         trim_blocks=True,
         lstrip_blocks=True,
     )

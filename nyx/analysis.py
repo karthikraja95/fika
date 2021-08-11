@@ -33,7 +33,7 @@ class Analysis(Visualizations, Stats):
     Parameters
     -----------
     x_train: pd.DataFrame
-        Training data or aethos data object
+        Training data or nyx data object
     x_test: pd.DataFrame
         Test data, by default None
     target: str

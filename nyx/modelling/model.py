@@ -363,7 +363,7 @@ class ModelBase(object):
 
     def to_service(self, model_name: str, project_name: str):
         """
-        Creates an app.py, requirements.txt and Dockerfile in `~/.aethos/projects` and the necessary folder structure
+        Creates an app.py, requirements.txt and Dockerfile in `~/.nyx/projects` and the necessary folder structure
         to run the model as a microservice.
         
         Parameters
@@ -910,7 +910,7 @@ class ModelBase(object):
             from transformers import pipeline
         except ModuleNotFoundError as e:
             raise EnvironmentError(
-                "Pre trained model dependencies have not been installed. Please run pip install aethos[ptmodels]"
+                "Pre trained model dependencies have not been installed. Please run pip install nyx[ptmodels]"
             )
 
         nlp = pipeline("sentiment-analysis", model=model_type)
@@ -1028,7 +1028,7 @@ class ModelBase(object):
             from transformers import pipeline
         except ModuleNotFoundError as e:
             raise EnvironmentError(
-                "Pre trained model dependencies have not been installed. Please run pip install aethos[ptmodels]"
+                "Pre trained model dependencies have not been installed. Please run pip install nyx[ptmodels]"
             )
 
         nlp = pipeline("question-answering", model=model_type)

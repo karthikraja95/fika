@@ -206,7 +206,7 @@ def to_pickle(model, name, project=False, project_name=None):
             path = cfg["models"]["dir"]
     else:
         path = os.path.join(
-            os.path.expanduser("~"), ".aethos", "projects", project_name, "app"
+            os.path.expanduser("~"), ".nyx", "projects", project_name, "app"
         )
 
     _make_dir(path)
