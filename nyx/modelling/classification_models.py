@@ -572,3 +572,143 @@ class Classification(
         )
 
         return model
+
+    @add_to_queue
+    def GradientBoostingClassification(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="accuracy",
+        model_name="grad_cls",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Trains a Gradient Boosting classification model.
+        GB builds an additive model in a forward stage-wise fashion; it allows for the optimization of arbitrary differentiable loss functions.
+        In each stage n_classes_ regression trees are fit on the negative gradient of the binomial or multinomial deviance loss function. 
+        Binary classification is a special case where only a single regression tree is induced.
+        For more Gradient Boosting Classifier info, you can view it here: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier   
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘accuracy’ 	
+            - ‘balanced_accuracy’ 	
+            - ‘average_precision’ 	
+            - ‘brier_score_loss’ 	
+            - ‘f1’ 	
+            - ‘f1_micro’ 	
+            - ‘f1_macro’ 	
+            - ‘f1_weighted’ 	
+            - ‘f1_samples’ 	
+            - ‘neg_log_loss’ 	
+            - ‘precision’	
+            - ‘recall’ 	
+            - ‘jaccard’ 	
+            - ‘roc_auc’
+        
+        Parameters
+        ----------
+        cv_type : bool, optional
+            If True run crossvalidation on the model, by default None.
+        gridsearch : int, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default 'accuracy'
+        model_name : str, optional
+            Name for this model, by default "grad_cls"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1
+        loss : {‘deviance’, ‘exponential’}, optional (default=’deviance’)
+            loss function to be optimized. ‘deviance’ refers to deviance (= logistic regression) for classification with probabilistic outputs. 
+            For loss ‘exponential’ gradient boosting recovers the AdaBoost algorithm.
+            
+        learning_rate : float, optional (default=0.1)
+            learning rate shrinks the contribution of each tree by learning_rate.
+            There is a trade-off between learning_rate and n_estimators.
+        n_estimators : int (default=100)
+            The number of boosting stages to perform.
+            Gradient boosting is fairly robust to over-fitting so a large number usually results in better performance.
+        subsample : float, optional (default=1.0)
+            The fraction of samples to be used for fitting the individual base learners.
+            If smaller than 1.0 this results in Stochastic Gradient Boosting.
+            Subsample interacts with the parameter n_estimators.
+            Choosing subsample < 1.0 leads to a reduction of variance and an increase in bias.
+        criterion : string, optional (default=”friedman_mse”)
+            The function to measure the quality of a split.
+            Supported criteria are “friedman_mse” for the mean squared error with improvement score by Friedman, “mse” for mean squared error, and “mae” for the mean absolute error.
+            The default value of “friedman_mse” is generally the best as it can provide a better approximation in some cases.
+        min_samples_split : int, float, optional (default=2)
+            The minimum number of samples required to split an internal node:
+                If int, then consider min_samples_split as the minimum number.
+                If float, then min_samples_split is a fraction and ceil(min_samples_split * n_samples) are the minimum number of samples for each split.
+        min_samples_leaf : int, float, optional (default=1)
+            The minimum number of samples required to be at a leaf node.
+            A split point at any depth will only be considered if it leaves at least min_samples_leaf training samples in each of the left and right branches.
+            This may have the effect of smoothing the model, especially in regression.
+                If int, then consider min_samples_leaf as the minimum number.
+                If float, then min_samples_leaf is a fraction and ceil(min_samples_leaf * n_samples) are the minimum number of samples for each node.
+        max_depth : integer, optional (default=3)
+            maximum depth of the individual regression estimators.
+            The maximum depth limits the number of nodes in the tree.
+            Tune this parameter for best performance; the best value depends on the interaction of the input variables.
+        max_features : int, float, string or None, optional (default=None)
+            The number of features to consider when looking for the best split:
+                If int, then consider max_features features at each split.
+                If float, then max_features is a fraction and int(max_features * n_features) features are considered at each split.
+                If “auto”, then max_features=sqrt(n_features).
+                If “sqrt”, then max_features=sqrt(n_features).
+                If “log2”, then max_features=log2(n_features).
+                If None, then max_features=n_features.
+            Choosing max_features < n_features leads to a reduction of variance and an increase in bias.
+            Note: the search for a split does not stop until at least one valid partition of the node samples is found, even if it requires to effectively inspect more than max_features features. 
+        max_leaf_nodes : int or None, optional (default=None)
+            Grow trees with max_leaf_nodes in best-first fashion.
+            Best nodes are defined as relative reduction in impurity.
+            If None then unlimited number of leaf nodes.
+        presort : bool or ‘auto’, optional (default=’auto’)
+            Whether to presort the data to speed up the finding of best splits in fitting.
+            Auto mode by default will use presorting on dense data and default to normal sorting on sparse data.
+            Setting presort to true on sparse data will raise an error.
+        validation_fraction : float, optional, default 0.1
+            The proportion of training data to set aside as validation set for early stopping.
+            Must be between 0 and 1. Only used if n_iter_no_change is set to an integer.
+        tol : float, optional, default 1e-4
+            Tolerance for the early stopping.
+            When the loss is not improving by at least tol for n_iter_no_change iterations (if set to a number), the training stops.
+        Returns
+        -------
+        ClassificationModelAnalysis
+            ClassificationModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.GradientBoostingClassification()
+        >>> model.GradientBoostingClassification(model_name='m1', n_estimators=100)
+        >>> model.GradientBoostingClassification(cv_type='kfold')
+        >>> model.GradientBoostingClassification(gridsearch={'n_estimators':[100, 200]}, cv_type='strat-kfold')
+        >>> model.GradientBoostingClassification(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.ensemble import GradientBoostingClassifier
+
+        model = GradientBoostingClassifier
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            ClassificationModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
