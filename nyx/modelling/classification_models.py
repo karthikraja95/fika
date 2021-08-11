@@ -712,3 +712,140 @@ class Classification(
         )
 
         return model
+
+    @add_to_queue
+    def RandomForestClassification(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="accuracy",
+        model_name="rf_cls",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Trains a Random Forest classification model.
+        A random forest is a meta estimator that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting. 
+        The sub-sample size is always the same as the original input sample size but the samples are drawn with replacement if bootstrap=True (default).
+        For more Random Forest info, you can view it here: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘accuracy’ 	
+            - ‘balanced_accuracy’ 	
+            - ‘average_precision’ 	
+            - ‘brier_score_loss’ 	
+            - ‘f1’ 	
+            - ‘f1_micro’ 	
+            - ‘f1_macro’ 	
+            - ‘f1_weighted’ 	
+            - ‘f1_samples’ 	
+            - ‘neg_log_loss’ 	
+            - ‘precision’	
+            - ‘recall’ 	
+            - ‘jaccard’ 	
+            - ‘roc_auc’
+        
+        Parameters
+        ----------
+        cv_type : bool, optional
+            If True run crossvalidation on the model, by default None.
+        gridsearch : int, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default 'accuracy'
+        model_name : str, optional
+            Name for this model, by default "rf_cls"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1
+        
+        n_estimators : integer, optional (default=10)
+            The number of trees in the forest.
+        criterion : string, optional (default=”gini”)
+            The function to measure the quality of a split.
+            Supported criteria are “gini” for the Gini impurity and “entropy” for the information gain.
+            
+            Note: this parameter is tree-specific.
+        max_depth : integer or None, optional (default=None)
+            The maximum depth of the tree.
+            If None, then nodes are expanded until all leaves are pure or until all leaves contain less than min_samples_split samples.
+        min_samples_split : int, float, optional (default=2)
+            The minimum number of samples required to split an internal node:
+                If int, then consider min_samples_split as the minimum number.
+                If float, then min_samples_split is a fraction and ceil(min_samples_split * n_samples) are the minimum number of samples for each split.
+        min_samples_leaf : int, float, optional (default=1)
+            The minimum number of samples required to be at a leaf node. A split point at any depth will only be considered if it leaves at least min_samples_leaf training samples in each of the left and right branches. This may have the effect of smoothing the model, especially in regression.
+                If int, then consider min_samples_leaf as the minimum number.
+                If float, then min_samples_leaf is a fraction and ceil(min_samples_leaf * n_samples) are the minimum number of samples for each node.
+        max_features : int, float, string or None, optional (default=”auto”)
+            The number of features to consider when looking for the best split:
+                If int, then consider max_features features at each split.
+                If float, then max_features is a fraction and int(max_features * n_features) features are considered at each split.
+                If “auto”, then max_features=sqrt(n_features).
+                If “sqrt”, then max_features=sqrt(n_features) (same as “auto”).
+                If “log2”, then max_features=log2(n_features).
+                If None, then max_features=n_features.
+            Note: the search for a split does not stop until at least one valid partition of the node samples is found, even if it requires to effectively inspect more than max_features features.
+        
+        max_leaf_nodes : int or None, optional (default=None)
+            Grow trees with max_leaf_nodes in best-first fashion.
+            Best nodes are defined as relative reduction in impurity. If None then unlimited number of leaf nodes.
+        min_impurity_decrease : float, optional (default=0.)
+            A node will be split if this split induces a decrease of the impurity greater than or equal to this value.
+            The weighted impurity decrease equation is the following:
+            N_t / N * (impurity - N_t_R / N_t * right_impurity
+                                - N_t_L / N_t * left_impurity)
+            where N is the total number of samples, N_t is the number of samples at the current node, N_t_L is the number of samples in the left child, and N_t_R is the number of samples in the right child.
+            N, N_t, N_t_R and N_t_L all refer to the weighted sum, if sample_weight is passed.
+        bootstrap : boolean, optional (default=True)
+            Whether bootstrap samples are used when building trees. If False, the whole datset is used to build each tree.
+        oob_score : bool (default=False)
+            Whether to use out-of-bag samples to estimate the generalization accuracy.
+        class_weight : dict, list of dicts, “balanced”, “balanced_subsample” or None, optional (default=None)
+            Weights associated with classes in the form {class_label: weight}. If not given, all classes are supposed to have weight one. For multi-output problems, a list of dicts can be provided in the same order as the columns of y.
+            Note that for multioutput (including multilabel) weights should be defined for each class of every column in its own dict. For example, for four-class multilabel classification weights should be [{0: 1, 1: 1}, {0: 1, 1: 5}, {0: 1, 1: 1}, {0: 1, 1: 1}] instead of [{1:1}, {2:5}, {3:1}, {4:1}].
+            The “balanced” mode uses the values of y to automatically adjust weights inversely proportional to class frequencies in the input data as n_samples / (n_classes * np.bincount(y))
+            The “balanced_subsample” mode is the same as “balanced” except that weights are computed based on the bootstrap sample for every tree grown.
+            For multi-output, the weights of each column of y will be multiplied.
+            Note that these weights will be multiplied with sample_weight (passed through the fit method) if sample_weight is specified.
+        ccp_alphanon-negative : float, optional (default=0.0)
+            Complexity parameter used for Minimal Cost-Complexity Pruning.
+            The subtree with the largest cost complexity that is smaller than ccp_alpha will be chosen.
+            By default, no pruning is performed.
+            See Minimal Cost-Complexity Pruning for details.
+        Returns
+        -------
+        ClassificationModelAnalysis
+            ClassificationModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.RandomForestClassification()
+        >>> model.RandomForestClassification(model_name='m1', n_estimators=100)
+        >>> model.RandomForestClassification(cv_type='kfold')
+        >>> model.RandomForestClassification(gridsearch={'n_estimators':[100, 200]}, cv_type='strat-kfold')
+        >>> model.RandomForestClassification(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.ensemble import RandomForestClassifier
+
+        model = RandomForestClassifier
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            ClassificationModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
