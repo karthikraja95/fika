@@ -1369,3 +1369,120 @@ class Classification(
         )
 
         return model
+
+    @add_to_queue
+    def SVC(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="accuracy",
+        model_name="svc_cls",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Trains a C-Support Vector classification model.
+        Supports multi classification.
+        The fit time scales at least quadratically with the number of samples and may be impractical beyond tens of thousands of samples.
+        For large datasets consider using model.linearsvc or model.sgd_classification instead
+        The multiclass support is handled according to a one-vs-one scheme.
+        For more Support Vector info, you can view it here: https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘accuracy’ 	
+            - ‘balanced_accuracy’ 	
+            - ‘average_precision’ 	
+            - ‘brier_score_loss’ 	
+            - ‘f1’ 	
+            - ‘f1_micro’ 	
+            - ‘f1_macro’ 	
+            - ‘f1_weighted’ 	
+            - ‘f1_samples’ 	
+            - ‘neg_log_loss’ 	
+            - ‘precision’	
+            - ‘recall’ 	
+            - ‘jaccard’ 	
+            - ‘roc_auc’
+        
+        Parameters
+        ----------
+        cv_type : bool, optional
+            If True run crossvalidation on the model, by default None.
+        gridsearch : int, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default 'accuracy'
+        model_name : str, optional
+            Name for this model, by default "linsvc_cls"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1    	
+        C : float, optional (default=1.0)
+            Penalty parameter C of the error term.
+        kernel : string, optional (default=’rbf’)
+            Specifies the kernel type to be used in the algorithm.
+            It must be one of ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’ or a callable.
+            If none is given, ‘rbf’ will be used.
+            If a callable is given it is used to pre-compute the kernel matrix from data matrices; that matrix should be an array of shape (n_samples, n_samples).
+        degree : int, optional (default=3)
+            Degree of the polynomial kernel function (‘poly’). Ignored by all other kernels.
+        gamma : float, optional (default=’auto’)
+            Kernel coefficient for ‘rbf’, ‘poly’ and ‘sigmoid’.
+            Current default is ‘auto’ which uses 1 / n_features, if gamma='scale' is passed then it uses 1 / (n_features * X.var()) as value of gamma.
+        coef0 : float, optional (default=0.0)
+            Independent term in kernel function. It is only significant in ‘poly’ and ‘sigmoid’.
+        shrinking : boolean, optional (default=True)
+            Whether to use the shrinking heuristic.
+        probability : boolean, optional (default=False)
+            Whether to enable probability estimates. This must be enabled prior to calling fit, and will slow down that method.
+        tol : float, optional (default=1e-3)
+            Tolerance for stopping criterion.
+        cache_size : float, optional
+            Specify the size of the kernel cache (in MB).
+        class_weight : {dict, ‘balanced’}, optional
+            Set the parameter C of class i to class_weight[i]*C for SVC.
+            If not given, all classes are supposed to have weight one.
+            The “balanced” mode uses the values of y to automatically adjust weights inversely proportional to class frequencies in the input data as n_samples / (n_classes * np.bincount(y))
+        max_iter : int, optional (default=-1)
+            Hard limit on iterations within solver, or -1 for no limit.
+        decision_function_shape : ‘ovo’, ‘ovr’, default=’ovr’
+            Whether to return a one-vs-rest (‘ovr’) decision function of shape (n_samples, n_classes) as all other classifiers,
+            or the original one-vs-one (‘ovo’) decision function of libsvm which has shape (n_samples, n_classes * (n_classes - 1) / 2).
+            However, one-vs-one (‘ovo’) is always used as multi-class strategy.
+        Returns
+        -------
+        ClassificationModelAnalysis
+            ClassificationModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.SVC()
+        >>> model.SVC(model_name='m1', C=0.0003)
+        >>> model.SVC(cv_type='kfold')
+        >>> model.SVC(gridsearch={'C':[0.01, 0.02]}, cv_type='strat-kfold')
+        >>> model.SVC(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.svm import SVC
+
+        model = SVC
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            ClassificationModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
+
