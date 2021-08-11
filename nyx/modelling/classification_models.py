@@ -379,3 +379,95 @@ class Classification(
         )
 
         return model
+
+    @add_to_queue
+    def ADABoostClassification(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="accuracy",
+        model_name="ada_cls",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Trains an AdaBoost classification model.
+        An AdaBoost classifier is a meta-estimator that begins by fitting a classifier on the original dataset and then fits additional copies of the classifier on the same dataset
+        but where the weights of incorrectly classified instances are adjusted such that subsequent classifiers focus more on difficult cases.
+        For more AdaBoost info, you can view it here: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html#sklearn.ensemble.AdaBoostClassifier
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘accuracy’ 	
+            - ‘balanced_accuracy’ 	
+            - ‘average_precision’ 	
+            - ‘brier_score_loss’ 	
+            - ‘f1’ 	
+            - ‘f1_micro’ 	
+            - ‘f1_macro’ 	
+            - ‘f1_weighted’ 	
+            - ‘f1_samples’ 	
+            - ‘neg_log_loss’ 	
+            - ‘precision’	
+            - ‘recall’ 	
+            - ‘jaccard’ 	
+            - ‘roc_auc’
+        
+        Parameters
+        ----------
+        cv_type : {kfold, strat-kfold}, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        gridsearch : dict, optional
+            Parameters to gridsearch, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default 'accuracy'
+        model_name : str, optional
+            Name for this model, by default "ada_cls"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1
+        base_estimator : object, optional (default=None)
+            The base estimator from which the boosted ensemble is built.
+            Support for sample weighting is required, as well as proper classes_ and n_classes_ attributes.
+            If None, then the base estimator is DecisionTreeClassifier(max_depth=1)
+        n_estimators : integer, optional (default=50)
+            The maximum number of estimators at which boosting is terminated.
+            In case of perfect fit, the learning procedure is stopped early.
+        learning_rate : float, optional (default=1.)
+            Learning rate shrinks the contribution of each classifier by learning_rate.
+            There is a trade-off between learning_rate and n_estimators.
+        Returns
+        -------
+        ClassificationModelAnalysis
+            ClassificationModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.AdaBoostClassification()
+        >>> model.AdaBoostClassification(model_name='rc_1, learning_rate=0.001)
+        >>> model.AdaBoostClassification(cv_type='kfold')
+        >>> model.AdaBoostClassification(gridsearch={'n_estimators': [50, 100]}, cv_type='strat-kfold')
+        >>> model.AdaBoostClassification(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.ensemble import AdaBoostClassifier
+
+        model = AdaBoostClassifier
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            ClassificationModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
