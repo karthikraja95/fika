@@ -241,3 +241,141 @@ class Classification(
         )
 
         return model
+
+    @add_to_queue
+    def SGDClassification(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="accuracy",
+        model_name="sgd_cls",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Trains a Linear classifier (SVM, logistic regression, a.o.) with SGD training.
+        For more info please view it here: https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RidgeClassifier.html#sklearn.linear_model.RidgeClassifier
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘accuracy’ 	
+            - ‘balanced_accuracy’ 	
+            - ‘average_precision’ 	
+            - ‘brier_score_loss’ 	
+            - ‘f1’ 	
+            - ‘f1_micro’ 	
+            - ‘f1_macro’ 	
+            - ‘f1_weighted’ 	
+            - ‘f1_samples’ 	
+            - ‘neg_log_loss’ 	
+            - ‘precision’	
+            - ‘recall’ 	
+            - ‘jaccard’ 	
+            - ‘roc_auc’
+        
+        Parameters
+        ----------
+        cv_type : {kfold, strat-kfold}, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        gridsearch : dict, optional
+            Parameters to gridsearch, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default 'accuracy'
+        
+        model_name : str, optional
+            Name for this model, by default "sgd_cls"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1
+        
+        loss : str, default: ‘hinge’
+            The loss function to be used. Defaults to ‘hinge’, which gives a linear SVM.
+            The possible options are ‘hinge’, ‘log’, ‘modified_huber’, ‘squared_hinge’, ‘perceptron’, or a regression loss: ‘squared_loss’, ‘huber’, ‘epsilon_insensitive’, or ‘squared_epsilon_insensitive’.
+            The ‘log’ loss gives logistic regression, a probabilistic classifier. 
+            ‘modified_huber’ is another smooth loss that brings tolerance to outliers as well as probability estimates. 
+            ‘squared_hinge’ is like hinge but is quadratically penalized. 
+            ‘perceptron’ is the linear loss used by the perceptron algorithm.
+            The other losses are designed for regression but can be useful in classification as well; see SGDRegressor for a description.
+        penalty : str, ‘none’, ‘l2’, ‘l1’, or ‘elasticnet’
+            The penalty (aka regularization term) to be used.
+            Defaults to ‘l2’ which is the standard regularizer for linear SVM models.
+            ‘l1’ and ‘elasticnet’ might bring sparsity to the model (feature selection) not achievable with ‘l2’.
+        
+        alpha : float
+            Constant that multiplies the regularization term. Defaults to 0.0001 Also used to compute learning_rate when set to ‘optimal’.
+        l1_ratio : float
+            The Elastic Net mixing parameter, with 0 <= l1_ratio <= 1. l1_ratio=0 corresponds to L2 penalty, l1_ratio=1 to L1. Defaults to 0.15.
+        fit_intercept : bool
+            Whether the intercept should be estimated or not. If False, the data is assumed to be already centered. Defaults to True.
+        max_iter : int, optional (default=1000)
+            The maximum number of passes over the training data (aka epochs). It only impacts the behavior in the fit method, and not the partial_fit.
+        tol : float or None, optional (default=1e-3)
+            The stopping criterion. If it is not None, the iterations will stop when (loss > best_loss - tol) for n_iter_no_change consecutive epochs.
+        shuffle : bool, optional
+            Whether or not the training data should be shuffled after each epoch. Defaults to True.
+        epsilon : float
+            Epsilon in the epsilon-insensitive loss functions; only if loss is ‘huber’, ‘epsilon_insensitive’, or ‘squared_epsilon_insensitive’. For ‘huber’, determines the threshold at which it becomes less important to get the prediction exactly right. For epsilon-insensitive, any differences between the current prediction and the correct label are ignored if they are less than this threshold.
+        learning_rate : string, optional
+            The learning rate schedule:
+            ‘constant’:
+                eta = eta0
+            ‘optimal’: [default]
+                eta = 1.0 / (alpha * (t + t0)) where t0 is chosen by a heuristic proposed by Leon Bottou.
+            ‘invscaling’:
+                eta = eta0 / pow(t, power_t)
+            ‘adaptive’:
+                eta = eta0, as long as the training keeps decreasing. Each time n_iter_no_change consecutive epochs fail to decrease the training loss by tol or fail to increase validation score by tol if early_stopping is True, the current learning rate is divided by 5.
+        eta0 : double
+            The initial learning rate for the ‘constant’, ‘invscaling’ or ‘adaptive’ schedules. The default value is 0.0 as eta0 is not used by the default schedule ‘optimal’.
+        power_t : double
+            The exponent for inverse scaling learning rate [default 0.5].
+        early_stopping : bool, default=False
+            Whether to use early stopping to terminate training when validation score is not improving.
+            If set to True, it will automatically set aside a stratified fraction of training data as validation and terminate training when validation score is not improving by at least tol for n_iter_no_change consecutive epochs.
+        validation_fraction : float, default=0.1
+            The proportion of training data to set aside as validation set for early stopping. Must be between 0 and 1. Only used if early_stopping is True.
+        n_iter_no_change : int, default=5
+            Number of iterations with no improvement to wait before early stopping.
+        class_weight : dict, {class_label: weight} or “balanced” or None, optional
+            Preset for the class_weight fit parameter.
+            Weights associated with classes. If not given, all classes are supposed to have weight one.
+            The “balanced” mode uses the values of y to automatically adjust weights inversely proportional to class frequencies in the input data as n_samples / (n_classes * np.bincount(y))
+        average : bool or int, optional
+            When set to True, computes the averaged SGD weights and stores the result in the coef_ attribute.
+            If set to an int greater than 1, averaging will begin once the total number of samples seen reaches average. So average=10 will begin averaging after seeing 10 samples.
+        Returns
+        -------
+        ClassificationModelAnalysis
+            ClassificationModelAnalysis object to view results and analyze results
+        
+        Examples
+        --------
+        >>> model.SGDClassification()
+        >>> model.SGDClassification(model_name='rc_1, tol=0.001)
+        >>> model.SGDClassification(cv_type='kfold')
+        >>> model.SGDClassification(gridsearch={'alpha':[0.01, 0.02]}, cv_type='strat-kfold')
+        >>> model.SGDClassification(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.linear_model import SGDClassifier
+
+        model = SGDClassifier
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            ClassificationModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
