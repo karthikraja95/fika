@@ -1253,3 +1253,119 @@ class Classification(
         )
 
         return model
+
+    @add_to_queue
+    def LinearSVC(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="accuracy",
+        model_name="linsvc",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Trains a Linear Support Vector classification model.
+        Supports multi classification.
+        Similar to SVC with parameter kernel=’linear’, but implemented in terms of liblinear rather than libsvm, so it has more flexibility in the choice of penalties and loss functions and should scale better to large numbers of samples.
+        This class supports both dense and sparse input and the multiclass support is handled according to a one-vs-the-rest scheme.
+        For more Support Vector info, you can view it here: https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘accuracy’ 	
+            - ‘balanced_accuracy’ 	
+            - ‘average_precision’ 	
+            - ‘brier_score_loss’ 	
+            - ‘f1’ 	
+            - ‘f1_micro’ 	
+            - ‘f1_macro’ 	
+            - ‘f1_weighted’ 	
+            - ‘f1_samples’ 	
+            - ‘neg_log_loss’ 	
+            - ‘precision’	
+            - ‘recall’ 	
+            - ‘jaccard’ 	
+            - ‘roc_auc’
+        
+        Parameters
+        ----------
+        cv_type : bool, optional
+            If True run crossvalidation on the model, by default None.
+        gridsearch : int, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default 'accuracy'
+        model_name : str, optional
+            Name for this model, by default "linsvc"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1    	
+        penalty : string, ‘l1’ or ‘l2’ (default=’l2’)
+            Specifies the norm used in the penalization.
+            The ‘l2’ penalty is the standard used in SVC.
+            The ‘l1’ leads to coef_ vectors that are sparse.
+        loss : string, ‘hinge’ or ‘squared_hinge’ (default=’squared_hinge’)
+            Specifies the loss function.            
+            ‘hinge’ is the standard SVM loss (used e.g. by the SVC class) while ‘squared_hinge’ is the square of the hinge loss.
+        dual : bool, (default=True)
+            Select the algorithm to either solve the dual or primal optimization problem.
+            Prefer dual=False when n_samples > n_features.
+        tol : float, optional (default=1e-4)
+            Tolerance for stopping criteria.
+        C : float, optional (default=1.0)
+            Penalty parameter C of the error term.
+        multi_class : string, ‘ovr’ or ‘crammer_singer’ (default=’ovr’)
+            Determines the multi-class strategy if y contains more than two classes.
+            "ovr" trains n_classes one-vs-rest classifiers, while "crammer_singer" optimizes a joint objective over all classes.
+            While crammer_singer is interesting from a theoretical perspective as it is consistent, it is seldom used in practice as it rarely leads to better accuracy and is more expensive to compute.
+            If "crammer_singer" is chosen, the options loss, penalty and dual will be ignored.
+        fit_intercept : boolean, optional (default=True)
+            Whether to calculate the intercept for this model.
+            If set to false, no intercept will be used in calculations (i.e. data is expected to be already centered).
+        intercept_scaling : float, optional (default=1)
+            When self.fit_intercept is True, instance vector x becomes [x, self.intercept_scaling], i.e. a “synthetic” feature with constant value equals to intercept_scaling is appended to the instance vector.
+            The intercept becomes intercept_scaling * synthetic feature weight Note! the synthetic feature weight is subject to l1/l2 regularization as all other features.
+            To lessen the effect of regularization on synthetic feature weight (and therefore on the intercept) intercept_scaling has to be increased.
+        class_weight : {dict, ‘balanced’}, optional
+            Set the parameter C of class i to class_weight[i]*C for SVC.
+            If not given, all classes are supposed to have weight one.
+            The “balanced” mode uses the values of y to automatically adjust weights inversely proportional to class frequencies in the input data as n_samples / (n_classes * np.bincount(y))
+       
+        max_iter : int, (default=1000)
+            The maximum number of iterations to be run.
+        Returns
+        -------
+        ClassificationModelAnalysis
+            ClassificationModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.LinearSVC()
+        >>> model.LinearSVC(model_name='m1', C=0.0003)
+        >>> model.LinearSVC(cv_type='kfold')
+        >>> model.LinearSVC(gridsearch={'C':[0.01, 0.02]}, cv_type='strat-kfold')
+        >>> model.LinearSVC(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.svm import LinearSVC
+
+        model = LinearSVC
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            ClassificationModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
