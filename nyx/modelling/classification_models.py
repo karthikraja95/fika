@@ -144,3 +144,100 @@ class Classification(
         )
 
         return model
+
+    @add_to_queue
+    def RidgeClassification(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="accuracy",
+        model_name="ridge_cls",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Trains a Ridge Classification model.
+        For more Ridge Regression parameters, you can view them here: https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RidgeClassifier.html#sklearn.linear_model.RidgeClassifier        
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘accuracy’ 	
+            - ‘balanced_accuracy’ 	
+            - ‘average_precision’ 	
+            - ‘brier_score_loss’ 	
+            - ‘f1’ 	
+            - ‘f1_micro’ 	
+            - ‘f1_macro’ 	
+            - ‘f1_weighted’ 	
+            - ‘f1_samples’ 	
+            - ‘neg_log_loss’ 	
+            - ‘precision’	
+            - ‘recall’ 	
+            - ‘jaccard’ 	
+            - ‘roc_auc’
+        
+        Parameters
+        ----------
+        cv_type : {kfold, strat-kfold}, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        gridsearch : dict, optional
+            Parameters to gridsearch, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default 'accuracy'
+        model_name : str, optional
+            Name for this model, by default "ridge_cls"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1
+        alpha : float
+            Regularization strength; must be a positive float.
+            Regularization improves the conditioning of the problem and reduces the variance of the estimates.
+            Larger values specify stronger regularization.
+            Alpha corresponds to C^-1 in other linear models such as LogisticRegression or LinearSVC.
+        fit_intercept : boolean
+            Whether to calculate the intercept for this model.
+            If set to false, no intercept will be used in calculations (e.g. data is expected to be already centered).
+        normalize : boolean, optional, default False
+            This parameter is ignored when fit_intercept is set to False.
+            If True, the regressors X will be normalized before regression by subtracting the mean and dividing by the l2-norm.
+        tol : float, optional (default=1e-4)
+            Tolerance for stopping criteria.
+        class_weight : dict or ‘balanced’, optional (default=None)
+            Weights associated with classes in the form {class_label: weight}. If not given, all classes are supposed to have weight one.
+            The “balanced” mode uses the values of y to automatically adjust weights inversely proportional to class frequencies in the input data as n_samples / (n_classes * np.bincount(y)).
+            Note that these weights will be multiplied with sample_weight (passed through the fit method) if sample_weight is specified.
+        Returns
+        -------
+        ClassificationModelAnalysis
+            ClassificationModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.RidgeClassification()
+        >>> model.RidgeClassification(model_name='rc_1, tol=0.001)
+        >>> model.RidgeClassification(cv_type='kfold')
+        >>> model.RidgeClassification(gridsearch={'alpha':[0.01, 0.02]}, cv_type='strat-kfold')
+        >>> model.RidgeClassification(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.linear_model import RidgeClassifier
+
+        model = RidgeClassifier
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            ClassificationModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
