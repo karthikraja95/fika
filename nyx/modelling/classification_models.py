@@ -1025,3 +1025,92 @@ class Classification(
         )
 
         return model
+
+    @add_to_queue
+    def MultinomialClassification(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="accuracy",
+        model_name="multi",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Trains a Multinomial Naive Bayes classification model.
+        The multinomial Naive Bayes classifier is suitable for classification with discrete features (e.g., word counts for text classification). The multinomial distribution normally requires integer feature counts.
+        However, in practice, fractional counts such as tf-idf may also work.
+        For more Multinomial Naive Bayes info, you can view it here: https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.MultinomialNB.html#sklearn.naive_bayes.MultinomialNB
+        and https://scikit-learn.org/stable/modules/naive_bayes.html#multinomial-naive-bayes 
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘accuracy’ 	
+            - ‘balanced_accuracy’ 	
+            - ‘average_precision’ 	
+            - ‘brier_score_loss’ 	
+            - ‘f1’ 	
+            - ‘f1_micro’ 	
+            - ‘f1_macro’ 	
+            - ‘f1_weighted’ 	
+            - ‘f1_samples’ 	
+            - ‘neg_log_loss’ 	
+            - ‘precision’	
+            - ‘recall’ 	
+            - ‘jaccard’ 	
+            - ‘roc_auc’
+        
+        Parameters
+        ----------
+        cv_type : bool, optional
+            If True run crossvalidation on the model, by default False.
+        gridsearch : int, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default 'accuracy'
+        model_name : str, optional
+            Name for this model, by default "multi"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1
+        alpha : float, optional (default=1.0)
+            Additive (Laplace/Lidstone) smoothing parameter (0 for no smoothing).
+        fit_prior : boolean, optional (default=True)
+            Whether to learn class prior probabilities or not. If false, a uniform prior will be used.
+        class_prior : array-like, size (n_classes,), optional (default=None)
+            Prior probabilities of the classes. If specified the priors are not adjusted according to the data.
+        Returns
+        -------
+        ClassificationModelAnalysis
+            ClassificationModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.MultinomialClassification()
+        >>> model.MultinomialClassification(model_name='m1', alpha=0.0003)
+        >>> model.MultinomialClassification(cv_type='kfold')
+        >>> model.MultinomialClassification(gridsearch={'alpha':[0.01, 0.02]}, cv_type='strat-kfold')
+        >>> model.MultinomialClassification(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.naive_bayes import MultinomialNB
+
+        model = MultinomialNB
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            ClassificationModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
