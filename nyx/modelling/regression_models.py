@@ -671,5 +671,91 @@ class Regression(
 
         return model
 
+    @add_to_queue
+    def ADABoostRegression(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="neg_mean_squared_error",
+        model_name="ada_reg",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Trains an AdaBoost Regression model.
+        An AdaBoost classifier is a meta-estimator that begins by fitting a regressor on the original dataset and then fits additional copies of the regressor on the same dataset
+        but where the weights of incorrectly classified instances are adjusted such that subsequent regressors focus more on difficult cases.
+        For more AdaBoost info, you can view it here:https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostRegressor.html#sklearn.ensemble.AdaBoostRegressor
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘explained_variance’ 	 
+            - ‘max_error’ 	 
+            - ‘neg_mean_absolute_error’ --> MAE	 
+            - ‘neg_mean_squared_error’ --> MSE 	 
+            - ‘neg_mean_squared_log_error’ --> MSLE
+            - ‘neg_median_absolute_error’ --> MeAE 	 
+            - ‘r2’
+        
+        Parameters
+        ----------
+        cv : int, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        gridsearch : dict, optional
+            Parameters to gridsearch, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default ‘neg_mean_squared_error’
+        model_name : str, optional
+            Name for this model, by default "ada_reg"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1
+        base_estimator : object, optional (default=None)
+            The base estimator from which the boosted ensemble is built.
+            Support for sample weighting is required, as well as proper classes_ and n_classes_ attributes.
+            If None, then the base estimator is DecisionTreeRegressor(max_depth=3)
+        n_estimators : integer, optional (default=50)
+            The maximum number of estimators at which boosting is terminated.
+            In case of perfect fit, the learning procedure is stopped early.
+        learning_rate : float, optional (default=1.)
+            Learning rate shrinks the contribution of each classifier by learning_rate.
+            There is a trade-off between learning_rate and n_estimators.
+        loss : {‘linear’, ‘square’, ‘exponential’}, optional (default=’linear’)
+            The loss function to use when updating the weights after each boosting iteration.
+        Returns
+        -------
+        RegressionModelAnalysis
+            RegressionModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.AdaBoostRegression()
+        >>> model.AdaBoostRegression(model_name='m1', learning_rate=0.0003)
+        >>> model.AdaBoostRegression(cv=10)
+        >>> model.AdaBoostRegression(gridsearch={'learning_rate':[0.01, 0.02]}, cv='strat-kfold')
+        >>> model.AdaBoostRegression(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.ensemble import AdaBoostRegressor
+
+        model = AdaBoostRegressor
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            RegressionModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
 
 
