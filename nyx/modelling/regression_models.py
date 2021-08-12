@@ -1436,3 +1436,137 @@ class Regression(
         )
 
         return model
+
+    @add_to_queue
+    def XGBoostRegression(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="neg_mean_squared_error",
+        model_name="xgb_reg",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Trains an XGBoost Regression Model.
+        XGBoost is an optimized distributed gradient boosting library designed to be highly efficient, flexible and portable.
+        It implements machine learning algorithms under the Gradient Boosting framework.
+        XGBoost provides a parallel tree boosting (also known as GBDT, GBM) that solve many data science problems in a fast and accurate way.
+        The same code runs on major distributed environment (Hadoop, SGE, MPI) and can solve problems beyond billions of examples.
+        For more XGBoost info, you can view it here: https://xgboost.readthedocs.io/en/latest/ and
+        https://github.com/dmlc/xgboost/blob/master/doc/parameter.rst. 
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘explained_variance’ 	 
+            - ‘max_error’ 	 
+            - ‘neg_mean_absolute_error’ --> MAE 
+            - ‘neg_mean_squared_error’ --> MSE
+            - ‘neg_mean_squared_log_error’ --> MSLE 
+            - ‘neg_median_absolute_error’ --> MeAE 
+            - ‘r2’
+        
+        Parameters
+        ----------
+        cv : bool, optional
+            If True run crossvalidation on the model, by default None.
+        gridsearch : int, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default 'neg_mean_squared_error'
+        model_name : str, optional
+            Name for this model, by default "xgb_reg"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1    	
+        max_depth : int
+            Maximum tree depth for base learners. By default 3
+        learning_rate : float
+            Boosting learning rate (xgb's "eta"). By default 0.1
+        n_estimators : int
+            Number of trees to fit. By default 100.
+        objective : string or callable
+            Specify the learning task and the corresponding learning objective or
+            a custom objective function to be used (see note below).
+            By default, reg:linear
+        booster: string
+            Specify which booster to use: gbtree, gblinear or dart. By default 'gbtree'
+        tree_method: string
+            Specify which tree method to use
+            If this parameter is set to default, XGBoost will choose the most conservative option
+            available.  It's recommended to study this option from parameters
+            document. By default 'auto'
+        gamma : float
+            Minimum loss reduction required to make a further partition on a leaf node of the tree.
+            By default 0
+        subsample : float
+            Subsample ratio of the training instance.
+            By default 1
+        
+        reg_alpha : float (xgb's alpha)
+            L1 regularization term on weights. By default 0
+        reg_lambda : float (xgb's lambda)
+            L2 regularization term on weights. By default 1
+        scale_pos_weight : float
+            Balancing of positive and negative weights. By default 1
+        base_score:
+            The initial prediction score of all instances, global bias. By default 0
+        missing : float, optional
+            Value in the data which needs to be present as a missing value. If
+            None, defaults to np.nan.
+            By default, None
+        num_parallel_tree: int
+            Used for boosting random forest.
+            By default 1
+        importance_type: string, default "gain"
+            The feature importance type for the feature_importances\\_ property:
+            either "gain", "weight", "cover", "total_gain" or "total_cover".
+            By default 'gain'.
+        Note
+        ----
+        A custom objective function can be provided for the ``objective``
+        parameter. In this case, it should have the signature
+        ``objective(y_true, y_pred) -> grad, hess``:
+        y_true: array_like of shape [n_samples]
+            The target values
+        y_pred: array_like of shape [n_samples]
+            The predicted values
+        grad: array_like of shape [n_samples]
+            The value of the gradient for each sample point.
+        hess: array_like of shape [n_samples]
+            The value of the second derivative for each sample point
+        Returns
+        -------
+        RegressionModelAnalysis
+            RegressionModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.XGBoostRegression()
+        >>> model.XGBoostRegression(model_name='m1', reg_alpha=0.0003)
+        >>> model.XGBoostRegression(cv=10)
+        >>> model.XGBoostRegression(gridsearch={'reg_alpha':[0.01, 0.02]}, cv='strat-kfold')
+        >>> model.XGBoostRegression(run=False) # Add model to the queue
+        """
+        # endregion
+
+        import xgboost as xgb
+
+        model = xgb.XGBRegressor
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            RegressionModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
