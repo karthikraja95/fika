@@ -331,3 +331,107 @@ class Regression(
 
         return model
 
+    @add_to_queue
+    def LassoRegression(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="neg_mean_squared_error",
+        model_name="lasso",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Lasso Regression Model trained with L1 prior as regularizer (aka the Lasso)
+        Technically the Lasso model is optimizing the same objective function as the Elastic Net with l1_ratio=1.0 (no L2 penalty).   
+        For more Lasso Regression info, you can view it here: https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘explained_variance’ 	 
+            - ‘max_error’ 	 
+            - ‘neg_mean_absolute_error’ --> MAE	 
+            - ‘neg_mean_squared_error’ --> MSE 	 
+            - ‘neg_mean_squared_log_error’ --> MSLE
+            - ‘neg_median_absolute_error’ --> MeAE 	 
+            - ‘r2’
+        
+        Parameters
+        ----------
+        cv : bool, optional
+            If True run crossvalidation on the model, by default None.
+        gridsearch : int, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default ‘neg_mean_squared_error’
+        model_name : str, optional
+            Name for this model, by default "lasso"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1        
+        
+        alpha : float, optional
+            Constant that multiplies the L1 term.
+            Defaults to 1.0. alpha = 0 is equivalent to an ordinary least square, solved by the LinearRegression object.
+            For numerical reasons, using alpha = 0 with the Lasso object is not advised.
+            Given this, you should use the LinearRegression object.
+        fit_intercept : boolean, optional, default True
+            Whether to calculate the intercept for this model.
+            If set to False, no intercept will be used in calculations (e.g. data is expected to be already centered).
+        normalize : boolean, optional, default False
+            This parameter is ignored when fit_intercept is set to False.
+            If True, the regressors X will be normalized before regression by subtracting the mean and dividing by the l2-norm.
+            
+        precompute : True | False | array-like, default=False
+            Whether to use a precomputed Gram matrix to speed up calculations.
+            If set to 'auto' let us decide. The Gram matrix can also be passed as argument.
+            For sparse input this option is always True to preserve sparsity.
+        max_iter : int, optional
+            The maximum number of iterations
+        
+        tol : float, optional
+            The tolerance for the optimization:
+             if the updates are smaller than tol, the optimization code checks the dual gap for optimality and continues until it is smaller than tol.
+        
+        positive : bool, optional
+            When set to True, forces the coefficients to be positive.
+        selection : str, default ‘cyclic’
+            If set to ‘random’, a random coefficient is updated every iteration rather than looping over features sequentially by default.
+            This (setting to ‘random’) often leads to significantly faster convergence especially when tol is higher than 1e-4.
+        Returns
+        -------
+        RegressionModelAnalysis
+            RegressionModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.LassoRegression()
+        >>> model.LassoRegression(model_name='m1', alpha=0.0003)
+        >>> model.LassoRegression(cv=10)
+        >>> model.LassoRegression(gridsearch={'alpha':[0.01, 0.02]}, cv='strat-kfold')
+        >>> model.LassoRegression(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.linear_model import Lasso
+
+        model = Lasso
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            RegressionModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
+
+
