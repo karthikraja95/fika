@@ -124,3 +124,101 @@ class Regression(
         )
 
         return model
+
+    @add_to_queue
+    def BayesianRidgeRegression(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="neg_mean_squared_error",
+        model_name="bayridge_reg",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Trains a Bayesian Ridge Regression model.
+        For more Linear Regression info, you can view it here: https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.BayesianRidge.html#sklearn.linear_model.BayesianRidge
+        and https://scikit-learn.org/stable/modules/linear_model.html#bayesian-regression 
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘explained_variance’ 	 
+            - ‘max_error’ 	 
+            - ‘neg_mean_absolute_error’ --> MAE	 
+            - ‘neg_mean_squared_error’ --> MSE 	 
+            - ‘neg_mean_squared_log_error’ --> MSLE
+            - ‘neg_median_absolute_error’ --> MeAE 	 
+            - ‘r2’
+        
+        Parameters
+        ----------
+        cv : bool, optional
+            If True run crossvalidation on the model, by default None.
+        gridsearch : int, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default ‘neg_mean_squared_error’
+        model_name : str, optional
+            Name for this model, by default "bayridge_reg"
+        
+            Name of column for labels that are generated, by default "bayridge_reg_predictions"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1
+        
+        n_iter : int, optional
+            Maximum number of iterations. Default is 300. Should be greater than or equal to 1.
+        tol : float, optional
+            Stop the algorithm if w has converged. Default is 1.e-3.
+            
+        alpha_1 : float, optional
+            Hyper-parameter : shape parameter for the Gamma distribution prior over the alpha parameter. Default is 1.e-6
+        alpha_2 : float, optional
+            Hyper-parameter : inverse scale parameter (rate parameter) for the Gamma distribution prior over the alpha parameter. Default is 1.e-6.
+        lambda_1 : float, optional
+            Hyper-parameter : shape parameter for the Gamma distribution prior over the lambda parameter. Default is 1.e-6.
+        lambda_2 : float, optional
+            Hyper-parameter : inverse scale parameter (rate parameter) for the Gamma distribution prior over the lambda parameter. Default is 1.e-6
+        fit_intercept : boolean, optional, default True
+            Whether to calculate the intercept for this model.
+            The intercept is not treated as a probabilistic parameter and thus has no associated variance.
+            If set to False, no intercept will be used in calculations (e.g. data is expected to be already centered).
+        normalize : boolean, optional, default False
+            This parameter is ignored when fit_intercept is set to False. 
+            If True, the regressors X will be normalized before regression by subtracting the mean and dividing by the l2-norm.
+            
+        Returns
+        -------
+        RegressionModelAnalysis
+            RegressionModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.BayesianRidgeRegression()
+        >>> model.BayesianRidgeRegression(model_name='alpha_1', C=0.0003)
+        >>> model.BayesianRidgeRegression(cv=10)
+        >>> model.BayesianRidgeRegression(gridsearch={'alpha_2':[0.01, 0.02]}, cv='strat-kfold')
+        >>> model.BayesianRidgeRegression(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.linear_model import BayesianRidge
+
+        model = BayesianRidge
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            RegressionModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
