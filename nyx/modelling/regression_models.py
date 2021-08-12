@@ -1237,3 +1237,102 @@ class Regression(
         )
 
         return model
+
+    @add_to_queue
+    def LinearSVR(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="neg_mean_squared_error",
+        model_name="linsvr",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Trains a Linear Support Vector Regression model.
+        Similar to SVR with parameter kernel=’linear’, but implemented in terms of liblinear rather than libsvm,
+        so it has more flexibility in the choice of penalties and loss functions and should scale better to large numbers of samples.
+        For more Support Vector info, you can view it here: https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVR.html#sklearn.svm.LinearSVR
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘explained_variance’ 	 
+            - ‘max_error’ 	 
+            - ‘neg_mean_absolute_error’ --> MAE	 
+            - ‘neg_mean_squared_error’ --> MSE 	 
+            - ‘neg_mean_squared_log_error’ --> MSLE
+            - ‘neg_median_absolute_error’ --> MeAE 	 
+            - ‘r2’
+        
+        Parameters
+        ----------
+        cv : bool, optional
+            If True run crossvalidation on the model, by default None.
+        gridsearch : int, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default 'neg_mean_squared_error’
+        model_name : str, optional
+            Name for this model, by default "linsvr_cls"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1    	
+        epsilon : float, optional (default=0.0)
+            Epsilon parameter in the epsilon-insensitive loss function.
+            Note that the value of this parameter depends on the scale of the target variable y.
+            If unsure, set epsilon=0.
+        tol : float, optional (default=1e-4)
+            Tolerance for stopping criteria.
+        C : float, optional (default=1.0)
+            Penalty parameter C of the error term.
+        loss : string, ‘hinge’ or ‘squared_hinge’ (default=’squared_hinge’)
+            Specifies the loss function.            
+            ‘hinge’ is the standard SVM loss (used e.g. by the SVC class) while ‘squared_hinge’ is the square of the hinge loss.
+        dual : bool, (default=True)
+            Select the algorithm to either solve the dual or primal optimization problem.
+            Prefer dual=False when n_samples > n_features.
+        fit_intercept : boolean, optional (default=True)
+            Whether to calculate the intercept for this model.
+            If set to false, no intercept will be used in calculations (i.e. data is expected to be already centered).
+        intercept_scaling : float, optional (default=1)
+            When self.fit_intercept is True, instance vector x becomes [x, self.intercept_scaling], i.e. a “synthetic” feature with constant value equals to intercept_scaling is appended to the instance vector.
+            The intercept becomes intercept_scaling * synthetic feature weight Note! the synthetic feature weight is subject to l1/l2 regularization as all other features.
+            To lessen the effect of regularization on synthetic feature weight (and therefore on the intercept) intercept_scaling has to be increased.
+       
+        max_iter : int, (default=1000)
+            The maximum number of iterations to be run.
+        Returns
+        -------
+        RegressionModelAnalysis
+            RegressionModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.LinearSVR()
+        >>> model.LinearSVR(model_name='m1', C=0.0003)
+        >>> model.LinearSVR(cv=10)
+        >>> model.LinearSVR(gridsearch={'C':[0.01, 0.02]}, cv='strat-kfold')
+        >>> model.LinearSVR(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.svm import LinearSVR
+
+        model = LinearSVR
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            RegressionModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
