@@ -758,4 +758,98 @@ class Regression(
 
         return model
 
+    @add_to_queue
+    def BaggingRegression(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="neg_mean_squared_error",
+        model_name="bag_reg",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Trains a Bagging Regressor model.
+        A Bagging classifier is an ensemble meta-estimator that fits base regressors each on random subsets of the original dataset and then aggregate their individual predictions (either by voting or by averaging) to form a final prediction.
+        Such a meta-estimator can typically be used as a way to reduce the variance of a black-box estimator (e.g., a decision tree), by introducing randomization into its construction procedure and then making an ensemble out of it.
+        For more Bagging Classifier info, you can view it here: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingRegressor.html#sklearn.ensemble.BaggingRegressor
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘explained_variance’ 	 
+            - ‘max_error’ 	 
+            - ‘neg_mean_absolute_error’ --> MAE	 
+            - ‘neg_mean_squared_error’ --> MSE 	 
+            - ‘neg_mean_squared_log_error’ --> MSLE
+            - ‘neg_median_absolute_error’ --> MeAE 	 
+            - ‘r2’
+        
+        Parameters
+        ----------
+        cv : int, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        gridsearch : dict, optional
+            Parameters to gridsearch, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default ‘neg_mean_squared_error’
+        model_name : str, optional
+            Name for this model, by default "bag_reg"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1
+        base_estimator : object or None, optional (default=None)
+            The base estimator to fit on random subsets of the dataset.
+            If None, then the base estimator is a decision tree.
+        n_estimators : int, optional (default=10)
+            The number of base estimators in the ensemble.
+        max_samples : int or float, optional (default=1.0)
+            The number of samples to draw from X to train each base estimator.
+                If int, then draw max_samples samples.
+                If float, then draw max_samples * X.shape[0] samples.
+        max_features : int or float, optional (default=1.0)
+            The number of features to draw from X to train each base estimator.
+                If int, then draw max_features features.
+                If float, then draw max_features * X.shape[1] features.
+        bootstrap : boolean, optional (default=True)
+            Whether samples are drawn with replacement. If False, sampling without replacement is performed.
+        bootstrap_features : boolean, optional (default=False)
+            Whether features are drawn with replacement.
+        oob_score : bool, optional (default=False)
+            Whether to use out-of-bag samples to estimate the generalization error.
+        Returns
+        -------
+        RegressionModelAnalysis
+            RegressionModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.BaggingRegression()
+        >>> model.BaggingRegression(model_name='m1', n_estimators=100)
+        >>> model.BaggingRegression(cv=10)
+        >>> model.BaggingRegression(gridsearch={'n_estimators':[100, 200]}, cv='strat-kfold')
+        >>> model.BaggingRegression(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.ensemble import BaggingRegressor
+
+        model = BaggingRegressor
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            RegressionModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
+
 
