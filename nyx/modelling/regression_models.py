@@ -1336,3 +1336,103 @@ class Regression(
         )
 
         return model
+
+    @add_to_queue
+    def SVR(
+        self,
+        cv_type=None,
+        gridsearch=None,
+        score="neg_mean_squared_error",
+        model_name="svr_reg",
+        run=True,
+        verbose=1,
+        **kwargs,
+    ):
+        # region
+        """
+        Epsilon-Support Vector Regression.
+        The free parameters in the model are C and epsilon.
+        The fit time scales at least quadratically with the number of samples and may be impractical beyond tens of thousands of samples.
+        For large datasets consider using model.linearsvr or model.sgd_regression instead
+        For more Support Vector info, you can view it here: https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVR.html#sklearn.svm.SVR
+        If running gridsearch, the implemented cross validators are:
+            - 'kfold' for KFold
+            - 'strat-kfold' for StratifiedKfold
+        Possible scoring metrics: 
+            - ‘explained_variance’ 	 
+            - ‘max_error’ 	 
+            - ‘neg_mean_absolute_error’ --> MAE	 
+            - ‘neg_mean_squared_error’ --> MSE 	 
+            - ‘neg_mean_squared_log_error’ --> MSLE
+            - ‘neg_median_absolute_error’ --> MeAE 	 
+            - ‘r2’
+        Parameters
+        ----------
+        cv : bool, optional
+            If True run crossvalidation on the model, by default None.
+        gridsearch : int, Crossvalidation Generator, optional
+            Cross validation method, by default None
+        score : str, optional
+            Scoring metric to evaluate models, by default 'neg_mean_squared_error'
+        model_name : str, optional
+            Name for this model, by default "linsvr"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1    	
+        kernel : string, optional (default=’rbf’)
+            Specifies the kernel type to be used in the algorithm.
+            It must be one of ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’ or a callable.
+            If none is given, ‘rbf’ will be used.
+            If a callable is given it is used to pre-compute the kernel matrix from data matrices; that matrix should be an array of shape (n_samples, n_samples).
+        degree : int, optional (default=3)
+            Degree of the polynomial kernel function (‘poly’). Ignored by all other kernels.
+        gamma : float, optional (default=’auto’)
+            Kernel coefficient for ‘rbf’, ‘poly’ and ‘sigmoid’.
+            Current default is ‘auto’ which uses 1 / n_features, if gamma='scale' is passed then it uses 1 / (n_features * X.var()) as value of gamma.
+        coef0 : float, optional (default=0.0)
+            Independent term in kernel function. It is only significant in ‘poly’ and ‘sigmoid’.
+        tol : float, optional (default=1e-3)
+            Tolerance for stopping criterion.
+        C : float, optional (default=1.0)
+            Penalty parameter C of the error term.
+        epsilon : float, optional (default=0.1)
+            Epsilon in the epsilon-SVR model.
+            It specifies the epsilon-tube within which no penalty is associated in the training loss function with points predicted within a distance epsilon from the actual value.
+        shrinking : boolean, optional (default=True)
+            Whether to use the shrinking heuristic.
+        cache_size : float, optional
+            Specify the size of the kernel cache (in MB).
+        max_iter : int, optional (default=-1)
+            Hard limit on iterations within solver, or -1 for no limit.
+        Returns
+        -------
+        RegressionModelAnalysis
+            RegressionModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.SVR()
+        >>> model.SVR(model_name='m1', C=0.0003)
+        >>> model.SVR(cv=10)
+        >>> model.SVR(gridsearch={'C':[0.01, 0.02]}, cv='strat-kfold')
+        >>> model.SVR(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.svm import SVR
+
+        model = SVR
+
+        model = self._run_supervised_model(
+            model,
+            model_name,
+            RegressionModelAnalysis,
+            cv_type=cv_type,
+            gridsearch=gridsearch,
+            score=score,
+            run=run,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        return model
