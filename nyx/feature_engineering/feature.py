@@ -883,7 +883,7 @@ class Feature(object):
 
         return self
 
-     def _run_sklearn_dim_reduction(self, algo: str, n_components, **kwargs):
+    def _run_sklearn_dim_reduction(self, algo: str, n_components, **kwargs):
         """
         Generalized helper function to run dimensionality reduction algorithms from sklearn.
         
