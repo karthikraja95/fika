@@ -364,3 +364,58 @@ class Unsupervised(
         model = self._run_unsupervised_model(model, model_name, run=run, **kwargs,)
 
         return model
+
+    @add_to_queue
+    def MeanShift(
+        self, model_name="mshift", run=True, **kwargs,
+    ):
+        # region
+        """
+        Trains a Mean Shift clustering algorithm.
+        Mean shift clustering aims to discover “blobs” in a smooth density of samples.
+        It is a centroid-based algorithm, which works by updating candidates for centroids to be the mean of the points within a given region.
+        These candidates are then filtered in a post-processing stage to eliminate near-duplicates to form the final set of centroids.
+        For more info on Mean Shift clustering please visit: https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MeanShift.html#sklearn.cluster.MeanShift
+        Parameters
+        ----------
+        model_name : str, optional
+            Name for this model, by default "mshift"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        bandwidth : float, optional
+            Bandwidth used in the RBF kernel.
+            If not given, the bandwidth is estimated using sklearn.cluster.estimate_bandwidth; see the documentation for that function for hints on scalability (see also the Notes, below).
+        seeds : array, shape=[n_samples, n_features], optional
+            Seeds used to initialize kernels.
+            If not set, the seeds are calculated by clustering.get_bin_seeds with bandwidth as the grid size and default values for other parameters.
+        bin_seeding : boolean, optional
+            If true, initial kernel locations are not locations of all points, but rather the location of the discretized version of points, where points are binned onto a grid whose coarseness corresponds to the bandwidth.
+            Setting this option to True will speed up the algorithm because fewer seeds will be initialized.
+            default value: False Ignored if seeds argument is not None.        
+            
+        min_bin_freq : int, optional
+            To speed up the algorithm, accept only those bins with at least min_bin_freq points as seeds.
+            If not defined, set to 1.
+        cluster_all : boolean, default True
+            If true, then all points are clustered, even those orphans that are not within any kernel. Orphans are assigned to the nearest kernel.
+            If false, then orphans are given cluster label -1.
+                    
+        Returns
+        -------
+        UnsupervisedModelAnalysis
+            UnsupervisedModelAnalysis object to view results and further analysis
+        Examples
+        --------
+        >>> model.MeanShift()
+        >>> model.MeanShift(model_name='ms_1', cluster_all=False)
+        >>> model.MeanShift(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.cluster import MeanShift
+
+        model = MeanShift
+
+        model = self._run_unsupervised_model(model, model_name, run=run, **kwargs,)
+
+        return model
