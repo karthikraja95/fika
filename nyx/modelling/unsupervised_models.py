@@ -22,7 +22,7 @@ class Unsupervised(
         Parameters
         -----------
         x_train: pd.DataFrame
-            Training data or aethos data object
+            Training data or nyx data object
         exp_name : str
             Experiment name to be tracked in MLFlow.
         """
