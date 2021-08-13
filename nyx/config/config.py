@@ -34,7 +34,6 @@ Implementation
   which can save developers some typing, see the docstring.
 """
 
-
 import re
 from collections import namedtuple
 from contextlib import contextmanager
