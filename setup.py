@@ -42,20 +42,6 @@ pkgs = [
 
 extras = {"ptmodels": ["transformers==2.3.0", "tensorflow==2.1.0"]}
 
-"""
-class VerifyVersionCommand(install):
-    
-    description = "verify that the git tag matches our version"
-
-    def run(self):
-        tag = os.getenv("CIRCLE_TAG")
-
-        if tag != "v" + VERSION:
-            info = "Git tag: {0} does not match the version of this app: {1}".format(
-                tag, VERSION
-            )
-            sys.exit(info)
-"""
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -81,11 +67,6 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Development Status :: Beta",
     ],
-
-
-    """
-    cmdclass={"verify": VerifyVersionCommand},
-    """
 
     entry_points={"console_scripts": ["nyx=nyx.__main__:main"]},
 )
