@@ -240,7 +240,7 @@ class MSFTInterpret(object):
         """
 
         import interpret
-        from aethos.model_analysis.constants import INTERPRET_EXPLAINERS
+        from nyx.model_analysis.constants import INTERPRET_EXPLAINERS
 
         if predictions == "probability":
             predict_fn = self.model.predict_proba
@@ -303,7 +303,7 @@ class MSFTInterpret(object):
         """
 
         import interpret
-        from aethos.model_analysis.constants import INTERPRET_EXPLAINERS
+        from nyx.model_analysis.constants import INTERPRET_EXPLAINERS
 
         if predictions == "probability":
             predict_fn = self.model.predict_proba
@@ -382,7 +382,7 @@ class MSFTInterpret(object):
         """
 
         import interpret
-        from aethos.model_analysis.constants import INTERPRET_EXPLAINERS
+        from nyx.model_analysis.constants import INTERPRET_EXPLAINERS
 
         if predictions == "probability":
             predict_fn = self.model.predict_proba
@@ -416,8 +416,8 @@ class MSFTInterpret(object):
         """
 
         import interpret
-        from aethos.model_analysis.constants import INTERPRET_EXPLAINERS
-        from aethos.util import _interpret_data
+        from nyx.model_analysis.constants import INTERPRET_EXPLAINERS
+        from nyx.util import _interpret_data
 
         dashboard_plots = [_interpret_data(self.x_train, self.y_train, show=False)]
 
