@@ -20,7 +20,7 @@ pkgs = [
     "gensim==3.8.2",
     "pandas-profiling==2.8.0",
     "cookiecutter==1.6.0",
-    "shap==0.39.0",
+    "shap==0.35.0",
     "interpret==0.1.21",
     "yellowbrick==1.1",
     "spacy==2.2.4",
