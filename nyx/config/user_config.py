@@ -41,7 +41,7 @@ DEFAULT_IMAGE_DIR = os.path.join(os.path.expanduser("~"), ".nyx", "images")
 DEFAULT_EXPERIMENTS_DIR = "file:" + os.path.join(
     os.path.expanduser("~"), ".nyx", "experiments", "mlruns")
 
-DEFAULT_DEPLOYMENTS_DIR = OS.path.join(os.path.expanduser("~"), ".nyx", "projects")
+DEFAULT_DEPLOYMENTS_DIR = os.path.join(os.path.expanduser("~"), ".nyx", "projects")
 
 IMAGE_DIR = _make_image_dir()
 
