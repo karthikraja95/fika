@@ -174,10 +174,10 @@ def _get_cv_type(cv_type, n_splits, shuffle, **kwargs):
     shuffle = shuffle
 
     if cv_type == "kfold":
-        cv_type = KFold(n_splits=n_splits, shuffle=shuffle, random_state=42, **kwargs)
+        cv_type = KFold(n_splits=n_splits, shuffle=shuffle,  **kwargs)
     elif cv_type == "strat-kfold":
         cv_type = StratifiedKFold(
-            n_splits=n_splits, shuffle=shuffle, random_state=42, **kwargs
+            n_splits=n_splits, shuffle=shuffle, **kwargs
         )
     else:
         raise ValueError("Cross Validation type is invalid.")
