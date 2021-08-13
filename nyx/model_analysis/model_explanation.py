@@ -206,3 +206,247 @@ class Shap(object):
             misclassified = y_pred != self.y_test
 
         return misclassified
+
+class MSFTInterpret(object):
+    def __init__(self, model, x_train, x_test, y_train, y_test, problem):
+
+        self.model = model
+        self.x_train = x_train.apply(pd.to_numeric)
+        self.x_test = x_test.apply(pd.to_numeric)
+        self.y_train = y_train
+        self.y_test = y_test
+        self.problem = problem
+        self.trained_blackbox_explainers = {}
+
+    def blackbox_show_performance(self, method, predictions="default", show=True):
+        """
+        Plots an interpretable display of your model based off a performance metric.
+        Can either be 'ROC' or 'PR' for precision, recall for classification problems.
+        Can be 'regperf' for regression problems.
+        
+        Parameters
+        ----------
+        method : str
+            Performance metric, either 'roc' or 'PR'
+        predictions : str, optional
+            Prediction type, can either be 'default' (.predict) or 'probability' if the model can predict probabilities, by default 'default'
+        show : bool, optional
+            False to not display the plot, by default True
+        
+        Returns
+        -------
+        Interpret
+            Interpretable dashboard of your model
+        """
+
+        import interpret
+        from aethos.model_analysis.constants import INTERPRET_EXPLAINERS
+
+        if predictions == "probability":
+            predict_fn = self.model.predict_proba
+        else:
+            predict_fn = self.model.predict
+
+        if self.problem in INTERPRET_EXPLAINERS["problem"]:
+            if method.lower() in INTERPRET_EXPLAINERS["problem"][self.problem]:
+                blackbox_perf = INTERPRET_EXPLAINERS["problem"][self.problem][
+                    method.lower()
+                ](predict_fn).explain_perf(
+                    self.x_test, self.y_test, name=method.upper()
+                )
+        else:
+            raise ValueError(
+                "Supported blackbox explainers are only {} for classification problems and {} for regression problems".format(
+                    ",".join(INTERPRET_EXPLAINERS["problem"]["classification"].keys()),
+                    ",".join(INTERPRET_EXPLAINERS["problem"]["regression"].keys()),
+                )
+            )
+
+        if show:
+            interpret.show(blackbox_perf)
+
+        self.trained_blackbox_explainers[method.lower()] = blackbox_perf
+
+        return blackbox_perf
+
+    def blackbox_local_explanation(
+        self,
+        num_samples=0.5,
+        sample_no=None,
+        method="lime",
+        predictions="default",
+        show=True,
+        **kwargs,
+    ):
+        """
+        Plots an interpretable display that explains individual predictions of your model.
+        Supported explainers are either 'lime' or 'shap'.
+        
+        Parameters
+        ----------
+        num_samples : int, float, or 'all', optional
+            Number of samples to display, if less than 1 it will treat it as a percentage, 'all' will include all samples
+            , by default 0.25
+        sample_no : int, optional
+            Sample number to isolate and analyze, if provided it overrides num_samples, by default None
+        method : str, optional
+            Explainer type, can either be 'lime' or 'shap', by default 'lime'
+        predictions : str, optional
+            Prediction type, can either be 'default' (.predict) or 'probability' if the model can predict probabilities, by default 'default'
+        show : bool, optional
+            False to not display the plot, by default True
+        
+        Returns
+        -------
+        Interpret
+            Interpretable dashboard of your model
+        """
+
+        import interpret
+        from aethos.model_analysis.constants import INTERPRET_EXPLAINERS
+
+        if predictions == "probability":
+            predict_fn = self.model.predict_proba
+        else:
+            predict_fn = self.model.predict
+
+        # Determine method
+        if method.lower() in INTERPRET_EXPLAINERS["local"]:
+            if method.lower() == "lime":
+                data = self.x_train
+            elif method.lower() == "shap":
+                data = np.median(self.x_train, axis=0).reshape(1, -1)
+            else:
+                raise ValueError
+
+            explainer = INTERPRET_EXPLAINERS["local"][method.lower()](
+                predict_fn=predict_fn,
+                data=data,
+                feature_names=self.x_train.columns.tolist(),
+                **kwargs,
+            )
+
+        else:
+            raise ValueError(
+                'Supported blackbox local explainers are only "lime" and "shap".'
+            )
+
+        if sample_no is not None:
+            if sample_no < 1 or not isinstance(sample_no, int):
+                raise ValueError("Sample number must be greater than 1.")
+
+            samples = slice(sample_no - 1, sample_no)
+        else:
+            if num_samples == "all":
+                samples = slice(0, len(self.x_test))
+            elif num_samples <= 0:
+                raise ValueError(
+                    "Number of samples must be greater than 0. If it is less than 1, it will be treated as a percentage."
+                )
+            elif num_samples > 0 and num_samples < 1:
+                samples = slice(0, int(num_samples * len(self.x_test)))
+            else:
+                samples = slice(0, num_samples)
+
+        explainer_local = explainer.explain_local(
+            self.x_test[samples], self.y_test[samples], name=method.upper()
+        )
+
+        self.trained_blackbox_explainers[method.lower()] = explainer_local
+
+        if show:
+            interpret.show(explainer_local)
+
+        return explainer_local
+
+    def blackbox_global_explanation(
+        self, method="morris", predictions="default", show=True, **kwargs
+    ):
+        """
+        Provides an interpretable summary of your models behaviour based off an explainer.
+        Can either be 'morris' or 'dependence' for Partial Dependence.
+        
+        Parameters
+        ----------
+        method : str, optional
+            Explainer type, can either be 'morris' or 'dependence', by default 'morris'
+        predictions : str, optional
+            Prediction type, can either be 'default' (.predict) or 'probability' if the model can predict probabilities, by default 'default'
+        show : bool, optional
+            False to not display the plot, by default True
+        
+        Returns
+        -------
+        Interpret
+            Interpretable dashboard of your model
+        """
+
+        import interpret
+        from aethos.model_analysis.constants import INTERPRET_EXPLAINERS
+
+        if predictions == "probability":
+            predict_fn = self.model.predict_proba
+        else:
+            predict_fn = self.model.predict
+
+        if method.lower() in INTERPRET_EXPLAINERS["global"]:
+            sensitivity = INTERPRET_EXPLAINERS["global"][method.lower()](
+                predict_fn=predict_fn, data=self.x_train, **kwargs
+            )
+
+        else:
+            raise ValueError(
+                'Supported blackbox global explainers are only "morris" and partial "dependence".'
+            )
+
+        sensitivity_global = sensitivity.explain_global(name=method.upper())
+
+        self.trained_blackbox_explainers[method.lower()] = sensitivity_global
+
+        if show:
+            interpret.show(sensitivity_global)
+
+        return sensitivity_global
+
+    def create_dashboard(self):  # pragma: no cover
+        """
+        Displays an interpretable dashboard of already created interpretable plots.
+        
+        If a plot hasn't been interpreted yet it is created using default parameters for the dashboard.
+        """
+
+        import interpret
+        from aethos.model_analysis.constants import INTERPRET_EXPLAINERS
+        from aethos.util import _interpret_data
+
+        dashboard_plots = [_interpret_data(self.x_train, self.y_train, show=False)]
+
+        for explainer_type in INTERPRET_EXPLAINERS:
+
+            if explainer_type == "problem":
+                temp_explainer_type = INTERPRET_EXPLAINERS[explainer_type][self.problem]
+            else:
+                temp_explainer_type = INTERPRET_EXPLAINERS[explainer_type]
+
+            for explainer in temp_explainer_type:
+                if explainer in self.trained_blackbox_explainers:
+                    dashboard_plots.append(self.trained_blackbox_explainers[explainer])
+                else:
+                    if explainer_type == "problem":
+                        dashboard_plots.append(
+                            self.blackbox_show_performance(explainer, show=False)
+                        )
+                    elif explainer_type == "local":
+                        dashboard_plots.append(
+                            self.blackbox_local_explanation(
+                                method=explainer, show=False
+                            )
+                        )
+                    else:
+                        dashboard_plots.append(
+                            self.blackbox_global_explanation(
+                                method=explainer, show=False
+                            )
+                        )
+
+        interpret.show(dashboard_plots)
