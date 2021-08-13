@@ -1,6 +1,6 @@
 import os 
 import yaml
-from Ipython import get_ipython
+from IPython import get_ipython
 from nyx.util import _make_dir
 
 pkg_directory = os.path.dirname(__file__)
