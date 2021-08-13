@@ -30,7 +30,7 @@ class UnsupervisedModelAnalysis(ModelAnalysisBase):
 
         self.x_train[self.cluster_col] = self.y_pred
 
-     def filter_cluster(self, cluster_no: int):
+    def filter_cluster(self, cluster_no: int):
         """
         Filters data by a cluster number for analysis.
         
