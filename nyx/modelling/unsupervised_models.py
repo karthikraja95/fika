@@ -171,3 +171,63 @@ class Unsupervised(
         model = self._run_unsupervised_model(model, model_name, run=run, **kwargs,)
 
         return model
+
+    @add_to_queue
+    def IsolationForest(
+        self, model_name="iso_forest", run=True, verbose=1, **kwargs,
+    ):
+        # region
+        """
+        Isolation Forest Algorithm
+        Return the anomaly score of each sample using the IsolationForest algorithm
+        The IsolationForest ‘isolates’ observations by randomly selecting a feature and then randomly selecting a split value between the maximum and minimum values of the selected feature.
+        For more Isolation Forest info, you can view it here: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest
+        
+        Parameters
+        ----------
+        model_name : str, optional
+            Name for this model, by default "iso_forest"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1
+        n_estimators : int, optional (default=100)
+            The number of base estimators in the ensemble.
+        max_samples : int or float, optional (default=”auto”)
+            The number of samples to draw from X to train each base estimator.
+                    If int, then draw max_samples samples.
+                    If float, then draw max_samples * X.shape[0] samples.
+                    If “auto”, then max_samples=min(256, n_samples).
+            If max_samples is larger than the number of samples provided, all samples will be used for all trees (no sampling).
+        contamination : float in (0., 0.5), optional (default=0.1)
+            The amount of contamination of the data set, i.e. the proportion of outliers in the data set.
+            Used when fitting to define the threshold on the decision function.
+            If ‘auto’, the decision function threshold is determined as in the original paper.
+        max_features : int or float, optional (default=1.0)
+            The number of features to draw from X to train each base estimator.
+                    If int, then draw max_features features.
+                    If float, then draw max_features * X.shape[1] features.
+        bootstrap : boolean, optional (default=False)
+            If True, individual trees are fit on random subsets of the training data sampled with replacement.
+            If False, sampling without replacement is performed.
+        Returns
+        -------
+        UnsupervisedModelAnalysis
+            UnsupervisedModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.IsolationForest()
+        >>> model.IsolationForest(model_name='iso_1, max_features=5)
+        >>> model.IsolationForest(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.ensemble import IsolationForest
+
+        model = IsolationForest
+
+        model = self._run_unsupervised_model(
+            model, model_name, run=run, verbose=verbose, **kwargs,
+        )
+
+        return model
