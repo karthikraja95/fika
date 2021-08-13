@@ -32,7 +32,7 @@ pkgs = [
     "selenium==3.141.0",
     "graphviz==0.13.2",
     "pyldavis==2.1.2",
-    "swifter==0.302",
+    "swifter==1.0.9",
     "lightgbm==2.3.1",
     "mlflow==1.7.2",
     "statsmodels==0.11.1",
