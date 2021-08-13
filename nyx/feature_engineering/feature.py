@@ -803,7 +803,7 @@ class Feature(object):
 
         return self
 
-     def drop_correlated_features(self, threshold=0.95):
+    def drop_correlated_features(self, threshold=0.95):
 
         """
         Drop features that have a correlation coefficient greater than the specified threshold with other features.
