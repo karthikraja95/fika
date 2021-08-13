@@ -10,7 +10,7 @@ VERSION = "1.0.0"
 pkgs = [
     "numpy==1.18.2",
     "pandas==1.0.3",
-    "scikit-learn>=0.22",
+    "scikit-learn==0.24",
     "textblob==0.15.3",
     "matplotlib==3.2.1",
     "pandas_summary",
@@ -22,7 +22,7 @@ pkgs = [
     "cookiecutter==1.6.0",
     "shap==0.35.0",
     "interpret==0.1.21",
-    "yellowbrick>=1.1",
+    "yellowbrick==1.3",
     "spacy==2.2.4",
     "xgboost==0.90",
     "ipywidgets==7.5.1",
