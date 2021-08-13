@@ -4,7 +4,7 @@ from nyx.config.config import is_bool, is_list
 from nyx.config.user_config import _make_experiment_dir
 from nyx.util import _make_dir
 
-interactive_df_doc = """
+interactive_dataframe_doc = """
 : bool
     Use QGrid library to interact with pandas dataframe.
     Default value is False
@@ -105,9 +105,9 @@ def create_experiment_dir(key):
 
 
 cf.register_option(
-    "interactive_df",
+    "interactive_dataframe",
     default=False,
-    doc=interactive_df_doc,
+    doc=interactive_dataframe_doc,
     validator=is_bool,
     cb=use_qgrid,
 )
