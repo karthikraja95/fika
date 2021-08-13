@@ -113,7 +113,7 @@ class Visualizations(object):
 
         return fig
 
-     def barplot(
+    def barplot(
         self,
         x: str,
         y=None,
