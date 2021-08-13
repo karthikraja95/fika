@@ -2,8 +2,7 @@ import nyx.config.config as cf
 from nyx.config import cfg, shell
 from nyx.config.config import is_bool, is_list
 from nyx.config.user_config import _make_experiment_dir
-from nyx.util import _make_dir 
-
+from nyx.util import _make_dir
 
 interactive_df_doc = """
 : bool
@@ -81,15 +80,14 @@ track_experiments_doc = """
     Valid values: False, True
 """
 
-def use_qgird(key):
 
-    import qgrid 
+def use_qgrid(key):
+    import qgrid
 
-    if shell == "ZMQInterativeShell":
+    if shell == "ZMQInteractiveShell":
         if cf.get_option(key):
             qgrid.enable()
             qgrid.set_defaults(show_toolbar=True)
-
         else:
             qgrid.disable()
 
@@ -101,6 +99,7 @@ def use_itable(key):
     opt.lengthMenu = [5, 10, 20, 50, 100, 200, 500]
     opt.maxBytes = 0
 
+
 def create_experiment_dir(key):
     _make_experiment_dir()
 
@@ -110,22 +109,19 @@ cf.register_option(
     default=False,
     doc=interactive_df_doc,
     validator=is_bool,
-    cb=use_qgird,
+    cb=use_qgrid,
 )
 
 cf.register_option(
     "interactive_table",
     default=False,
-    doc=interactive_table,
+    doc=interactive_table_doc,
     validator=is_bool,
     cb=use_itable,
 )
 
 cf.register_option(
-    "project_,metrics",
-    default=[],
-    doc=project_metric_doc,
-    validator=is_list,
+    "project_metrics", default=[], doc=project_metric_doc, validator=is_list
 )
 
 cf.register_option(
@@ -135,6 +131,3 @@ cf.register_option(
     validator=is_bool,
     cb=create_experiment_dir,
 )
-
-
-
