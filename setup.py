@@ -14,7 +14,7 @@ pkgs = [
     "textblob==0.15.3",
     "matplotlib==3.2.1",
     "pandas_summary",
-    "ptitprince==0.2.3",
+    "ptitprince==0.2.5",
     "nltk==3.5",
     "ipython==7.13.0",
     "gensim==3.8.2",
