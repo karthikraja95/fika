@@ -1,1 +1,6 @@
-__version__ = '0.1.0'
+import warnings
+import os
+import shutil
+
+warnings.simplefilter("ignore", FutureWarning)
+warnings.simplefilter("ignore", DeprecationWarning)
