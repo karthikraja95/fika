@@ -115,3 +115,59 @@ class Unsupervised(
         )
 
         return model
+
+    @add_to_queue
+    def DBScan(
+        self, model_name="dbs", run=True, verbose=1, **kwargs,
+    ):
+        # region
+        """
+        Based on a set of points (let’s think in a bidimensional space as exemplified in the figure), 
+        DBSCAN groups together points that are close to each other based on a distance measurement (usually Euclidean distance) and a minimum number of points.
+        It also marks as outliers the points that are in low-density regions.
+        The DBSCAN algorithm should be used to find associations and structures in data that are hard to find manually but that can be relevant and useful to find patterns and predict trends.
+        
+        For a list of all possible options for DBSCAN please visit: https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html
+        Parameters
+        ----------
+        model_name : str, optional
+            Name for this model, by default "dbscan"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        eps : float
+            The maximum distance between two samples for one to be considered as in the neighborhood of the other.
+            This is not a maximum bound on the distances of points within a cluster.
+            This is the most important DBSCAN parameter to choose appropriately for your data set and distance function.
+        min_samples : int, optional
+            The number of samples (or total weight) in a neighborhood for a point to be considered as a core point. This includes the point itself.
+        metric : string, or callable
+            The metric to use when calculating distance between instances in a feature array.
+            If metric is a string or callable, it must be one of the options allowed by sklearn.
+            If metric is “precomputed”, X is assumed to be a distance matrix and must be square.
+            X may be a sparse matrix, in which case only “nonzero” elements may be considered neighbors for DBSCAN.
+        p : float, optional
+            The power of the Minkowski metric to be used to calculate distance between points.
+        n_jobs : int or None, optional (default=None)
+            The number of parallel jobs to run.
+            None means 1 unless in a joblib.parallel_backend context. -1 means using all processors.
+            See Glossary for more details.
+        
+        Returns
+        -------
+        UnsupervisedModelAnalysis
+            UnsupervisedModelAnalysis object to view results and further analysis
+        Examples
+        --------
+        >>> model.DBScan()
+        >>> model.DBScan(model_name='dbs_1, min_samples=5)
+        >>> model.DBScan(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.cluster import DBSCAN
+
+        model = DBSCAN
+
+        model = self._run_unsupervised_model(model, model_name, run=run, **kwargs,)
+
+        return model
