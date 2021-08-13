@@ -419,3 +419,91 @@ class Unsupervised(
         model = self._run_unsupervised_model(model, model_name, run=run, **kwargs,)
 
         return model
+
+    @add_to_queue
+    def GaussianMixtureClustering(
+        self, model_name="gm_cluster", run=True, verbose=1, **kwargs,
+    ):
+        # region
+        """
+        Trains a GaussianMixture algorithm that implements the expectation-maximization algorithm for fitting mixture
+        of Gaussian models.
+        A Gaussian mixture model is a probabilistic model that assumes all the data points are generated from a mixture of a finite number of Gaussian distributions with unknown parameters.
+        There are 2 key advantages to using GMMs.
+        
+        Firstly GMMs are a lot more flexible in terms of cluster covariance than K-Means; due to the standard deviation parameter, the clusters can take on any ellipse shape, rather than being restricted to circles.
+        
+        K-Means is actually a special case of GMM in which each cluster’s covariance along all dimensions approaches 0.
+        Secondly, since GMMs use probabilities, they can have multiple clusters per data point.
+        
+        So if a data point is in the middle of two overlapping clusters, we can simply define its class by saying it belongs X-percent to class 1 and Y-percent to class 2. I.e GMMs support mixed membership.
+        For more information on Gaussian Mixture algorithms please visit: https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html#sklearn.mixture.GaussianMixture
+        Parameters
+        ----------
+        model_name : str, optional
+            Name for this model, by default "gm_cluster"
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1
+        n_components : int, defaults to 1.
+            The number of mixture components/ number of unique y_train values.
+        covariance_type : {‘full’ (default), ‘tied’, ‘diag’, ‘spherical’}
+            String describing the type of covariance parameters to use. Must be one of:
+            ‘full’
+                each component has its own general covariance matrix
+            ‘tied’
+                all components share the same general covariance matrix
+            ‘diag’
+                each component has its own diagonal covariance matrix
+            ‘spherical’
+                each component has its own single variance
+        tol : float, defaults to 1e-3.
+            The convergence threshold. EM iterations will stop when the lower bound average gain is below this threshold.
+        reg_covar : float, defaults to 1e-6.
+            Non-negative regularization added to the diagonal of covariance.
+            Allows to assure that the covariance matrices are all positive.
+        max_iter : int, defaults to 100.
+            The number of EM iterations to perform.
+        n_init : int, defaults to 1.
+            The number of initializations to perform. The best results are kept.
+        init_params : {‘kmeans’, ‘random’}, defaults to ‘kmeans’.
+            The method used to initialize the weights, the means and the precisions. Must be one of:
+            'kmeans' : responsibilities are initialized using kmeans.
+            'random' : responsibilities are initialized randomly.
+        weights_init : array-like, shape (n_components, ), optional
+            The user-provided initial weights
+            If it None, weights are initialized using the init_params method.
+            Defaults to None. 
+        means_init : array-like, shape (n_components, n_features), optional
+            The user-provided initial means
+            If it None, means are initialized using the init_params method.
+            Defaults to None
+        precisions_init : array-like, optional.
+            The user-provided initial precisions (inverse of the covariance matrices), defaults to None. If it None, precisions are initialized using the ‘init_params’ method. The shape depends on ‘covariance_type’:
+            (n_components,)                        if 'spherical',
+            (n_features, n_features)               if 'tied',
+            (n_components, n_features)             if 'diag',
+            (n_components, n_features, n_features) if 'full'
+            
+        Returns
+        -------
+        UnsupervisedModelAnalysis
+            UnsupervisedModelAnalysis object to view results and further analysis
+        Examples
+        --------
+        >>> model.GuassianMixtureClustering()
+        >>> model.GuassianMixtureClustering(model_name='gm_1, max_iter=1000)
+        >>> model.GuassianMixtureClustering(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.mixture import GaussianMixture
+
+        model = GaussianMixture
+
+        model = self._run_unsupervised_model(
+            model, model_name, run=run, verbose=verbose, **kwargs,
+        )
+
+        return model
