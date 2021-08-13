@@ -295,3 +295,72 @@ class Unsupervised(
         )
 
         return model
+
+    @add_to_queue
+    def AgglomerativeClustering(
+        self, model_name="agglom", run=True, **kwargs,
+    ):
+        # region
+        """
+        Trains a Agglomerative Clustering Model
+        Each data point as a single cluster at the outset and then successively merge (or agglomerate) pairs of clusters until all clusters have been merged into a single cluster that contains all data points
+        
+        Hierarchical clustering does not require us to specify the number of clusters and we can even select which number of clusters looks best since we are building a tree.
+        
+        Additionally, the algorithm is not sensitive to the choice of distance metric; all of them tend to work equally well whereas with other clustering algorithms, 
+        the choice of distance metric is critical. 
+        
+        A particularly good use case of hierarchical clustering methods is when the underlying data has a hierarchical structure and you want to recover the hierarchy;
+        other clustering algorithms can’t do this.
+        
+        These advantages of hierarchical clustering come at the cost of lower efficiency, as it has a time complexity of O(n³), unlike the linear complexity of K-Means and GMM.
+        For a list of all possible options for Agglomerative clustering please visit: https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering
+        Parameters
+        ----------
+        model_name : str, optional
+            Name for this model, by default "agglom" 
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        n_clusters : int or None, optional (default=2)
+            The number of clusters to find.
+            It must be None if distance_threshold is not None.
+        affinity : string or callable, default: “euclidean”
+            Metric used to compute the linkage.
+            Can be “euclidean”, “l1”, “l2”, “manhattan”, “cosine”, or “precomputed”.
+            If linkage is “ward”, only “euclidean” is accepted.
+            If “precomputed”, a distance matrix (instead of a similarity matrix) is needed as input for the fit method.
+        compute_full_tree : bool or ‘auto’ (optional)
+            Stop early the construction of the tree at n_clusters.
+            This is useful to decrease computation time if the number of clusters is not small compared to the number of samples.
+            This option is useful only when specifying a connectivity matrix.
+            Note also that when varying the number of clusters and using caching, it may be advantageous to compute the full tree.
+            It must be True if distance_threshold is not None.
+        linkage : {“ward”, “complete”, “average”, “single”}, optional (default=”ward”)
+            Which linkage criterion to use. The linkage criterion determines which distance to use between sets of observation. The algorithm will merge the pairs of cluster that minimize this criterion.
+                'ward' minimizes the variance of the clusters being merged.
+                'average' uses the average of the distances of each observation of the two sets.
+                'complete' or maximum linkage uses the maximum distances between all observations of the two sets.
+                'single' uses the minimum of the distances between all observations of the two sets.
+        distance_threshold : float, optional (default=None)
+            The linkage distance threshold above which, clusters will not be merged.
+            If not None, n_clusters must be None and compute_full_tree must be True.
+                    
+        Returns
+        -------
+        UnsupervisedModelAnalysis
+            UnsupervisedModelAnalysis object to view results and further analysis
+        Examples
+        --------
+        >>> model.AgglomerativeClustering()
+        >>> model.AgglomerativeClustering(model_name='ag_1, n_clusters=5)
+        >>> model.AgglomerativeClustering(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.cluster import AgglomerativeClustering
+
+        model = AgglomerativeClustering
+
+        model = self._run_unsupervised_model(model, model_name, run=run, **kwargs,)
+
+        return model
