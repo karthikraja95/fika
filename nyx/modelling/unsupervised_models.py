@@ -231,3 +231,67 @@ class Unsupervised(
         )
 
         return model
+
+    @add_to_queue
+    def OneClassSVM(
+        self, model_name="ocsvm", run=True, verbose=1, **kwargs,
+    ):
+        # region
+        """
+        Trains a One Class SVM model.
+        Unsupervised Outlier Detection.
+        For more Support Vector info, you can view it here: https://scikit-learn.org/stable/modules/generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM
+        
+        Parameters
+        ----------
+        model_name : str, optional
+            Name for this model, by default "ocsvm"     
+        run : bool, optional
+            Whether to train the model or just initialize it with parameters (useful when wanting to test multiple models at once) , by default False
+        verbose : int, optional
+            Verbosity level of model output, the higher the number - the more verbose. By default, 1    	
+        kernel : string, optional (default=’rbf’)
+            Specifies the kernel type to be used in the algorithm.
+            It must be one of ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’ or a callable.
+            If none is given, ‘rbf’ will be used.
+            If a callable is given it is used to precompute the kernel matrix.
+        degree : int, optional (default=3)
+            Degree of the polynomial kernel function (‘poly’). Ignored by all other kernels.
+        gamma : float, optional (default=’auto’)
+            Kernel coefficient for ‘rbf’, ‘poly’ and ‘sigmoid’.
+            Current default is ‘auto’ which uses 1 / n_features, if gamma='scale' is passed then it uses 1 / (n_features * X.var()) as value of gamma.
+        coef0 : float, optional (default=0.0)
+            Independent term in kernel function. It is only significant in ‘poly’ and ‘sigmoid’.
+        tol : float, optional
+            Tolerance for stopping criterion.
+        nu : float, optional
+            An upper bound on the fraction of training errors and a lower bound of the fraction of support vectors.
+            Should be in the interval (0, 1]. By default 0.5 will be taken.
+        shrinking : boolean, optional
+            Whether to use the shrinking heuristic.
+        cache_size : float, optional
+            Specify the size of the kernel cache (in MB).
+        
+        max_iter : int, optional (default=-1)
+            Hard limit on iterations within solver, or -1 for no limit.
+        Returns
+        -------
+        UnsupervisedModelAnalysis
+            UnsupervisedModelAnalysis object to view results and analyze results
+        Examples
+        --------
+        >>> model.OneClassSVM()
+        >>> model.OneClassSVM(model_name='ocs_1, max_iter=100)
+        >>> model.OneClassSVM(run=False) # Add model to the queue
+        """
+        # endregion
+
+        from sklearn.svm import OneClassSVM
+
+        model = OneClassSVM
+
+        model = self._run_unsupervised_model(
+            model, model_name, run=run, verbose=verbose, **kwargs,
+        )
+
+        return model
