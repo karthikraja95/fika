@@ -47,7 +47,7 @@ def gensim_textrank_summarizer(
 
     return x_train, x_test
 
-    def gensim_textrank_keywords(
+def gensim_textrank_keywords(
     x_train,
     x_test=None,
     list_of_cols=[],
