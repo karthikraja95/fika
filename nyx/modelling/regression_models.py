@@ -27,7 +27,7 @@ class Regression(
         Parameters
         -----------
         x_train: pd.DataFrame
-            Training data or aethos data object
+            Training data or nyx data object
         target: str
             For supervised learning problems, the name of the column you're trying to predict.
         x_test: pd.DataFrame
