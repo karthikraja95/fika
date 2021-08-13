@@ -1,0 +1,5 @@
+include README.md
+include nyx/config/technique_reasons.yml
+exclude */test_*.py
+include nyx/templates/files/*
+include nyx/config/config.yml
