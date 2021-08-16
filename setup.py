@@ -65,7 +65,7 @@ setup(
     classifiers=[
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
-        "Development Status :: Beta",
+        "Development Status :: 4 - Beta",
     ],
 
     entry_points={"console_scripts": ["nyx=nyx.__main__:main"]},
