@@ -1,10 +1,10 @@
-# Nija
+# fika
 
 
 
 *"A collection of tools for Data Scientists and ML Engineers to automate their workflow of performing analysis to deploying models and pipelines."*
 
-Nija is a library/platform that automates your data science and analytical tasks at any stage in the pipeline. Nija is, at its core, a uniform API that helps automate analytical techniques from various libaries such as pandas, sci-kit learn, spacy, etc.
+fika is a library/platform that automates your data science and analytical tasks at any stage in the pipeline. fika is, at its core, a uniform API that helps automate analytical techniques from various libaries such as pandas, sci-kit learn, spacy, etc.
 
 ## Setup
 
@@ -12,9 +12,9 @@ Nija is a library/platform that automates your data science and analytical tasks
 
 #### Install from GitHub
 
-`pip install nija`
+`pip install fika`
 
 
-## How to use nija
+## How to use fika
 
-Take a look at this [nija.ipynb](https://github.com/karthikraja95/nija/blob/master/examples/nija.ipynb) notebook
+Take a look at this [fika.ipynb](https://github.com/karthikraja95/fika/blob/master/examples/fika.ipynb) notebook

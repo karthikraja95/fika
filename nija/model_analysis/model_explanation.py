@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import warnings
 
-from nija.config import IMAGE_DIR
+from fika.config import IMAGE_DIR
 
 warnings.simplefilter("ignore", UserWarning)
 
@@ -240,7 +240,7 @@ class MSFTInterpret(object):
         """
 
         import interpret
-        from nija.model_analysis.constants import INTERPRET_EXPLAINERS
+        from fika.model_analysis.constants import INTERPRET_EXPLAINERS
 
         if predictions == "probability":
             predict_fn = self.model.predict_proba
@@ -303,7 +303,7 @@ class MSFTInterpret(object):
         """
 
         import interpret
-        from nija.model_analysis.constants import INTERPRET_EXPLAINERS
+        from fika.model_analysis.constants import INTERPRET_EXPLAINERS
 
         if predictions == "probability":
             predict_fn = self.model.predict_proba
@@ -382,7 +382,7 @@ class MSFTInterpret(object):
         """
 
         import interpret
-        from nija.model_analysis.constants import INTERPRET_EXPLAINERS
+        from fika.model_analysis.constants import INTERPRET_EXPLAINERS
 
         if predictions == "probability":
             predict_fn = self.model.predict_proba
@@ -416,8 +416,8 @@ class MSFTInterpret(object):
         """
 
         import interpret
-        from nija.model_analysis.constants import INTERPRET_EXPLAINERS
-        from nija.util import _interpret_data
+        from fika.model_analysis.constants import INTERPRET_EXPLAINERS
+        from fika.util import _interpret_data
 
         dashboard_plots = [_interpret_data(self.x_train, self.y_train, show=False)]
 

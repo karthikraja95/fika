@@ -1,7 +1,7 @@
 import os
 
-from nija.config import DEFAULT_DEPLOYMENTS_DIR, cfg
-from nija.util import _make_dir
+from fika.config import DEFAULT_DEPLOYMENTS_DIR, cfg
+from fika.util import _make_dir
 
 
 def _create_dir():

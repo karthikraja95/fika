@@ -11,12 +11,12 @@ from IPython.display import display
 from ipywidgets import widgets
 from ipywidgets.widgets.widget_layout import Layout
 
-from nija.config import shell
-from nija.config.config import _global_config
-from nija.model_analysis.unsupervised_model_analysis import UnsupervisedModelAnalysis
-from nija.model_analysis.text_model_analysis import TextModelAnalysis
-from nija.modelling import text
-from nija.modelling.util import (
+from fika.config import shell
+from fika.config.config import _global_config
+from fika.model_analysis.unsupervised_model_analysis import UnsupervisedModelAnalysis
+from fika.model_analysis.text_model_analysis import TextModelAnalysis
+from fika.modelling import text
+from fika.modelling.util import (
     _get_cv_type,
     _make_img_project_dir,
     _run_models_parallel,
@@ -26,8 +26,8 @@ from nija.modelling.util import (
     to_pickle,
     track_model,
 )
-from nija.templates.template_generator import TemplateGenerator as tg
-from nija.util import _input_columns, split_data, _get_attr_, _get_item_
+from fika.templates.template_generator import TemplateGenerator as tg
+from fika.util import _input_columns, split_data, _get_attr_, _get_item_
 
 warnings.simplefilter("ignore", FutureWarning)
 
@@ -217,7 +217,7 @@ class ModelBase(object):
         >>> model.help_debug()
         """
 
-        from nija.model_analysis.constants import DEBUG_OVERFIT, DEBUG_UNDERFIT
+        from fika.model_analysis.constants import DEBUG_OVERFIT, DEBUG_UNDERFIT
 
         overfit_labels = [
             widgets.Checkbox(description=item, layout=Layout(width="100%"))
@@ -363,7 +363,7 @@ class ModelBase(object):
 
     def to_service(self, model_name: str, project_name: str):
         """
-        Creates an app.py, requirements.txt and Dockerfile in `~/.nija/projects` and the necessary folder structure
+        Creates an app.py, requirements.txt and Dockerfile in `~/.fika/projects` and the necessary folder structure
         to run the model as a microservice.
         
         Parameters
@@ -910,7 +910,7 @@ class ModelBase(object):
             from transformers import pipeline
         except ModuleNotFoundError as e:
             raise EnvironmentError(
-                "Pre trained model dependencies have not been installed. Please run pip install nija[ptmodels]"
+                "Pre trained model dependencies have not been installed. Please run pip install fika[ptmodels]"
             )
 
         nlp = pipeline("sentiment-analysis", model=model_type)
@@ -1028,7 +1028,7 @@ class ModelBase(object):
             from transformers import pipeline
         except ModuleNotFoundError as e:
             raise EnvironmentError(
-                "Pre trained model dependencies have not been installed. Please run pip install nija[ptmodels]"
+                "Pre trained model dependencies have not been installed. Please run pip install fika[ptmodels]"
             )
 
         nlp = pipeline("question-answering", model=model_type)

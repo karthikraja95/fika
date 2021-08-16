@@ -1,15 +1,15 @@
 import pandas as pd
 
 from .model import ModelBase
-from nija.config import shell
-from nija.model_analysis.regression_model_analysis import RegressionModelAnalysis
-from nija.analysis import Analysis
-from nija.cleaning.clean import Clean
-from nija.preprocessing.preprocess import Preprocess
-from nija.feature_engineering.feature import Feature
-from nija.visualizations.visualizations import Visualizations
-from nija.stats.stats import Stats
-from nija.modelling.util import add_to_queue
+from fika.config import shell
+from fika.model_analysis.regression_model_analysis import RegressionModelAnalysis
+from fika.analysis import Analysis
+from fika.cleaning.clean import Clean
+from fika.preprocessing.preprocess import Preprocess
+from fika.feature_engineering.feature import Feature
+from fika.visualizations.visualizations import Visualizations
+from fika.stats.stats import Stats
+from fika.modelling.util import add_to_queue
 
 class Regression(
     ModelBase, Analysis, Clean, Preprocess, Feature, Visualizations, Stats
@@ -27,7 +27,7 @@ class Regression(
         Parameters
         -----------
         x_train: pd.DataFrame
-            Training data or nija data object
+            Training data or fika data object
         target: str
             For supervised learning problems, the name of the column you're trying to predict.
         x_test: pd.DataFrame

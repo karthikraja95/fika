@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import seaborn as sns
-from nija.config import IMAGE_DIR, cfg
-from nija.util import _make_dir
+from fika.config import IMAGE_DIR, cfg
+from fika.util import _make_dir
 
 
 class VizCreator(object):

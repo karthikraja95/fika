@@ -1,5 +1,5 @@
 import pandas as pd
-from nija.util import _get_columns, _numeric_input_conditions, drop_replace_columns
+from fika.util import _get_columns, _numeric_input_conditions, drop_replace_columns
 from sklearn.impute import SimpleImputer
 
 def replace_missing_mean_median_mode(

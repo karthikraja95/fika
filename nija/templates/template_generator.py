@@ -5,7 +5,7 @@ from pathlib import Path
 
 from jinja2 import Environment, PackageLoader
 
-from nija.templates.util import (
+from fika.templates.util import (
     _create_dir,
     _create_project_dir,
     _get_model_type_kwarg,
@@ -15,7 +15,7 @@ class TemplateGenerator(object):
 
     # Prepare environment and source data
     env = Environment(
-        loader=PackageLoader("nija", "templates"),
+        loader=PackageLoader("fika", "templates"),
         trim_blocks=True,
         lstrip_blocks=True,
     )

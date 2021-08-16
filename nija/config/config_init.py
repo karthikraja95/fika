@@ -1,8 +1,8 @@
-import nija.config.config as cf
-from nija.config import cfg, shell
-from nija.config.config import is_bool, is_list
-from nija.config.user_config import _make_experiment_dir
-from nija.util import _make_dir
+import fika.config.config as cf
+from fika.config import cfg, shell
+from fika.config.config import is_bool, is_list
+from fika.config.user_config import _make_experiment_dir
+from fika.util import _make_dir
 
 interactive_dataframe_doc = """
 : bool
