@@ -10,9 +10,7 @@ Fika is a library/platform that automates your data science and analytical tasks
 
 **Python Requirements**: 3.6, 3.7
 
-#### Install from GitHub
-
-`pip install fika`
+**Run**: `pip install fika`
 
 
 ## How to use Fika
