@@ -13,3 +13,16 @@ NyX is a platform (Web Application and API) that automates tasks of the ML pipel
 NyX provides you with the code for each technique that was ran on your dataset to remove the "black box" of other autoML platforms. This allows users to learn, customize and tweak the code as they desire. The code provided will be production-ready so you don't have to waste time writing the code and then revising it to production standard. If any models were ran, the users will receive the trained models. As NyX goes through the ML pipeline it records its actions and steps provides a detailed report of what was done, how it was done, where it was done, etc. allowing users to share their process with co-workers, colleagues, friends, etc.
 
 It is Py-automls's goal that Data Scientists and Machine Learning Engineers will contribute the techniques they have used and that researchers will contribute with their code and paper so that everyone using the platform can apply the latest advancements and techniques in A.I. onto their dataset.
+
+## Setup
+
+**Python Requirements**: 3.6, 3.7
+
+#### Install from GitHub
+
+`pip install git+https://github.com/karthikraja95/nyx.git`
+
+
+## How to use NyX
+
+Take a look at this [NyX.ipynb](https://github.com/karthikraja95/nyx/blob/master/examples/data/NyX.ipynb) notebook
