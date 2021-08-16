@@ -4,7 +4,7 @@
 
 *"A collection of tools for Data Scientists and ML Engineers to automate their workflow of performing analysis to deploying models and pipelines."*
 
-nija is a library/platform that automates your data science and analytical tasks at any stage in the pipeline. nija is, at its core, a uniform API that helps automate analytical techniques from various libaries such as pandas, sci-kit learn, spacy, etc.
+Nija is a library/platform that automates your data science and analytical tasks at any stage in the pipeline. Nija is, at its core, a uniform API that helps automate analytical techniques from various libaries such as pandas, sci-kit learn, spacy, etc.
 
 ## Setup
 
