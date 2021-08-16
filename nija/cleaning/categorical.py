@@ -1,5 +1,5 @@
 import numpy as np
-from nija.util import _get_columns
+from fika.util import _get_columns
 
 def _determine_default_category(x_train, col, replacement_categories):
 

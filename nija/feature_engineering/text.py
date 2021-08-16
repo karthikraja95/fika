@@ -4,7 +4,7 @@ import spacy
 
 from textblob import TextBlob
 
-from nija.util import _get_columns
+from fika.util import _get_columns
 
 def textblob_features(
     x_train, x_test, feature, list_of_cols=[], new_col_name="_postagged",

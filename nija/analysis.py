@@ -6,9 +6,9 @@ import ipywidgets as widgets
 import numpy as np
 import pandas as pd
 
-from nija.config import shell
-from nija.stats.stats import Stats
-from nija.util import (
+from fika.config import shell
+from fika.stats.stats import Stats
+from fika.util import (
     CLEANING_CHECKLIST,
     DATA_CHECKLIST,
     ISSUES_CHECKLIST,
@@ -21,7 +21,7 @@ from nija.util import (
     _interpret_data,
     label_encoder,
 )
-from nija.visualizations.visualizations import Visualizations
+from fika.visualizations.visualizations import Visualizations
 from IPython import get_ipython
 from IPython.display import HTML, display
 from ipywidgets import Layout
@@ -33,7 +33,7 @@ class Analysis(Visualizations, Stats):
     Parameters
     -----------
     x_train: pd.DataFrame
-        Training data or nija data object
+        Training data or fika data object
     x_test: pd.DataFrame
         Test data, by default None
     target: str

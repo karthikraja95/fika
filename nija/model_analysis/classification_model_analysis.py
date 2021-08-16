@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 
 from sklearn import metrics
 
-from nija.config import IMAGE_DIR
-from nija.config.config import _global_config
+from fika.config import IMAGE_DIR
+from fika.config.config import _global_config
 from .model_analysis import SupervisedModelAnalysis
-from nija.modelling.util import track_artifacts
+from fika.modelling.util import track_artifacts
 
 class ClassificationModelAnalysis(SupervisedModelAnalysis):
     def __init__(
@@ -455,7 +455,7 @@ class ClassificationModelAnalysis(SupervisedModelAnalysis):
         >>> m.metrics('F1', 'F-Beta')
         """
 
-        from nija.model_analysis.constants import CLASS_METRICS_DESC
+        from fika.model_analysis.constants import CLASS_METRICS_DESC
 
         metric_list = {
             "Accuracy": self.accuracy(),

@@ -11,19 +11,19 @@ import pandas as pd
 import sklearn
 from IPython.display import HTML, SVG, display
 
-from nija.config.config import _global_config
-from nija.feature_engineering.util import sklearn_dim_reduction
-from nija.model_analysis.model_explanation import MSFTInterpret, Shap
-from nija.modelling.util import (
+from fika.config.config import _global_config
+from fika.feature_engineering.util import sklearn_dim_reduction
+from fika.model_analysis.model_explanation import MSFTInterpret, Shap
+from fika.modelling.util import (
     to_pickle,
     track_artifacts,
     _get_cv_type,
     run_crossvalidation,
 )
-from nija.templates.template_generator import TemplateGenerator as tg
-from nija.visualizations.visualizations import Visualizations
-from nija.stats.stats import Stats
-from nija.model_analysis.constants import (
+from fika.templates.template_generator import TemplateGenerator as tg
+from fika.visualizations.visualizations import Visualizations
+from fika.stats.stats import Stats
+from fika.model_analysis.constants import (
     PROBLEM_TYPE,
     SHAP_LEARNERS,
 )
@@ -74,7 +74,7 @@ class ModelAnalysisBase(Visualizations, Stats):
 
     def to_service(self, project_name: str):
         """
-        Creates an app.py, requirements.txt and Dockerfile in `~/.nija/projects` and the necessary folder structure
+        Creates an app.py, requirements.txt and Dockerfile in `~/.fika/projects` and the necessary folder structure
         to run the model as a microservice.
         
         Parameters
@@ -508,7 +508,7 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
         """
 
         import interpret
-        from nija.model_analysis.constants import INTERPRET_EXPLAINERS
+        from fika.model_analysis.constants import INTERPRET_EXPLAINERS
 
         warnings.simplefilter("ignore")
 
@@ -569,7 +569,7 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
         """
 
         import interpret
-        from nija.model_analysis.constants import INTERPRET_EXPLAINERS
+        from fika.model_analysis.constants import INTERPRET_EXPLAINERS
 
         warnings.simplefilter("ignore")
 
@@ -627,7 +627,7 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
         """
 
         import interpret
-        from nija.model_analysis.constants import INTERPRET_EXPLAINERS
+        from fika.model_analysis.constants import INTERPRET_EXPLAINERS
 
         warnings.simplefilter("ignore")
 

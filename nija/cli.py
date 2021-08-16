@@ -2,7 +2,7 @@ import os
 
 import click
 import subprocess
-from nija.config.user_config import EXP_DIR
+from fika.config.user_config import EXP_DIR
 
 @click.group()
 def main():

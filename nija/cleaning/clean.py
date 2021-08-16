@@ -4,10 +4,10 @@ import pandas as pd
 
 from sklearn.impute import MissingIndicator, KNNImputer
 
-from nija.cleaning import util
-from nija.cleaning import categorical as cat
-from nija.cleaning import numeric as num
-from nija.util import _input_columns, _numeric_input_conditions
+from fika.cleaning import util
+from fika.cleaning import categorical as cat
+from fika.cleaning import numeric as num
+from fika.util import _input_columns, _numeric_input_conditions
 
 # Create cleaning code by creating different func
 class Clean(object):

@@ -4,7 +4,7 @@ import sklearn
 import warnings
 import math
 
-from nija.config.config import _global_config
+from fika.config.config import _global_config
 from .model_analysis import SupervisedModelAnalysis
 
 class RegressionModelAnalysis(SupervisedModelAnalysis):
@@ -270,7 +270,7 @@ class RegressionModelAnalysis(SupervisedModelAnalysis):
         >>> m.metrics('SMAPE', 'Root Mean Squared Error')
         """
 
-        from nija.model_analysis.constants import REG_METRICS_DESC
+        from fika.model_analysis.constants import REG_METRICS_DESC
 
         metric_list = {
             "Explained Variance": self.explained_variance(),

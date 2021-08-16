@@ -1,5 +1,5 @@
 include README.md
-include nija/config/technique_reasons.yml
+include fika/config/technique_reasons.yml
 exclude */test_*.py
-include nija/templates/files/*
-include nija/config/config.yml
+include fika/templates/files/*
+include fika/config/config.yml

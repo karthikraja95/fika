@@ -120,6 +120,6 @@ dmypy.json
 datasets/
 
 #reports
-nija_reports/
+fika_reports/
 
-nija_web/*/sources/*
+fika_web/*/sources/*
