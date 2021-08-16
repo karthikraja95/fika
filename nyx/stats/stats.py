@@ -11,7 +11,7 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedKFold, cross_val_predict
 from collections import Counter
 from typing import Union
-from nyx.stats.util import run_2sample_ttest
+from nija.stats.util import run_2sample_ttest
 
 
 class Stats(object):

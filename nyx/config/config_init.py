@@ -1,8 +1,8 @@
-import nyx.config.config as cf
-from nyx.config import cfg, shell
-from nyx.config.config import is_bool, is_list
-from nyx.config.user_config import _make_experiment_dir
-from nyx.util import _make_dir
+import nija.config.config as cf
+from nija.config import cfg, shell
+from nija.config.config import is_bool, is_list
+from nija.config.user_config import _make_experiment_dir
+from nija.util import _make_dir
 
 interactive_dataframe_doc = """
 : bool

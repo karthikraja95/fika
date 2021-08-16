@@ -1,12 +1,12 @@
 import os 
 import yaml
 from IPython import get_ipython
-from nyx.util import _make_dir
+from nija.util import _make_dir
 
 pkg_directory = os.path.dirname(__file__)
 
 with open(
-    os.path.join(os.path.expanduser("~"), ".nyx", "config.yml"), "r"
+    os.path.join(os.path.expanduser("~"), ".nija", "config.yml"), "r"
 ) as ymlfile:
     cfg = yaml.safe_load(ymlfile)
 
@@ -36,12 +36,12 @@ def _make_experiment_dir():
 
     return exp_dir
 
-DEFAULT_MODEL_DIR = os.path.join(os.path.expanduser("~"), ".nyx", "models")
-DEFAULT_IMAGE_DIR = os.path.join(os.path.expanduser("~"), ".nyx", "images")
+DEFAULT_MODEL_DIR = os.path.join(os.path.expanduser("~"), ".nija", "models")
+DEFAULT_IMAGE_DIR = os.path.join(os.path.expanduser("~"), ".nija", "images")
 DEFAULT_EXPERIMENTS_DIR = "file:" + os.path.join(
-    os.path.expanduser("~"), ".nyx", "experiments", "mlruns")
+    os.path.expanduser("~"), ".nija", "experiments", "mlruns")
 
-DEFAULT_DEPLOYMENTS_DIR = os.path.join(os.path.expanduser("~"), ".nyx", "projects")
+DEFAULT_DEPLOYMENTS_DIR = os.path.join(os.path.expanduser("~"), ".nija", "projects")
 
 IMAGE_DIR = _make_image_dir()
 

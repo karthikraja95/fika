@@ -1,7 +1,7 @@
 import os
 
-from nyx.config.config import _global_config
-from nyx.modelling.util import track_artifacts
+from nija.config.config import _global_config
+from nija.modelling.util import track_artifacts
 from .model_analysis import ModelAnalysisBase
 
 class UnsupervisedModelAnalysis(ModelAnalysisBase):

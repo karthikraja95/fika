@@ -2,7 +2,7 @@ import os
 
 import click
 import subprocess
-from nyx.config.user_config import EXP_DIR
+from nija.config.user_config import EXP_DIR
 
 @click.group()
 def main():

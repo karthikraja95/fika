@@ -22,9 +22,9 @@ import xgboost as xgb
 from sklearn.model_selection import GridSearchCV, KFold, StratifiedKFold
 from yellowbrick.model_selection import CVScores, LearningCurve
 
-from nyx.config import EXP_DIR, DEFAULT_MODEL_DIR, IMAGE_DIR, cfg
-from nyx.config.config import _global_config
-from nyx.util import _make_dir
+from nija.config import EXP_DIR, DEFAULT_MODEL_DIR, IMAGE_DIR, cfg
+from nija.config.config import _global_config
+from nija.util import _make_dir
 from pickle import dump
 
 def add_to_queue(model_function):
@@ -206,7 +206,7 @@ def to_pickle(model, name, project=False, project_name=None):
             path = cfg["models"]["dir"]
     else:
         path = os.path.join(
-            os.path.expanduser("~"), ".nyx", "projects", project_name, "app"
+            os.path.expanduser("~"), ".nija", "projects", project_name, "app"
         )
 
     _make_dir(path)

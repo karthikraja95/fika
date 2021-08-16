@@ -47,8 +47,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="nyx",
-    url="https://github.com/karthikraja95/NyX",
+    name="nija",
+    url="https://github.com/karthikraja95/nija",
     packages=find_packages(),
     author="Karthik Bhaskar",
     author_email="karthikrajabk@gmail.com",
@@ -68,5 +68,5 @@ setup(
         "Development Status :: 4 - Beta",
     ],
 
-    entry_points={"console_scripts": ["nyx=nyx.__main__:main"]},
+    entry_points={"console_scripts": ["nija=nija.__main__:main"]},
 )

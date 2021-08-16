@@ -1,17 +1,17 @@
 import pandas as pd
 
 from .model import ModelBase
-from nyx.config import shell
-from nyx.model_analysis.classification_model_analysis import (
+from nija.config import shell
+from nija.model_analysis.classification_model_analysis import (
     ClassificationModelAnalysis,
 )
-from nyx.analysis import Analysis
-from nyx.cleaning.clean import Clean
-from nyx.preprocessing.preprocess import Preprocess
-from nyx.feature_engineering.feature import Feature
-from nyx.visualizations.visualizations import Visualizations
-from nyx.stats.stats import Stats
-from nyx.modelling.util import add_to_queue
+from nija.analysis import Analysis
+from nija.cleaning.clean import Clean
+from nija.preprocessing.preprocess import Preprocess
+from nija.feature_engineering.feature import Feature
+from nija.visualizations.visualizations import Visualizations
+from nija.stats.stats import Stats
+from nija.modelling.util import add_to_queue
 
 class Classification(
     ModelBase, Analysis, Clean, Preprocess, Feature, Visualizations, Stats
@@ -29,7 +29,7 @@ class Classification(
         Parameters
         -----------
         x_train: pd.DataFrame
-            Training data or nyx data object
+            Training data or nija data object
         target: str
             For supervised learning problems, the name of the column you're trying to predict.
         x_test: pd.DataFrame

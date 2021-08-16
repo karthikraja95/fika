@@ -1,7 +1,7 @@
 import pandas as pd
 
 from .analysis import Analysis
-from nyx.util import _get_columns
+from nija.util import _get_columns
 
 def groupby_analysis(df: pd.DataFrame, groupby: list, col_filter=[]):
     """
@@ -34,7 +34,7 @@ def groupby_analysis(df: pd.DataFrame, groupby: list, col_filter=[]):
     Returns
     -------
     Analysis
-        nyx Analysis object to analyze data
+        nija Analysis object to analyze data
     Examples
     --------
     >>> analysis = data.groupby_analysis(df, ["col1", "col2"])

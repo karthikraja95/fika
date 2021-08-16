@@ -9,9 +9,9 @@ from nltk.stem import WordNetLemmatizer
 from nltk.stem.snowball import PorterStemmer, SnowballStemmer
 from nltk.tokenize import RegexpTokenizer, word_tokenize
 
-from nyx.preprocessing import numeric, text
+from nija.preprocessing import numeric, text
 
-from nyx.util import (
+from nija.util import (
     _input_columns,
     _numeric_input_conditions,
 )

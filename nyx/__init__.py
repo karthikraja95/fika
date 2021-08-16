@@ -5,13 +5,13 @@ import shutil
 warnings.simplefilter("ignore", FutureWarning)
 warnings.simplefilter("ignore", DeprecationWarning)
 
-nyx_home = os.path.join(os.path.expanduser("~"), ".nyx")
-config_home = os.path.join(nyx_home, "config.yml")
+nija_home = os.path.join(os.path.expanduser("~"), ".nija")
+config_home = os.path.join(nija_home, "config.yml")
 pkg_directory = os.path.dirname(__file__)
 
 # Create the config file
 if not os.path.exists(config_home):
-    os.makedirs(nyx_home)
+    os.makedirs(nija_home)
     shutil.copyfile(
         os.path.join(pkg_directory, "config", "config.yml"), os.path.join(config_home)
     )
@@ -21,8 +21,8 @@ from IPython import get_ipython
 import plotly.io as pio
 
 # let init-time option registration happen
-import nyx.config.config_init
-from nyx.config.config import (
+import nija.config.config_init
+from nija.config.config import (
     describe_option,
     get_option,
     options,
@@ -30,11 +30,11 @@ from nyx.config.config import (
     set_option,
 )
 
-from nyx.helpers import groupby_analysis
+from nija.helpers import groupby_analysis
 
-from nyx.analysis import Analysis
-from nyx.modelling import Classification, Regression, Unsupervised
-from nyx.model_analysis import (
+from nija.analysis import Analysis
+from nija.modelling import Classification, Regression, Unsupervised
+from nija.model_analysis import (
     ClassificationModelAnalysis,
     RegressionModelAnalysis,
     UnsupervisedModelAnalysis,

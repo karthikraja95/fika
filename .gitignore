@@ -120,6 +120,6 @@ dmypy.json
 datasets/
 
 #reports
-nyx_reports/
+nija_reports/
 
-nyx_web/*/sources/*
+nija_web/*/sources/*

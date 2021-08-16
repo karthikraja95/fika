@@ -1,5 +1,5 @@
 include README.md
-include nyx/config/technique_reasons.yml
+include nija/config/technique_reasons.yml
 exclude */test_*.py
-include nyx/templates/files/*
-include nyx/config/config.yml
+include nija/templates/files/*
+include nija/config/config.yml

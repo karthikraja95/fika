@@ -5,7 +5,7 @@ from gensim.summarization import keywords
 from gensim.summarization.summarizer import summarize
 from nltk.tokenize import word_tokenize
 
-from nyx.preprocessing.text import process_text
+from nija.preprocessing.text import process_text
 
 def gensim_textrank_summarizer(
     x_train, x_test=None, list_of_cols=[], new_col_name="_summarized", **algo_kwargs

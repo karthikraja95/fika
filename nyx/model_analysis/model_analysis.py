@@ -11,19 +11,19 @@ import pandas as pd
 import sklearn
 from IPython.display import HTML, SVG, display
 
-from nyx.config.config import _global_config
-from nyx.feature_engineering.util import sklearn_dim_reduction
-from nyx.model_analysis.model_explanation import MSFTInterpret, Shap
-from nyx.modelling.util import (
+from nija.config.config import _global_config
+from nija.feature_engineering.util import sklearn_dim_reduction
+from nija.model_analysis.model_explanation import MSFTInterpret, Shap
+from nija.modelling.util import (
     to_pickle,
     track_artifacts,
     _get_cv_type,
     run_crossvalidation,
 )
-from nyx.templates.template_generator import TemplateGenerator as tg
-from nyx.visualizations.visualizations import Visualizations
-from nyx.stats.stats import Stats
-from nyx.model_analysis.constants import (
+from nija.templates.template_generator import TemplateGenerator as tg
+from nija.visualizations.visualizations import Visualizations
+from nija.stats.stats import Stats
+from nija.model_analysis.constants import (
     PROBLEM_TYPE,
     SHAP_LEARNERS,
 )
@@ -74,7 +74,7 @@ class ModelAnalysisBase(Visualizations, Stats):
 
     def to_service(self, project_name: str):
         """
-        Creates an app.py, requirements.txt and Dockerfile in `~/.nyx/projects` and the necessary folder structure
+        Creates an app.py, requirements.txt and Dockerfile in `~/.nija/projects` and the necessary folder structure
         to run the model as a microservice.
         
         Parameters
@@ -508,7 +508,7 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
         """
 
         import interpret
-        from nyx.model_analysis.constants import INTERPRET_EXPLAINERS
+        from nija.model_analysis.constants import INTERPRET_EXPLAINERS
 
         warnings.simplefilter("ignore")
 
@@ -569,7 +569,7 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
         """
 
         import interpret
-        from nyx.model_analysis.constants import INTERPRET_EXPLAINERS
+        from nija.model_analysis.constants import INTERPRET_EXPLAINERS
 
         warnings.simplefilter("ignore")
 
@@ -627,7 +627,7 @@ class SupervisedModelAnalysis(ModelAnalysisBase):
         """
 
         import interpret
-        from nyx.model_analysis.constants import INTERPRET_EXPLAINERS
+        from nija.model_analysis.constants import INTERPRET_EXPLAINERS
 
         warnings.simplefilter("ignore")
 

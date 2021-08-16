@@ -1,7 +1,7 @@
 import os
 
-from nyx.config import DEFAULT_DEPLOYMENTS_DIR, cfg
-from nyx.util import _make_dir
+from nija.config import DEFAULT_DEPLOYMENTS_DIR, cfg
+from nija.util import _make_dir
 
 
 def _create_dir():

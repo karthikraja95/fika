@@ -6,9 +6,9 @@ import ipywidgets as widgets
 import numpy as np
 import pandas as pd
 
-from nyx.config import shell
-from nyx.stats.stats import Stats
-from nyx.util import (
+from nija.config import shell
+from nija.stats.stats import Stats
+from nija.util import (
     CLEANING_CHECKLIST,
     DATA_CHECKLIST,
     ISSUES_CHECKLIST,
@@ -21,7 +21,7 @@ from nyx.util import (
     _interpret_data,
     label_encoder,
 )
-from nyx.visualizations.visualizations import Visualizations
+from nija.visualizations.visualizations import Visualizations
 from IPython import get_ipython
 from IPython.display import HTML, display
 from ipywidgets import Layout
@@ -33,7 +33,7 @@ class Analysis(Visualizations, Stats):
     Parameters
     -----------
     x_train: pd.DataFrame
-        Training data or nyx data object
+        Training data or nija data object
     x_test: pd.DataFrame
         Test data, by default None
     target: str
