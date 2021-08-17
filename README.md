@@ -65,12 +65,26 @@ df.replace_missing_random_discrete('Age')
 df.drop('Cabin') # Drop the cabin column
 ```
 
+As you've started to notice, alot of tasks to df the data and to explore the data have been reduced down to one command, and are also customizable by providing the respective keyword arguments.
+
+
+```python
+# Create a barplot of the mean surivial rate grouped by age.
+df.barplot(x='Age', y='Survived', method='mean')
+
+# Plots a scatter plot of Age vs. Fare and colours the dots based off the Survived column.
+df.scatterplot(x='Age', y='Fare', color='Survived')
+
+# One hot encode the `Person` and `Embarked` columns and then drop the original columns
+df.onehot_encode('Person', 'Embarked', keep_col=False) 
+
+```
 
 ## Setup
 
 **Python Requirements**: 3.6, 3.7
 
-**Run**: `pip install fika`
+RUN: `pip install aethos`
 
 
 ## How to use Fika
