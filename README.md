@@ -162,7 +162,7 @@ Now navigate to 'your_home_folder'('~' on linux and Users/'your_user_name' on wi
 
 **Python Requirements**: 3.6, 3.7
 
-RUN: `pip install aethos`
+RUN: `pip install fika`
 
 
 ## How to use Fika
