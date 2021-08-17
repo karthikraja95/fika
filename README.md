@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/fika.svg)](https://badge.fury.io/py/fika) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/fika) 
+
 # Fika
 
 *"A collection of tools for Data Scientists and ML Engineers to automate their workflow of performing analysis to deploying models and pipelines."*
