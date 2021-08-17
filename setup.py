@@ -5,7 +5,7 @@ from subprocess import check_call
 from setuptools import find_packages, setup
 from setuptools.command.install import install
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 
 pkgs = [
     "numpy==1.18.2",
@@ -65,7 +65,6 @@ setup(
     classifiers=[
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
-        "Development Status :: 4 - Beta",
     ],
 
     entry_points={"console_scripts": ["fika=fika.__main__:main"]},
