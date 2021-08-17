@@ -51,7 +51,20 @@ df.autoviz() # Runs autoviz on the data and runs EDA on your data
 df.pairplot() # Generate pairplots for your training data features at any time
 
 df.checklist() # Will provide an iteractive checklist to keep track of your cleaning tasks
+
 ```
+**NOTE:** One of the benefits of using `fika` is that any method you apply on your train set, gets applied to your test dataset. For any method that requires fitting (replacing missing data with mean), the method is fit on the training data and then applied to the testing data to avoid data leakage.
+
+```python
+# Replace missing values in the 'Fare' and 'Embarked' column with the most common values in each of the respective columns.
+df.replace_missing_mostcommon('Fare', 'Embarked')
+
+# Replace missing values in the 'Age' column with a random value that follows the probability distribution of the 'Age' column in the training set. 
+df.replace_missing_random_discrete('Age')
+
+df.drop('Cabin') # Drop the cabin column
+```
+
 
 ## Setup
 
