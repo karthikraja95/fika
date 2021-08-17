@@ -80,6 +80,36 @@ df.onehot_encode('Person', 'Embarked', keep_col=False)
 
 ```
 
+## Modelling with Fika
+
+### Running a Single Model
+
+Models can be trained one at a time or multiple at a time. They can also be trained by passing in the params for the sklearn, xgboost, etc constructor, by passing in a gridsearch dictionary & params, cross validating with gridsearch & params.
+
+After a model has been ran, it comes with use cases such as plotting RoC curves, calculating performance metrics, confusion matrices, SHAP plots, decision tree plots and other local and global model interpretability use cases.
+
+```python
+lr_model = df.LogisticRegression() # Train a logistic regression model
+
+# Train a logistic regression model with gridsearch
+lr_model = df.LogisticRegression(gridsearch={'penalty': ['l1', 'l2']}, random_state=42)
+
+# Crossvalidate a a logistic regression model, displays the scores and the learning curve and builds the model
+lr_model = df.LogisticRegression()
+lr_model.cross_validate(n_splits=10) # default is strat-kfold for classification  problems
+
+# Build a Logistic Regression model with Gridsearch and then cross validates the best model using stratified K-Fold cross validation.
+lr_model = model.LogisticRegression(gridsearch={'penalty': ['l1', 'l2']}, cv_type="strat-kfold") 
+
+lr_model.help_debug() # Interface with items to check for to help debug your model.
+
+lr_model.metrics() # Views all metrics for the model
+lr_model.confusion_matrix()
+lr_model.decision_boundary()
+lr_model.roc_curve()
+```
+
+
 ## Setup
 
 **Python Requirements**: 3.6, 3.7
