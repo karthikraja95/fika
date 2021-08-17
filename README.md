@@ -165,4 +165,9 @@ RUN: `pip install aethos`
 
 ## How to use Fika
 
-Take a look at this [fika.ipynb](https://github.com/karthikraja95/fika/blob/master/examples/fika.ipynb) notebook
+Take a look at this [fika.ipynb](https://github.com/karthikraja95/fika/blob/master/examples/fika.ipynb) notebook.
+
+## For Developers
+
+To install packages `pip3 install -r requirements-dev.txt`
+
