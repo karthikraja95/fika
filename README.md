@@ -129,6 +129,32 @@ df.log_reg.confusion_matrix() # Displays a confusion matrix for the logistic reg
 df.rf_cls.confusion_matrix() # Displays a confusion matrix for the random forest model
 ```
 
+## Model Interpretability
+
+As mentioned in the Model section, whenever a model is trained you have access to use cases for model interpretability as well. There are prebuild SHAP usecases and an interactive dashboard that is equipped with LIME and SHAP for local model interpretability and Morris Sensitivity for global model interpretability.
+
+```python
+lr_model = model.LogisticRegression(random_state=42)
+
+lr_model.summary_plot() # SHAP summary plot
+lr_model.force_plot() # SHAP force plot
+lr_model.decision_plot() # SHAP decision plot
+lr_model.dependence_plot() # SHAP depencence plot
+
+# Creates an interactive dashboard to interpret predictions of the model
+lr_model.interpret_model() 
+```
+
+## Code Generation
+
+Currently you are only able to export your model to be ran a service, and will be able to automatically generate the required files. The automatic creation of a data pipeline is still in progress.
+
+```python
+
+lr_model.to_service('titanic')
+```
+
+Now navigate to 'your_home_folder'('~' on linux and Users/'your_user_name' on windows)/.fika/projects/titanic/ and you will see the files needed to run the model as a service using FastAPI and uvicorn. 
 
 ## Setup
 
