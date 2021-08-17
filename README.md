@@ -109,6 +109,26 @@ lr_model.decision_boundary()
 lr_model.roc_curve()
 ```
 
+### Running multiple models in parallel
+
+```python
+# Add a Logistic Regression, Random Forest Classification and a XGBoost Classification model to the queue.
+lr = df.LogisticRegression(random_state=42, model_name='log_reg', run=False)
+rf = df.RandomForestClassification(run=False)
+
+
+df.run_models() # This will run all queued models in parallel
+df.run_models(method='series') # Run each model one after the other
+
+df.compare_models() # This will display each model evaluated against every metric
+
+# Every model is accessed by a unique name that is assiged when you run the model.
+# Default model names can be seen in the function header of each model.
+
+df.log_reg.confusion_matrix() # Displays a confusion matrix for the logistic regression model
+df.rf_cls.confusion_matrix() # Displays a confusion matrix for the random forest model
+```
+
 
 ## Setup
 
